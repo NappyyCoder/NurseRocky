@@ -110,12 +110,13 @@ export default function Home() {
           <div className="card-grid">
             <div className="card">
               <div className="card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
-                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
-                  <line x1="6" y1="1" x2="6" y2="4" />
-                  <line x1="10" y1="1" x2="10" y2="4" />
-                  <line x1="14" y1="1" x2="14" y2="4" />
+                {/* Hospital building with medical cross */}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 21h18" />
+                  <rect x="5" y="7" width="14" height="14" />
+                  <path d="M10 7V4h4v3" />
+                  <path d="M12 12v4" />
+                  <path d="M10 14h4" />
                 </svg>
               </div>
               <h3>Hospital &amp; Acute Care</h3>
@@ -133,10 +134,14 @@ export default function Home() {
             </div>
             <div className="card">
               <div className="card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="2" y="3" width="20" height="14" rx="2" />
-                  <line x1="8" y1="21" x2="16" y2="21" />
-                  <line x1="12" y1="17" x2="12" y2="21" />
+                {/* Person walking / physical therapy */}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="4" r="2" />
+                  <path d="M9 12l3-4 3 4" />
+                  <path d="M12 8v5" />
+                  <path d="M9 21l1.5-5" />
+                  <path d="M15 21l-1.5-5" />
+                  <path d="M7 14h10" />
                 </svg>
               </div>
               <h3>Rehab &amp; Long-Term Care</h3>
