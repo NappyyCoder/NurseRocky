@@ -668,13 +668,13 @@ section { padding: 5rem 0; }
   backdrop-filter: blur(14px);
   border-top: 1px solid var(--border);
   grid-template-columns: repeat(5, 1fr);
-  padding: .4rem 0 calc(.4rem + env(safe-area-inset-bottom, 0px));
+  padding: .4rem 0 env(safe-area-inset-bottom, .4rem);
   box-shadow: 0 -4px 20px rgba(0,0,0,.06);
 }
 @media (max-width: 768px) {
   .mobile-nav { display: grid; }
   /* Push page content above the nav bar */
-  body { padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
+  body { padding-bottom: calc(68px + env(safe-area-inset-bottom, 16px)); }
 }
 .mobile-nav-item {
   display: flex;
