@@ -623,14 +623,28 @@ section { padding: 5rem 0; }
   .stat-num { font-size: 1.3rem; }
   .stat-label { font-size: .75rem; }
 
-  /* Cards */
-  .card { padding: 1.25rem; }
+  /* Cards — center all text and icons */
+  .card { padding: 1.25rem; text-align: center; }
+  .card-icon { margin-left: auto; margin-right: auto; }
 
   /* Program card */
-  .program-card-content { padding: 1.5rem; }
+  .program-card-content { padding: 1.5rem; text-align: center; }
+  .step-node { justify-content: center; }
+  .steps-track::before { display: none; }
 
-  /* Tuition card */
-  .tuition-info { padding: 1.5rem; gap: .9rem; }
+  /* Tuition card — center content */
+  .tuition-info { padding: 1.5rem; gap: .9rem; text-align: center; align-items: center; }
+  .tuition-info .section-tag,
+  .tuition-info .section-title,
+  .tuition-info .section-body { text-align: center; }
+  .tuition-features { align-items: center; }
+  .tuition-features li { justify-content: center; }
+
+  /* Footer brand */
+  .footer-brand { text-align: center; }
+  .footer-brand p { max-width: 100%; }
+  .footer-col { text-align: center; }
+  .footer-col ul { align-items: center; }
 
   /* CTA buttons stack full-width */
   .cta-actions { flex-direction: column; align-items: center; }
@@ -640,6 +654,77 @@ section { padding: 5rem 0; }
   .footer { padding: 2.5rem 0 0; }
   .footer-grid { gap: 2rem; padding-bottom: 2rem; }
   .footer-bottom { flex-direction: column; text-align: center; gap: .5rem; }
+}
+
+/* ── Mobile bottom nav ──────────────────────────────────── */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: rgba(255,255,255,.97);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border);
+  grid-template-columns: repeat(5, 1fr);
+  padding: .4rem 0 calc(.4rem + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -4px 20px rgba(0,0,0,.06);
+}
+@media (max-width: 768px) {
+  .mobile-nav { display: grid; }
+  /* Push page content above the nav bar */
+  body { padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
+}
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .2rem;
+  padding: .35rem .25rem;
+  color: var(--text-muted);
+  font-size: .65rem;
+  font-weight: 500;
+  letter-spacing: .01em;
+  transition: color var(--transition);
+  text-decoration: none;
+}
+.mobile-nav-item svg { width: 21px; height: 21px; }
+.mobile-nav-item:active { color: var(--blue); }
+.mobile-nav-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .25rem;
+  padding: .2rem .25rem;
+  text-decoration: none;
+}
+.mobile-nav-cta-bubble {
+  width: 44px;
+  height: 44px;
+  background: var(--blue);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-blue);
+  color: var(--white);
+  margin-top: -18px;
+  border: 3px solid var(--white);
+  transition: background var(--transition), transform var(--transition);
+}
+.mobile-nav-cta-bubble svg { width: 18px; height: 18px; }
+.mobile-nav-cta:active .mobile-nav-cta-bubble {
+  background: var(--blue-dark);
+  transform: scale(.95);
+}
+.mobile-nav-cta span {
+  font-size: .65rem;
+  font-weight: 600;
+  color: var(--blue);
+  letter-spacing: .01em;
 }
 
 /* ── Small mobile (≤ 400px) ─────────────────────────────── */
