@@ -49,7 +49,7 @@ export default function Home() {
             <h1>Start Your <em>CNA Career</em> Today</h1>
             <p className="hero-sub">
               Become a Certified Nursing Assistant with hands-on training,
-              state exam prep, and career support — all in under 45 days.
+              state exam prep, and career support, all in under 45 days.
             </p>
             <div className="hero-actions">
               <a href="#enroll" className="btn btn-primary">Enroll Now</a>
@@ -103,7 +103,7 @@ export default function Home() {
             <h2 className="section-title">CNA Career Opportunities</h2>
             <p className="section-body">
               Launch your healthcare career as a Certified Nursing Assistant.
-              Work in hospitals, long-term care, rehab, and home health —
+              Work in hospitals, long-term care, rehab, and home health,
               with strong job demand and competitive pay.
             </p>
           </div>
@@ -129,7 +129,7 @@ export default function Home() {
                 </svg>
               </div>
               <h3>Home Health</h3>
-              <p>Provide one-on-one care in the comfort of patients&apos; homes — a growing and rewarding field.</p>
+                  <p>Provide one-on-one care in the comfort of patients&apos; homes, a growing and rewarding field.</p>
             </div>
             <div className="card">
               <div className="card-icon">
@@ -156,7 +156,7 @@ export default function Home() {
             <span className="section-tag">Why Nurse Rocky</span>
             <h2 className="section-title">What Makes Us Different</h2>
             <p className="section-body">
-              We don&apos;t just prep you for the exam — we prepare you for a real
+              We don&apos;t just prep you for the exam. We prepare you for a real
               healthcare career with confidence, skills, and support.
             </p>
           </div>
