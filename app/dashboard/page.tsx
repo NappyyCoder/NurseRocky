@@ -1,57 +1,8 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
-
-const modules = [
-  {
-    id: 1,
-    title: "Introduction to CNA Role",
-    lessons: 4,
-    duration: "45 min",
-    status: "available",
-    description: "Overview of the CNA profession, responsibilities, and the healthcare team.",
-  },
-  {
-    id: 2,
-    title: "Patient Rights & Safety",
-    lessons: 5,
-    duration: "60 min",
-    status: "locked",
-    description: "Understanding patient rights, HIPAA basics, and safety protocols.",
-  },
-  {
-    id: 3,
-    title: "Infection Control",
-    lessons: 4,
-    duration: "50 min",
-    status: "locked",
-    description: "Hand hygiene, PPE, standard precautions, and preventing infections.",
-  },
-  {
-    id: 4,
-    title: "Basic Nursing Skills",
-    lessons: 8,
-    duration: "90 min",
-    status: "locked",
-    description: "Vital signs, bed making, personal care, positioning, and transfers.",
-  },
-  {
-    id: 5,
-    title: "Clinical Practice Prep",
-    lessons: 3,
-    duration: "40 min",
-    status: "locked",
-    description: "What to expect in your clinical rotations and how to prepare.",
-  },
-  {
-    id: 6,
-    title: "State Exam Preparation",
-    lessons: 6,
-    duration: "75 min",
-    status: "locked",
-    description: "Practice tests, test-taking strategies, and what to expect on exam day.",
-  },
-];
+import { supabaseAdmin } from "@/lib/supabase";
+import type { Module, StudentProgress } from "@/lib/types";
 
 export default async function StudentDashboard() {
   const { userId } = await auth();
@@ -59,6 +10,51 @@ export default async function StudentDashboard() {
 
   const user = await currentUser();
   const firstName = user?.firstName ?? "Student";
+
+  // Fetch modules and this student's progress from Supabase
+  const [{ data: modules }, { data: student }] = await Promise.all([
+    supabaseAdmin
+      .from("modules")
+      .select("*")
+      .eq("is_published", true)
+      .order("order_num"),
+    supabaseAdmin
+      .from("students")
+      .select("id, enrolled")
+      .eq("clerk_user_id", userId)
+      .single(),
+  ]);
+
+  const studentId = student?.id ?? null;
+
+  const { data: progress } = studentId
+    ? await supabaseAdmin
+        .from("student_progress")
+        .select("module_id, completed")
+        .eq("student_id", studentId)
+        .eq("completed", true)
+    : { data: [] };
+
+  const completedModuleIds = new Set(
+    (progress ?? []).map((p: StudentProgress) => p.module_id)
+  );
+
+  const { data: clinicalData } = studentId
+    ? await supabaseAdmin
+        .from("clinical_hours")
+        .select("hours")
+        .eq("student_id", studentId)
+    : { data: [] };
+
+  const totalClinical = (clinicalData ?? []).reduce(
+    (sum: number, r: { hours: number }) => sum + Number(r.hours), 0
+  );
+
+  const allModules: Module[] = modules ?? [];
+  const completedCount = completedModuleIds.size;
+  const overallPct = allModules.length
+    ? Math.round((completedCount / allModules.length) * 100)
+    : 0;
 
   return (
     <div className="portal">
@@ -111,8 +107,8 @@ export default async function StudentDashboard() {
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             </div>
             <div>
-              <div className="progress-num">1 / 6</div>
-              <div className="progress-label">Modules</div>
+              <div className="progress-num">{completedCount} / {allModules.length}</div>
+              <div className="progress-label">Modules Complete</div>
             </div>
           </div>
           <div className="progress-card">
@@ -120,7 +116,7 @@ export default async function StudentDashboard() {
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
             </div>
             <div>
-              <div className="progress-num">0 / 6</div>
+              <div className="progress-num">0 / {allModules.length}</div>
               <div className="progress-label">Quizzes Passed</div>
             </div>
           </div>
@@ -129,7 +125,7 @@ export default async function StudentDashboard() {
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             </div>
             <div>
-              <div className="progress-num">0 / 16</div>
+              <div className="progress-num">{totalClinical} / 16</div>
               <div className="progress-label">Clinical Hours</div>
             </div>
           </div>
@@ -138,7 +134,7 @@ export default async function StudentDashboard() {
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
             </div>
             <div>
-              <div className="progress-num">17%</div>
+              <div className="progress-num">{overallPct}%</div>
               <div className="progress-label">Overall Progress</div>
             </div>
           </div>
@@ -148,26 +144,40 @@ export default async function StudentDashboard() {
         <section id="modules" className="portal-section">
           <h2 className="portal-section-title">Course Modules</h2>
           <div className="modules-list">
-            {modules.map((mod) => (
-              <div key={mod.id} className={`module-card ${mod.status}`}>
-                <div className="module-num">{String(mod.id).padStart(2, "0")}</div>
-                <div className="module-info">
-                  <div className="module-title">{mod.title}</div>
-                  <div className="module-meta">{mod.lessons} lessons · {mod.duration}</div>
-                  <div className="module-desc">{mod.description}</div>
+            {allModules.map((mod: Module, idx: number) => {
+              const isComplete = completedModuleIds.has(mod.id);
+              const isAvailable = idx === 0 || completedModuleIds.has(allModules[idx - 1].id);
+              return (
+                <div key={mod.id} className={`module-card ${isAvailable ? "available" : "locked"}`}>
+                  <div className="module-num">{String(mod.order_num).padStart(2, "0")}</div>
+                  <div className="module-info">
+                    <div className="module-title">{mod.title}</div>
+                    <div className="module-meta">{mod.lessons_count} lessons · {mod.duration_min} min</div>
+                    <div className="module-desc">{mod.description}</div>
+                  </div>
+                  <div className="module-action">
+                    {isComplete ? (
+                      <span className="module-done">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="16" height="16" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Done
+                      </span>
+                    ) : isAvailable ? (
+                      <button className="module-btn start">Start →</button>
+                    ) : (
+                      <span className="module-locked">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        Locked
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div className="module-action">
-                  {mod.status === "available" ? (
-                    <button className="module-btn start">Start →</button>
-                  ) : (
-                    <span className="module-locked">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                      Locked
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))}
+              );
+            })}
+            {allModules.length === 0 && (
+              <p style={{ color: "#64748b", textAlign: "center", padding: "2rem" }}>
+                No modules published yet. Check back soon.
+              </p>
+            )}
           </div>
         </section>
 
@@ -323,6 +333,10 @@ export default async function StudentDashboard() {
         .module-locked {
           display: flex; align-items: center; gap: .35rem;
           font-size: .8rem; color: #94a3b8; font-weight: 500;
+        }
+        .module-done {
+          display: flex; align-items: center; gap: .35rem;
+          font-size: .8rem; color: #16a34a; font-weight: 600;
         }
 
         /* Responsive */
