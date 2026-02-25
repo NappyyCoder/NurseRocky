@@ -8,9 +8,10 @@ out/
 # production build
 build/
 
-# environment files
+# environment files — never commit real keys
 .env
 .env.local
+.env*.local
 .env.development.local
 .env.test.local
 .env.production.local
