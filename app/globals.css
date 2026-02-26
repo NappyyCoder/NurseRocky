@@ -929,6 +929,8 @@ section { padding: 5rem 0; }
 }
 .mobile-nav-item svg { width: 21px; height: 21px; }
 .mobile-nav-item:active { color: var(--blue); }
+.mobile-nav-item[href="/sign-in"] { color: var(--blue-mid); }
+.mobile-nav-item[href="/sign-in"]:active { color: var(--blue-dark); }
 .mobile-nav-cta {
   display: flex;
   flex-direction: column;

@@ -22,12 +22,12 @@ function MobileNav() {
         </svg>
         <span>Careers</span>
       </a>
-      <a href="#different" className="mobile-nav-item">
+      <a href="/sign-in" className="mobile-nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 8v4M12 16h.01" />
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
         </svg>
-        <span>About</span>
+        <span>Sign In</span>
       </a>
       <a href="/enroll" className="mobile-nav-cta">
         <div className="mobile-nav-cta-bubble">
