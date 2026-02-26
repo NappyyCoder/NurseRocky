@@ -332,8 +332,126 @@ section { padding: 5rem 0; }
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
+/* Allow grids with 5 cards to wrap cleanly into 3+2 */
+.card-grid:has(.card:nth-child(5):last-child) {
+  grid-template-columns: repeat(3, 1fr);
+}
 @media (max-width: 900px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } }
+
+/* ─── Career Callout ────────────────────────────────────────── */
+.career-callout {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  padding: 2rem;
+  background: var(--blue-light);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.career-callout-col h4 {
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--blue-dark);
+  margin-bottom: 1rem;
+}
+.career-callout-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+.career-callout-col ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+  font-size: .9rem;
+  color: var(--text-body);
+  line-height: 1.5;
+}
+.career-callout-col ul li svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--blue-mid);
+  margin-top: 2px;
+}
+@media (max-width: 860px) { .career-callout { grid-template-columns: 1fr; } }
+
+/* ─── Photo Strip (3-up) ────────────────────────────────────── */
+.photo-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-top: 2.5rem;
+  height: 260px;
+  overflow: hidden;
+}
+.photo-strip-item {
+  position: relative;
+  overflow: hidden;
+}
+.photo-strip-item img {
+  transition: transform .5s ease;
+}
+.photo-strip-item:hover img {
+  transform: scale(1.04);
+}
+@media (max-width: 700px) {
+  .photo-strip { grid-template-columns: 1fr; height: auto; }
+  .photo-strip-item { height: 200px; }
+}
+
+/* ─── Section Feature Photo ─────────────────────────────────── */
+/* ─── Different Section Highlight ──────────────────────────── */
+/* ─── Different Section Highlight ──────────────────────────── */
+.different-highlight {
+  display: grid;
+  grid-template-columns: 40% 1fr;
+  height: 260px;
+  margin-top: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.different-highlight-photo {
+  position: relative;
+}
+.different-highlight-text {
+  background: var(--blue-dark);
+  padding: 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.25rem;
+  border-left: 4px solid var(--blue-mid);
+}
+.different-highlight-text .section-tag {
+  color: rgba(255,255,255,.6);
+  border-color: rgba(255,255,255,.2);
+}
+.different-quote {
+  font-family: "Fraunces", serif;
+  font-size: clamp(.95rem, 1.3vw, 1.15rem);
+  font-style: italic;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.65;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+@media (max-width: 860px) {
+  .different-highlight { grid-template-columns: 1fr; height: auto; }
+  .different-highlight-photo { height: 220px; }
+  .different-highlight-text { border-left: none; border-top: 4px solid var(--blue-mid); padding: 1.5rem; }
+}
 
 .card {
   background: var(--white);
@@ -528,14 +646,25 @@ section { padding: 5rem 0; }
   position: relative;
   overflow: hidden;
 }
+.cta-bg-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.cta-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,24,50,.82);
+}
 .cta-section::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 70% 50%, rgba(12,122,184,.25) 0%, transparent 65%);
+  background: radial-gradient(ellipse at 70% 50%, rgba(12,122,184,.18) 0%, transparent 65%);
   pointer-events: none;
+  z-index: 1;
 }
-.cta-section .container { position: relative; z-index: 1; }
+.cta-section .container { position: relative; z-index: 2; }
 .cta-inner {
   display: grid;
   grid-template-columns: 1fr 340px;
@@ -738,6 +867,15 @@ section { padding: 5rem 0; }
   .tuition-info .section-body { text-align: center; }
   .tuition-features { align-items: center; }
   .tuition-features li { justify-content: center; }
+
+  /* Career callout — center on mobile */
+  .career-callout { padding: 1.5rem; }
+  .career-callout-col h4 { text-align: center; }
+  .career-callout-col ul li { justify-content: center; }
+
+  /* Different highlight — center on mobile */
+  .different-highlight-text { padding: 1.5rem; text-align: center; align-items: center; }
+  .different-highlight-text .btn { width: 100%; max-width: 300px; justify-content: center; }
 
   /* Footer brand */
   .footer-brand { text-align: center; }

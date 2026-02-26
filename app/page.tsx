@@ -108,11 +108,12 @@ export default function Home() {
           <div className="hero-media">
             <div className="hero-img-wrap">
               <Image
-                src={img("Nurse Rocky Image 2.jpg")}
-                alt="CNA helping a patient"
+                src={img("PICTURE 1.jpg")}
+                alt="CNA student in clinical training"
                 width={560}
                 height={420}
                 priority
+                quality={85}
                 sizes="(max-width: 900px) 100vw, 50vw"
               />
             </div>
@@ -151,15 +152,12 @@ export default function Home() {
             <span className="section-tag">Career Paths</span>
             <h2 className="section-title">CNA Career Opportunities</h2>
             <p className="section-body">
-              Launch your healthcare career as a Certified Nursing Assistant.
-              Work in hospitals, long-term care, rehab, and home health,
-              with strong job demand and competitive pay.
+              Healthcare is one of the fastest-growing industries in the United States and CNAs are essential frontline professionals. After certification, you are qualified to work across a wide range of high-demand settings.
             </p>
           </div>
           <div className="card-grid">
             <div className="card">
               <div className="card-icon">
-                {/* Hospital building with medical cross */}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M3 21h18" />
                   <rect x="5" y="7" width="14" height="14" />
@@ -168,8 +166,8 @@ export default function Home() {
                   <path d="M10 14h4" />
                 </svg>
               </div>
-              <h3>Hospital &amp; Acute Care</h3>
-              <p>Work alongside nurses and doctors in fast-paced hospital environments providing essential patient care.</p>
+              <h3>Hospitals &amp; Acute Care</h3>
+              <p>Work alongside nurses and doctors in fast-paced hospital environments providing essential patient care on the front lines of healthcare.</p>
             </div>
             <div className="card">
               <div className="card-icon">
@@ -178,12 +176,11 @@ export default function Home() {
                   <polyline points="9 22 9 12 15 12 15 22" />
                 </svg>
               </div>
-              <h3>Home Health</h3>
-                  <p>Provide one-on-one care in the comfort of patients&apos; homes, a growing and rewarding field.</p>
+              <h3>Home Health &amp; Hospice</h3>
+              <p>Provide one-on-one care in patients&apos; homes or support individuals in hospice settings, one of the most rewarding and fastest-growing fields.</p>
             </div>
             <div className="card">
               <div className="card-icon">
-                {/* Person walking / physical therapy */}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="4" r="2" />
                   <path d="M9 12l3-4 3 4" />
@@ -194,11 +191,43 @@ export default function Home() {
                 </svg>
               </div>
               <h3>Rehab &amp; Long-Term Care</h3>
-              <p>Support patients through recovery and help residents maintain quality of life in care facilities.</p>
+              <p>Support patients through recovery in rehabilitation centers and help residents maintain quality of life in skilled nursing and assisted living facilities.</p>
             </div>
           </div>
+
+          {/* Career growth callout */}
+          <div className="career-callout">
+            <div className="career-callout-col">
+              <h4>Competitive Benefits</h4>
+              <ul>
+                <li><CheckIcon />Shift differentials for nights and weekends</li>
+                <li><CheckIcon />Sign-on bonuses and overtime opportunities</li>
+                <li><CheckIcon />Tuition reimbursement programs</li>
+                <li><CheckIcon />Health insurance and retirement benefits</li>
+              </ul>
+            </div>
+            <div className="career-callout-col">
+              <h4>Advance Your Career</h4>
+              <ul>
+                <li><CheckIcon />Licensed Practical Nurse (LPN)</li>
+                <li><CheckIcon />Registered Nurse (RN)</li>
+                <li><CheckIcon />Medical Assistant</li>
+                <li><CheckIcon />Healthcare Administration</li>
+              </ul>
+            </div>
+            <div className="career-callout-col">
+              <h4>Strong Job Outlook</h4>
+              <ul>
+                <li><CheckIcon />Growing aging population driving demand</li>
+                <li><CheckIcon />Expansion of long-term care services</li>
+                <li><CheckIcon />Consistent hospital staffing needs</li>
+                <li><CheckIcon />Job security across all 50 states</li>
+              </ul>
+            </div>
+          </div>
+
           <div className="section-cta">
-            <a href="#program" className="btn btn-primary">Learn More About Career Paths</a>
+            <a href="/enroll" className="btn btn-primary">Learn More About Career Paths</a>
           </div>
         </div>
       </section>
@@ -210,8 +239,7 @@ export default function Home() {
             <span className="section-tag">Why Nurse Rocky</span>
             <h2 className="section-title">What Makes Us Different</h2>
             <p className="section-body">
-              We don&apos;t just prep you for the exam. We prepare you for a real
-              healthcare career with confidence, skills, and support.
+              At Nurse Rocky, we don&apos;t just teach you to pass the CNA exam. We prepare you to thrive in real healthcare environments by combining industry expertise, hands-on learning, and career-focused support to set you up for long-term success.
             </p>
           </div>
           <div className="card-grid">
@@ -222,20 +250,20 @@ export default function Home() {
                   <path d="M6 12v5c3 3 9 3 12 0v-5" />
                 </svg>
               </div>
-              <h3>Expert-Led Training</h3>
-              <p>Learn from experienced healthcare professionals who bring real-world knowledge to every lesson.</p>
+              <h3>Arizona-Aligned Curriculum</h3>
+              <p>Every module meets state requirements while reflecting the latest healthcare standards, preparing you for your exam and your first day on the job.</p>
             </div>
             <div className="card">
               <div className="card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                   <polyline points="14 2 14 8 20 8" />
                   <line x1="16" y1="13" x2="8" y2="13" />
                   <line x1="16" y1="17" x2="8" y2="17" />
                 </svg>
               </div>
-              <h3>Flexible Online + Clinical</h3>
-              <p>Complete online modules on your schedule, then master hands-on skills in supervised clinical settings.</p>
+              <h3>Realistic Clinical Training</h3>
+              <p>Learn in a safe, supportive environment with simulations, scenario-based exercises, and guided clinical practice that mirrors real-world healthcare settings.</p>
             </div>
             <div className="card">
               <div className="card-icon">
@@ -246,12 +274,60 @@ export default function Home() {
                   <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg>
               </div>
-              <h3>Career Support</h3>
-              <p>From your first class to your first job, our team is with you every step of the way.</p>
+              <h3>Career-Focused Support</h3>
+              <p>From resume building and interview prep to job placement assistance, we help you launch your healthcare career with confidence from day one.</p>
+            </div>
+            <div className="card">
+              <div className="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" />
+                  <line x1="8" y1="21" x2="16" y2="21" />
+                  <line x1="12" y1="17" x2="12" y2="21" />
+                </svg>
+              </div>
+              <h3>Flexible Online Learning</h3>
+              <p>Study online on your schedule without sacrificing the quality of instruction or practical training that sets you apart as a healthcare professional.</p>
+            </div>
+            <div className="card">
+              <div className="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 8v4M12 16h.01" />
+                </svg>
+              </div>
+              <h3>Student-Centered Community</h3>
+              <p>At Nurse Rocky, you are more than a student. You are part of a supportive learning community that values your growth, well-being, and long-term success.</p>
+            </div>
+            <div className="card">
+              <div className="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              <h3>Expert Healthcare Instructors</h3>
+              <p>Learn from experienced healthcare professionals who bring real-world clinical knowledge into every lesson, preparing you for what actually happens on the job.</p>
             </div>
           </div>
-          <div className="section-cta">
-            <a href="#program" className="btn btn-primary">See Why We&apos;re Different</a>
+          {/* Photo + highlight split */}
+          <div className="different-highlight">
+            <div className="different-highlight-photo">
+              <Image
+                src={img("Nurse Rocky Image 8.webp")}
+                alt="Nurse Rocky students in clinical training"
+                fill
+                quality={80}
+                sizes="(max-width: 860px) 100vw, 45vw"
+                style={{ objectFit: "cover", objectPosition: "center center" }}
+              />
+            </div>
+            <div className="different-highlight-text">
+              <span className="section-tag">Our Promise</span>
+              <blockquote className="different-quote">
+                &ldquo;Nurse Rocky isn&apos;t just a CNA program. It&apos;s the first step toward a rewarding, high-demand healthcare career — with the skills, confidence, and support you need to stand out.&rdquo;
+              </blockquote>
+              <a href="/enroll" className="btn btn-primary">See Why We&apos;re Different</a>
+            </div>
           </div>
         </div>
       </section>
@@ -263,8 +339,7 @@ export default function Home() {
             <span className="section-tag">The Program</span>
             <h2 className="section-title">Certified in 30–45 Days</h2>
             <p className="section-body">
-              Our accelerated, structured program takes you from enrollment
-              to career-ready in under 45 days.
+              At Nurse Rocky, we know your time is valuable. That&apos;s why our accelerated CNA program is designed to take you from beginner to certified professional in just 30–45 days, without sacrificing quality or hands-on experience.
             </p>
           </div>
           <div className="program-card">
@@ -281,7 +356,7 @@ export default function Home() {
                   </div>
                   <div className="step-body">
                     <div className="step-name">Enrollment</div>
-                    <div className="step-desc">Sign up and get immediate access to your student portal.</div>
+                    <div className="step-desc">Sign up and get immediate access to your student portal and all course materials.</div>
                   </div>
                 </div>
                 <div className="step-node">
@@ -294,20 +369,22 @@ export default function Home() {
                   </div>
                   <div className="step-body">
                     <div className="step-name">Online Learning</div>
-                    <div className="step-desc">Complete self-paced modules covering CNA fundamentals.</div>
+                    <div className="step-desc">Modules are carefully sequenced to build your knowledge step by step, from foundational concepts to advanced clinical skills.</div>
                   </div>
                 </div>
                 <div className="step-node">
                   <div className="step-circle">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <polyline points="14 2 14 8 20 8" />
-                      <line x1="16" y1="13" x2="8" y2="13" />
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                      <path d="M3 21h18" />
+                      <rect x="5" y="7" width="14" height="14" />
+                      <path d="M10 7V4h4v3" />
+                      <path d="M12 12v4" />
+                      <path d="M10 14h4" />
                     </svg>
                   </div>
                   <div className="step-body">
                     <div className="step-name">Clinical Practice</div>
-                    <div className="step-desc">Apply skills hands-on in supervised healthcare settings.</div>
+                    <div className="step-desc">Apply what you learn in realistic simulations and supervised clinical settings, ensuring you are confident and job-ready.</div>
                   </div>
                 </div>
                 <div className="step-node">
@@ -318,8 +395,8 @@ export default function Home() {
                     </svg>
                   </div>
                   <div className="step-body">
-                    <div className="step-name">State Exam</div>
-                    <div className="step-desc">Take the certification exam with our full prep support.</div>
+                    <div className="step-name">State Exam Prep</div>
+                    <div className="step-desc">Exam-focused practice, quizzes, and mock scenarios designed to help you pass your CNA state exam on the first attempt.</div>
                   </div>
                 </div>
                 <div className="step-node">
@@ -331,21 +408,22 @@ export default function Home() {
                   </div>
                   <div className="step-body">
                     <div className="step-name">Career Launch</div>
-                    <div className="step-desc">Start working as a certified CNA in under 45 days.</div>
+                    <div className="step-desc">Upon completion, receive career guidance, resume support, and job placement resources to enter the workforce quickly.</div>
                   </div>
                 </div>
               </div>
               <div style={{ marginTop: "2.5rem" }}>
-                <a href="#tuition" className="btn btn-primary">View Program Details</a>
+                <a href="/enroll" className="btn btn-primary">View Program Details</a>
               </div>
             </div>
             <div className="program-card-photo">
               <Image
-                src={img("Nurse Rocky Image 9.jpg")}
-                alt="Program in action"
+                src={img("Nurse Rocky New Image.jpg")}
+                alt="CNA student in clinical program"
                 fill
+                quality={82}
                 sizes="(max-width: 860px) 100vw, 40vw"
-                style={{ objectFit: "cover" }}
+                style={{ objectFit: "cover", objectPosition: "center top" }}
               />
             </div>
           </div>
@@ -358,26 +436,28 @@ export default function Home() {
           <div className="tuition-card">
             <div className="tuition-img">
               <Image
-                src={img("Nurse Rocky Image.jpg")}
-                alt="Nurse Rocky training"
+                src={img("Nurse Rocky New Image 3.png")}
+                alt="Nurse Rocky training and payment"
                 fill
-                sizes="40vw"
-                style={{ objectFit: "cover" }}
+                quality={80}
+                sizes="(max-width: 860px) 100vw, 40vw"
+                style={{ objectFit: "cover", objectPosition: "center top" }}
               />
             </div>
             <div className="tuition-info">
               <span className="section-tag">Tuition &amp; Payment</span>
               <h2 className="section-title">Affordable &amp; Accessible</h2>
               <p className="section-body">
-                Training is designed to fit your life and your budget. Everything
-                you need to become a CNA is included.
+                At Nurse Rocky, we believe that financial barriers should not stand between you and your healthcare career. We offer transparent tuition pricing and flexible payment options to make your CNA training accessible.
               </p>
               <ul className="tuition-features">
-                <li><CheckIcon />Online lessons &amp; clinical hours included</li>
-                <li><CheckIcon />State exam preparation materials</li>
-                <li><CheckIcon />Flexible payment plans available</li>
-                <li><CheckIcon />Upfront enrollment discounts</li>
-                <li><CheckIcon />Financial aid options available</li>
+                <li><CheckIcon />Online learning modules included</li>
+                <li><CheckIcon />Hands-on clinical practice included</li>
+                <li><CheckIcon />State exam preparation included</li>
+                <li><CheckIcon />Career support and job placement guidance</li>
+                <li><CheckIcon />Installment plans to spread the cost over months</li>
+                <li><CheckIcon />Upfront payment discount available</li>
+                <li><CheckIcon />Financial aid and scholarships for eligible students</li>
               </ul>
               <div>
                 <a href="/enroll" className="btn btn-primary">Check Payment Plans</a>
@@ -389,7 +469,19 @@ export default function Home() {
 
       {/* ── CTA ──────────────────────────────────── */}
       <section className="cta-section">
-        <div className="container">
+        {/* Subtle background photo */}
+        <div className="cta-bg-photo">
+          <Image
+            src={img("Nurse Rocky New Image 4.png")}
+            alt=""
+            fill
+            quality={75}
+            sizes="100vw"
+            style={{ objectFit: "cover", objectPosition: "center 40%" }}
+          />
+          <div className="cta-bg-overlay" />
+        </div>
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
           <div className="cta-inner">
             <div className="cta-text">
               <p className="cta-eyebrow">Start Today</p>
