@@ -25,7 +25,6 @@ export async function POST(req: NextRequest) {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.CheckoutSession;
     const clerkUserId = session.metadata?.clerk_user_id;
-    const studentId = session.metadata?.student_id;
 
     if (!clerkUserId) {
       console.error("No clerk_user_id in session metadata");
@@ -33,28 +32,20 @@ export async function POST(req: NextRequest) {
     }
 
     // Mark the student as enrolled
-    if (studentId) {
-      await supabaseAdmin
-        .from("students")
-        .update({
+    // Upsert the student record and mark enrolled in one operation
+    await supabaseAdmin
+      .from("students")
+      .upsert(
+        {
+          clerk_user_id: clerkUserId,
+          email: session.customer_details?.email ?? session.customer_email ?? "",
           enrolled: true,
           enrolled_at: new Date().toISOString(),
-          stripe_customer_id: session.customer as string ?? null,
-          stripe_payment_intent: session.payment_intent as string ?? null,
-        })
-        .eq("id", studentId);
-    } else {
-      // Fallback: look up by clerk_user_id
-      await supabaseAdmin
-        .from("students")
-        .update({
-          enrolled: true,
-          enrolled_at: new Date().toISOString(),
-          stripe_customer_id: session.customer as string ?? null,
-          stripe_payment_intent: session.payment_intent as string ?? null,
-        })
-        .eq("clerk_user_id", clerkUserId);
-    }
+          stripe_customer_id: (session.customer as string) ?? null,
+          stripe_payment_intent: (session.payment_intent as string) ?? null,
+        },
+        { onConflict: "clerk_user_id" }
+      );
 
     console.log(`Student ${clerkUserId} enrolled after successful payment.`);
   }
