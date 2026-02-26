@@ -47,10 +47,7 @@ export default async function StudentDashboard() {
     }
   }
 
-  // Not enrolled — send to payment page
-  if (!student?.enrolled) {
-    redirect("/enroll");
-  }
+  const isEnrolled = student?.enrolled === true;
 
   const studentId = student?.id ?? null;
 
@@ -119,13 +116,29 @@ export default async function StudentDashboard() {
         {/* Header */}
         <header className="portal-header">
           <div>
-            <h1 className="portal-welcome">Welcome back, {firstName}</h1>
-            <p className="portal-subtitle">Continue your CNA certification journey</p>
+            <h1 className="portal-welcome">Welcome{firstName !== "Student" ? `, ${firstName}` : ""}!</h1>
+            <p className="portal-subtitle">
+              {isEnrolled ? "Continue your CNA certification journey" : "Complete enrollment to access your course"}
+            </p>
           </div>
           <div className="portal-header-right">
             <UserButton afterSignOutUrl="/" />
           </div>
         </header>
+
+        {/* Not enrolled banner */}
+        {!isEnrolled && (
+          <div className="not-enrolled-banner">
+            <div className="not-enrolled-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="22" height="22"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div className="not-enrolled-text">
+              <strong>Your course is not unlocked yet.</strong>
+              <span>Complete enrollment to access all modules, quizzes, and clinical hours.</span>
+            </div>
+            <a href="/enroll" className="not-enrolled-btn">Enroll Now</a>
+          </div>
+        )}
 
         {/* Progress cards */}
         <div className="progress-grid">
@@ -173,7 +186,7 @@ export default async function StudentDashboard() {
           <div className="modules-list">
             {allModules.map((mod: Module, idx: number) => {
               const isComplete = completedModuleIds.has(mod.id);
-              const isAvailable = idx === 0 || completedModuleIds.has(allModules[idx - 1].id);
+              const isAvailable = isEnrolled && (idx === 0 || completedModuleIds.has(allModules[idx - 1].id));
               return (
                 <div key={mod.id} className={`module-card ${isAvailable ? "available" : "locked"}`}>
                   <div className="module-num">{String(mod.order_num).padStart(2, "0")}</div>
@@ -365,6 +378,42 @@ export default async function StudentDashboard() {
           display: flex; align-items: center; gap: .35rem;
           font-size: .8rem; color: #16a34a; font-weight: 600;
         }
+
+        /* Not enrolled banner */
+        .not-enrolled-banner {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          background: #fff7ed;
+          border: 1px solid #fed7aa;
+          border-left: 4px solid #f97316;
+          border-radius: 8px;
+          padding: 1rem 1.25rem;
+          margin-bottom: 2rem;
+          flex-wrap: wrap;
+        }
+        .not-enrolled-icon { color: #f97316; flex-shrink: 0; }
+        .not-enrolled-text {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: .15rem;
+          font-size: .875rem;
+        }
+        .not-enrolled-text strong { color: #9a3412; }
+        .not-enrolled-text span { color: #c2410c; }
+        .not-enrolled-btn {
+          background: #f97316;
+          color: #fff;
+          border-radius: 6px;
+          padding: .45rem 1rem;
+          font-size: .85rem;
+          font-weight: 700;
+          text-decoration: none;
+          white-space: nowrap;
+          transition: background .15s;
+        }
+        .not-enrolled-btn:hover { background: #ea580c; }
 
         /* Responsive */
         @media (max-width: 900px) {

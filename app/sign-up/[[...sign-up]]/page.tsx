@@ -43,9 +43,10 @@ export default async function StudentSignUpPage() {
       {/* ── Right form panel ── */}
       <div className="signup-right">
         <p className="signup-switch">Already have one? <a href="/sign-in">Sign in</a></p>
-        <SignUp
-          forceRedirectUrl="/dashboard"
-          unsafeMetadata={{ source: "enrollment" }}
+          <SignUp
+            forceRedirectUrl="/dashboard"
+            afterSignUpUrl="/dashboard"
+            unsafeMetadata={{ source: "enrollment" }}
           appearance={{
             variables: {
               colorPrimary: "#0c7ab8",
