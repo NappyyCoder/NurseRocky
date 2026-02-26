@@ -29,7 +29,7 @@ function MobileNav() {
         </svg>
         <span>About</span>
       </a>
-      <a href="#enroll" className="mobile-nav-cta">
+      <a href="/enroll" className="mobile-nav-cta">
         <div className="mobile-nav-cta-bubble">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M5 12h14M12 5l7 7-7 7" />
@@ -71,7 +71,7 @@ function Nav() {
           <li><a href="#program">Program</a></li>
           <li><a href="#tuition">Tuition</a></li>
         </ul>
-        <a href="#enroll" className="nav-cta">Enroll Now</a>
+        <a href="/enroll" className="nav-cta">Enroll Now</a>
       </div>
     </nav>
   );
@@ -98,7 +98,7 @@ export default function Home() {
               state exam prep, and career support, all in under 45 days.
             </p>
             <div className="hero-actions">
-              <a href="#enroll" className="btn btn-primary">Enroll Now</a>
+              <a href="/enroll" className="btn btn-primary">Enroll Now</a>
               <a href="#program" className="btn btn-outline">View Program</a>
             </div>
           </div>
@@ -377,7 +377,7 @@ export default function Home() {
                 <li><CheckIcon />Financial aid options available</li>
               </ul>
               <div>
-                <a href="#enroll" className="btn btn-primary">Check Payment Plans</a>
+                <a href="/enroll" className="btn btn-primary">Check Payment Plans</a>
               </div>
             </div>
           </div>
@@ -385,18 +385,42 @@ export default function Home() {
       </section>
 
       {/* ── CTA ──────────────────────────────────── */}
-      <section className="cta-section" id="enroll">
+      <section className="cta-section">
         <div className="container">
-          <h2>Ready to Start Your CNA Journey?</h2>
-          <p>
-            Join Nurse Rocky today and gain the skills, confidence, and
-            certification you need to launch your healthcare career.
-          </p>
-          <div className="cta-actions">
-            <a href="#" className="btn btn-white">Enroll Today</a>
-            <a href="#program" className="btn btn-outline" style={{ borderColor: "rgba(255,255,255,.5)", color: "#fff" }}>
-              Learn More
-            </a>
+          <div className="cta-inner">
+            <div className="cta-text">
+              <p className="cta-eyebrow">Start Today</p>
+              <h2>Ready to Launch Your CNA Career?</h2>
+              <p className="cta-body">
+                Join Nurse Rocky and become a Certified Nursing Assistant in 30–45 days.
+                Online modules, hands-on clinical training, and full state exam prep — everything
+                in one program.
+              </p>
+              <ul className="cta-list">
+                <li>
+                  <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+                  One-time payment, lifetime access
+                </li>
+                <li>
+                  <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+                  State exam prep included
+                </li>
+                <li>
+                  <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+                  Career support after graduation
+                </li>
+              </ul>
+            </div>
+            <div className="cta-card">
+              <div className="cta-price-label">One-Time Tuition</div>
+              <div className="cta-price">$1,499</div>
+              <p className="cta-price-sub">Full program. No hidden fees.</p>
+              <a href="/enroll" className="cta-enroll-btn">Enroll Now</a>
+              <p className="cta-secure">
+                <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/></svg>
+                Secured by Stripe
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -433,7 +457,7 @@ export default function Home() {
                 <li><a href="#tuition">Tuition</a></li>
                 <li><a href="#tuition">Payment Plans</a></li>
                 <li><a href="#tuition">Financial Aid</a></li>
-                <li><a href="#enroll">Apply Now</a></li>
+                <li><a href="/enroll">Apply Now</a></li>
               </ul>
             </div>
           </div>
