@@ -8,7 +8,7 @@
 CREATE TABLE IF NOT EXISTS students (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   clerk_user_id   TEXT UNIQUE NOT NULL,
-  email           TEXT NOT NULL,
+  email           TEXT UNIQUE NOT NULL,
   first_name      TEXT,
   last_name       TEXT,
   enrolled               BOOLEAN DEFAULT FALSE,

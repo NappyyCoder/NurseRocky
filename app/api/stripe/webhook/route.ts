@@ -3,7 +3,6 @@ import { stripe } from "@/lib/stripe";
 import { supabaseAdmin } from "@/lib/supabase";
 import Stripe from "stripe";
 
-// Disable body parsing — Stripe needs the raw body to verify the signature
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
@@ -24,30 +23,39 @@ export async function POST(req: NextRequest) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.CheckoutSession;
-    const clerkUserId = session.metadata?.clerk_user_id;
 
-    if (!clerkUserId) {
-      console.error("No clerk_user_id in session metadata");
-      return NextResponse.json({ error: "Missing metadata" }, { status: 400 });
+    const email =
+      session.customer_details?.email ??
+      session.customer_email ??
+      "";
+
+    if (!email) {
+      console.error("No email found in Stripe session:", session.id);
+      return NextResponse.json({ error: "No email" }, { status: 400 });
     }
 
-    // Mark the student as enrolled
-    // Upsert the student record and mark enrolled in one operation
-    await supabaseAdmin
+    // Create or update a student record by email.
+    // clerk_user_id is null until the student creates their account.
+    const { error } = await supabaseAdmin
       .from("students")
       .upsert(
         {
-          clerk_user_id: clerkUserId,
-          email: session.customer_details?.email ?? session.customer_email ?? "",
+          email,
           enrolled: true,
           enrolled_at: new Date().toISOString(),
           stripe_customer_id: (session.customer as string) ?? null,
           stripe_payment_intent: (session.payment_intent as string) ?? null,
+          // clerk_user_id intentionally omitted — linked on first sign-in
         },
-        { onConflict: "clerk_user_id" }
+        { onConflict: "email" }
       );
 
-    console.log(`Student ${clerkUserId} enrolled after successful payment.`);
+    if (error) {
+      console.error("Supabase upsert error:", error);
+      return NextResponse.json({ error: "DB error" }, { status: 500 });
+    }
+
+    console.log(`Student enrolled via Stripe: ${email}`);
   }
 
   return NextResponse.json({ received: true });

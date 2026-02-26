@@ -10,9 +10,10 @@ export default async function StudentDashboard() {
 
   const user = await currentUser();
   const firstName = user?.firstName ?? "Student";
+  const email = user?.primaryEmailAddress?.emailAddress ?? "";
 
-  // Fetch modules and this student's progress from Supabase
-  const [{ data: modules }, { data: student }] = await Promise.all([
+  // Fetch modules in parallel with the student lookup
+  const [{ data: modules }, { data: studentByClerkId }] = await Promise.all([
     supabaseAdmin
       .from("modules")
       .select("*")
@@ -22,8 +23,29 @@ export default async function StudentDashboard() {
       .from("students")
       .select("id, enrolled")
       .eq("clerk_user_id", userId)
-      .single(),
+      .maybeSingle(),
   ]);
+
+  let student = studentByClerkId;
+
+  // First login after guest checkout: link their payment record by email
+  if (!student && email) {
+    const { data: studentByEmail } = await supabaseAdmin
+      .from("students")
+      .select("id, enrolled")
+      .eq("email", email)
+      .is("clerk_user_id", null)
+      .maybeSingle();
+
+    if (studentByEmail) {
+      // Claim this record for the newly created Clerk account
+      await supabaseAdmin
+        .from("students")
+        .update({ clerk_user_id: userId, first_name: user?.firstName ?? null, last_name: user?.lastName ?? null })
+        .eq("id", studentByEmail.id);
+      student = studentByEmail;
+    }
+  }
 
   // Not enrolled — send to payment page
   if (!student?.enrolled) {
