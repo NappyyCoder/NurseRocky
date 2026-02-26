@@ -8,7 +8,8 @@ export default async function StudentSignUpPage() {
 
   return (
     <main className="signup-page">
-      {/* ── Left dark panel ── */}
+
+      {/* ── Dark left panel ── */}
       <div className="signup-left">
         <a href="/" className="signup-logo">Nurse <span>Rocky</span></a>
         <h1 className="signup-headline">Your CNA journey starts here.</h1>
@@ -41,85 +42,26 @@ export default async function StudentSignUpPage() {
 
       {/* ── Right form panel ── */}
       <div className="signup-right">
-        <div className="signup-form-inner">
-          <div className="signup-form-header">
-            <h2>Create your account</h2>
-            <p>Already have one? <a href="/sign-in">Sign in</a></p>
-          </div>
-          <SignUp
-            forceRedirectUrl="/dashboard"
-            unsafeMetadata={{ source: "enrollment" }}
-            appearance={{
-              variables: {
-                colorPrimary: "#0c7ab8",
-                borderRadius: "8px",
-                fontFamily: "DM Sans, system-ui, sans-serif",
-              },
-              elements: {
-                rootBox: {
-                  width: "100%",
-                  display: "block",
-                },
-                card: {
-                  boxShadow: "none",
-                  border: "none",
-                  padding: "0",
-                  margin: "0",
-                  width: "100%",
-                  maxWidth: "100%",
-                  backgroundColor: "transparent",
-                },
-                headerTitle: { display: "none" },
-                headerSubtitle: { display: "none" },
-                main: { width: "100%" },
-                form: { width: "100%" },
-                socialButtonsBlockButton: {
-                  border: "1px solid #e2e8f0",
-                  borderRadius: "8px",
-                  backgroundColor: "#fff",
-                  fontSize: ".875rem",
-                  padding: ".6rem 1rem",
-                  height: "42px",
-                },
-                formFieldLabel: {
-                  fontSize: ".85rem",
-                  fontWeight: "600",
-                  color: "#374151",
-                  marginBottom: ".35rem",
-                  display: "block",
-                },
-                formFieldRow: {
-                  marginBottom: ".85rem",
-                },
-                formFieldInput: {
-                  borderRadius: "8px",
-                  border: "1px solid #d1d5db",
-                  fontSize: ".9rem",
-                  backgroundColor: "#fff",
-                  width: "100%",
-                  padding: ".65rem .85rem",
-                  height: "42px",
-                  lineHeight: "1.5",
-                },
-                formFieldInputShowPasswordButton: {
-                  padding: "0 .75rem",
-                },
-                formButtonPrimary: {
-                  backgroundColor: "#0c7ab8",
-                  borderRadius: "8px",
-                  fontSize: ".9rem",
-                  fontWeight: "700",
-                  width: "100%",
-                  padding: ".75rem 1rem",
-                  height: "44px",
-                },
-                footerAction: { display: "none" },
-                dividerLine: { backgroundColor: "#e2e8f0" },
-                dividerText: { color: "#94a3b8", fontSize: ".8rem" },
-              },
-            }}
-          />
-        </div>
+        <p className="signup-switch">Already have one? <a href="/sign-in">Sign in</a></p>
+        <SignUp
+          forceRedirectUrl="/dashboard"
+          unsafeMetadata={{ source: "enrollment" }}
+          appearance={{
+            variables: {
+              colorPrimary: "#0c7ab8",
+              borderRadius: "8px",
+              fontFamily: "DM Sans, system-ui, sans-serif",
+              fontSize: "15px",
+            },
+            elements: {
+              headerTitle: { display: "none" },
+              headerSubtitle: { display: "none" },
+              card: { boxShadow: "0 4px 24px rgba(0,0,0,.08)", borderRadius: "12px" },
+              formButtonPrimary: { backgroundColor: "#0c7ab8", fontWeight: "700" },
+              footerAction: { display: "none" },
+            },
+          }}
+        />
       </div>
 
       <style>{`
@@ -127,13 +69,14 @@ export default async function StudentSignUpPage() {
 
         .signup-page {
           min-height: 100vh;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
+          display: flex;
           font-family: "DM Sans", system-ui, sans-serif;
         }
 
-        /* Dark left panel */
+        /* Left panel — fixed 45% */
         .signup-left {
+          width: 45%;
+          flex-shrink: 0;
           background: linear-gradient(160deg, #0f172a 0%, #0c4a6e 100%);
           padding: 3.5rem 3rem;
           display: flex;
@@ -148,9 +91,9 @@ export default async function StudentSignUpPage() {
           content: "";
           position: absolute;
           bottom: -80px; right: -80px;
-          width: 300px; height: 300px;
+          width: 320px; height: 320px;
           border-radius: 50%;
-          background: rgba(12,122,184,.2);
+          background: rgba(12,122,184,.18);
           pointer-events: none;
         }
         .signup-logo {
@@ -178,7 +121,6 @@ export default async function StudentSignUpPage() {
           font-size: .9rem;
           line-height: 1.7;
           margin-bottom: 2rem;
-          max-width: 34ch;
         }
         .signup-perks {
           list-style: none;
@@ -208,52 +150,40 @@ export default async function StudentSignUpPage() {
           font-weight: 500;
         }
 
-        /* Right form panel */
+        /* Right panel — takes the rest, centers the Clerk form */
         .signup-right {
-          background: #f8fafc;
-          overflow-y: auto;
+          flex: 1;
+          background: #f1f5f9;
           display: flex;
-          align-items: flex-start;
+          flex-direction: column;
+          align-items: center;
           justify-content: center;
           padding: 3rem 2rem;
+          overflow-y: auto;
+          gap: 1.25rem;
         }
-        .signup-form-inner {
-          width: 100%;
-          max-width: 440px;
-          padding-top: 1rem;
-        }
-        .signup-form-header {
-          margin-bottom: 1.75rem;
-        }
-        .signup-form-header h2 {
-          font-family: "Fraunces", serif;
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: #0f172a;
-          letter-spacing: -.02em;
-          margin-bottom: .3rem;
-        }
-        .signup-form-header p {
-          font-size: .85rem;
+        .signup-switch {
+          font-size: .875rem;
           color: #64748b;
+          text-align: center;
         }
-        .signup-form-header a {
+        .signup-switch a {
           color: #0c7ab8;
           font-weight: 600;
           text-decoration: none;
         }
-        .signup-form-header a:hover { text-decoration: underline; }
+        .signup-switch a:hover { text-decoration: underline; }
 
         /* Responsive */
         @media (max-width: 860px) {
-          .signup-page { grid-template-columns: 1fr; }
+          .signup-page { flex-direction: column; }
           .signup-left {
+            width: 100%;
             position: static;
             height: auto;
             padding: 2.5rem 1.75rem;
           }
-          .signup-right { padding: 2rem 1.5rem; }
-          .signup-form-inner { max-width: 100%; padding-top: 0; }
+          .signup-right { padding: 2rem 1rem; }
         }
       `}</style>
     </main>
