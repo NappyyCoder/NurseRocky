@@ -41,6 +41,7 @@ export default async function StudentSignUpPage() {
       </div>
 
       <div className="signup-right">
+        <div className="signup-form-wrap">
         <div className="signup-card-header">
           <h2>Create your account</h2>
           <p>Already have one? <a href="/sign-in">Sign in</a></p>
@@ -79,6 +80,7 @@ export default async function StudentSignUpPage() {
             },
           }}
         />
+        </div>
       </div>
 
       <style>{`
@@ -86,7 +88,7 @@ export default async function StudentSignUpPage() {
         .signup-page {
           min-height: 100vh;
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: 5fr 6fr;
           font-family: "DM Sans", system-ui, sans-serif;
         }
 
@@ -99,6 +101,7 @@ export default async function StudentSignUpPage() {
           justify-content: center;
           position: relative;
           overflow: hidden;
+          min-width: 0;
         }
         .signup-left::before {
           content: "";
@@ -175,7 +178,14 @@ export default async function StudentSignUpPage() {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          padding: 3.5rem;
+          padding: 3rem 2.5rem;
+          min-width: 0;
+          overflow-y: auto;
+        }
+        .signup-form-wrap {
+          width: 100%;
+          max-width: 420px;
+          margin: 0 auto;
         }
         .signup-card-header {
           margin-bottom: 1.75rem;

@@ -25,6 +25,7 @@ export default async function StudentSignInPage() {
       </div>
 
       <div className="signin-right">
+        <div className="signin-form-wrap">
         <div className="signin-card-header">
           <h2>Sign in to your account</h2>
           <p>New student? <a href="/enroll">Enroll first</a></p>
@@ -62,6 +63,7 @@ export default async function StudentSignInPage() {
             },
           }}
         />
+        </div>
       </div>
 
       <style>{`
@@ -69,7 +71,7 @@ export default async function StudentSignInPage() {
         .signin-page {
           min-height: 100vh;
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: 5fr 6fr;
           font-family: "DM Sans", system-ui, sans-serif;
         }
         .signin-left {
@@ -80,6 +82,7 @@ export default async function StudentSignInPage() {
           justify-content: center;
           position: relative;
           overflow: hidden;
+          min-width: 0;
         }
         .signin-left::before {
           content: "";
@@ -138,7 +141,14 @@ export default async function StudentSignInPage() {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          padding: 3.5rem;
+          padding: 3rem 2.5rem;
+          min-width: 0;
+          overflow-y: auto;
+        }
+        .signin-form-wrap {
+          width: 100%;
+          max-width: 420px;
+          margin: 0 auto;
         }
         .signin-card-header {
           margin-bottom: 1.75rem;
