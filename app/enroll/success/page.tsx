@@ -32,34 +32,32 @@ export default function EnrollSuccessPage() {
 
         {/* Steps tracker */}
         <div className="steps-track">
-          <div className="step-item done">
+          {/* Top row: circles + lines */}
+          <div className="steps-row">
             <div className="step-dot done">
               <svg viewBox="0 0 20 20" fill="currentColor" width="12" height="12">
                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
               </svg>
             </div>
-            <div className="step-info">
-              <span className="step-label">Step 1</span>
+            <div className="step-line done" />
+            <div className="step-dot active">2</div>
+            <div className="step-line" />
+            <div className="step-dot">3</div>
+          </div>
+          {/* Bottom row: labels */}
+          <div className="steps-labels">
+            <div className="step-label-block done">
+              <span className="step-num">Step 1</span>
               <span className="step-name">Payment</span>
             </div>
-          </div>
-
-          <div className="step-line active" />
-
-          <div className="step-item active">
-            <div className="step-dot active">2</div>
-            <div className="step-info">
-              <span className="step-label">Step 2</span>
+            <div className="step-label-spacer" />
+            <div className="step-label-block active">
+              <span className="step-num">Step 2</span>
               <span className="step-name">Create account</span>
             </div>
-          </div>
-
-          <div className="step-line" />
-
-          <div className="step-item">
-            <div className="step-dot">3</div>
-            <div className="step-info">
-              <span className="step-label">Step 3</span>
+            <div className="step-label-spacer" />
+            <div className="step-label-block">
+              <span className="step-num">Step 3</span>
               <span className="step-name">Start course</span>
             </div>
           </div>
@@ -189,76 +187,79 @@ export default function EnrollSuccessPage() {
 
         /* Steps */
         .steps-track {
-          display: flex;
-          align-items: center;
           width: 100%;
           background: #f8fafc;
           border: 1px solid #e2e8f0;
           border-radius: 12px;
-          padding: 1.1rem 1.25rem;
+          padding: 1.25rem 1.5rem 1rem;
           margin-bottom: 2rem;
-          gap: 0;
         }
-        .step-item {
+        /* Row 1: circles + connector lines — all perfectly centered */
+        .steps-row {
           display: flex;
           align-items: center;
-          gap: .55rem;
-          flex-shrink: 0;
+          width: 100%;
+          margin-bottom: .65rem;
         }
         .step-dot {
-          width: 30px;
-          height: 30px;
+          width: 32px;
+          height: 32px;
           border-radius: 50%;
           background: #e2e8f0;
           color: #94a3b8;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: .75rem;
+          font-size: .78rem;
           font-weight: 700;
           flex-shrink: 0;
-          transition: all .2s;
         }
-        .step-dot.done {
-          background: #dcfce7;
-          color: #16a34a;
-        }
+        .step-dot.done { background: #dcfce7; color: #16a34a; }
         .step-dot.active {
           background: #0c7ab8;
           color: #fff;
           box-shadow: 0 0 0 4px rgba(12,122,184,.15);
         }
-        .step-info {
-          display: flex;
-          flex-direction: column;
-          text-align: left;
-        }
-        .step-label {
-          font-size: .6rem;
-          color: #94a3b8;
-          text-transform: uppercase;
-          letter-spacing: .07em;
-          font-weight: 600;
-          line-height: 1;
-          margin-bottom: .15rem;
-        }
-        .step-name {
-          font-size: .78rem;
-          font-weight: 600;
-          color: #64748b;
-          white-space: nowrap;
-        }
-        .step-item.done .step-name { color: #16a34a; }
-        .step-item.active .step-name { color: #0c7ab8; }
         .step-line {
           flex: 1;
           height: 2px;
           background: #e2e8f0;
-          margin: 0 .5rem;
           border-radius: 99px;
-          min-width: 16px;
         }
-        .step-line.active { background: #bae6fd; }
+        .step-line.done { background: #bbf7d0; }
+        /* Row 2: labels — each label centered under its circle */
+        .steps-labels {
+          display: flex;
+          align-items: flex-start;
+          width: 100%;
+        }
+        .step-label-block {
+          width: 32px;
+          flex-shrink: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: .1rem;
+        }
+        .step-label-spacer { flex: 1; }
+        .step-num {
+          font-size: .6rem;
+          color: #94a3b8;
+          text-transform: uppercase;
+          letter-spacing: .06em;
+          font-weight: 600;
+          white-space: nowrap;
+        }
+        .step-name {
+          font-size: .75rem;
+          font-weight: 600;
+          color: #94a3b8;
+          white-space: nowrap;
+        }
+        .step-label-block.done .step-name { color: #16a34a; }
+        .step-label-block.done .step-num { color: #16a34a; }
+        .step-label-block.active .step-name { color: #0c7ab8; }
+        .step-label-block.active .step-num { color: #0c7ab8; }
 
         /* CTA button */
         .success-cta {
