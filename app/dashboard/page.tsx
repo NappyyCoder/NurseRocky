@@ -25,6 +25,11 @@ export default async function StudentDashboard() {
       .single(),
   ]);
 
+  // Not enrolled — send to payment page
+  if (!student?.enrolled) {
+    redirect("/enroll");
+  }
+
   const studentId = student?.id ?? null;
 
   const { data: progress } = studentId

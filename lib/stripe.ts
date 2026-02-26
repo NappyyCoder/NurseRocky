@@ -1,0 +1,8 @@
+import Stripe from "stripe";
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2025-01-27.acacia",
+});
+
+export const COURSE_PRICE_CENTS = 149900; // $1,499.00 — update to your actual price
+export const COURSE_NAME = "Nurse Rocky CNA Certification Program";

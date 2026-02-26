@@ -1,12 +1,13 @@
-import { SignIn, currentUser } from "@clerk/nextjs";
+import { SignIn } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 export default async function AdminSignInPage() {
-  const user = await currentUser();
+  const { userId, sessionClaims } = await auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
 
-  // Already signed in with admin role — go straight to dashboard
-  const role = (user?.publicMetadata as { role?: string })?.role;
-  if (user && role === "admin") {
+  // Already signed in as admin — go straight to dashboard
+  if (userId && role === "admin") {
     redirect("/admin/dashboard");
   }
 
@@ -17,20 +18,18 @@ export default async function AdminSignInPage() {
         <p className="admin-badge">Administrator Access</p>
       </div>
 
-      {user ? (
+      {userId ? (
         // Signed in but NOT an admin — show a clear message
         <div className="already-card">
           <p className="already-text">
-            You&apos;re signed in as <strong>{user.primaryEmailAddress?.emailAddress}</strong>,
-            but that account does not have admin access.
+            You&apos;re currently signed in, but this account does not have admin access.
           </p>
           <p className="already-sub">
-            Sign out below, then sign back in with your admin account. If you believe
-            this is an error, ask the site owner to set the admin role on your account
-            in the Clerk dashboard.
+            Sign out and sign back in with your admin account. Or use a separate
+            browser / incognito window to stay logged into both accounts at once.
           </p>
           <a href="/sign-out?redirect=/admin/sign-in" className="signout-btn">
-            Sign out
+            Sign out and switch account
           </a>
           <a href="/" className="back-link">← Back to site</a>
         </div>

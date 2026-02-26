@@ -11,9 +11,11 @@ CREATE TABLE IF NOT EXISTS students (
   email           TEXT NOT NULL,
   first_name      TEXT,
   last_name       TEXT,
-  enrolled        BOOLEAN DEFAULT FALSE,
-  enrolled_at     TIMESTAMPTZ,
-  created_at      TIMESTAMPTZ DEFAULT NOW()
+  enrolled               BOOLEAN DEFAULT FALSE,
+  enrolled_at            TIMESTAMPTZ,
+  stripe_customer_id     TEXT,
+  stripe_payment_intent  TEXT,
+  created_at             TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- ── Modules ──────────────────────────────────────────────────
