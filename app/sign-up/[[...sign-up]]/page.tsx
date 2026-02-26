@@ -78,11 +78,18 @@ export default async function StudentSignUpPage() {
                   borderRadius: "8px",
                   backgroundColor: "#fff",
                   fontSize: ".875rem",
+                  padding: ".6rem 1rem",
+                  height: "42px",
                 },
                 formFieldLabel: {
                   fontSize: ".85rem",
                   fontWeight: "600",
                   color: "#374151",
+                  marginBottom: ".35rem",
+                  display: "block",
+                },
+                formFieldRow: {
+                  marginBottom: ".85rem",
                 },
                 formFieldInput: {
                   borderRadius: "8px",
@@ -90,6 +97,12 @@ export default async function StudentSignUpPage() {
                   fontSize: ".9rem",
                   backgroundColor: "#fff",
                   width: "100%",
+                  padding: ".65rem .85rem",
+                  height: "42px",
+                  lineHeight: "1.5",
+                },
+                formFieldInputShowPasswordButton: {
+                  padding: "0 .75rem",
                 },
                 formButtonPrimary: {
                   backgroundColor: "#0c7ab8",
@@ -97,6 +110,8 @@ export default async function StudentSignUpPage() {
                   fontSize: ".9rem",
                   fontWeight: "700",
                   width: "100%",
+                  padding: ".75rem 1rem",
+                  height: "44px",
                 },
                 footerAction: { display: "none" },
                 dividerLine: { backgroundColor: "#e2e8f0" },
@@ -113,7 +128,7 @@ export default async function StudentSignUpPage() {
         .signup-page {
           min-height: 100vh;
           display: grid;
-          grid-template-columns: 420px 1fr;
+          grid-template-columns: 1fr 1fr;
           font-family: "DM Sans", system-ui, sans-serif;
         }
 
