@@ -71,7 +71,10 @@ function Nav() {
           <li><a href="#program">Program</a></li>
           <li><a href="#tuition">Tuition</a></li>
         </ul>
-        <a href="/enroll" className="nav-cta">Enroll Now</a>
+        <div className="nav-actions">
+          <a href="/sign-in" className="nav-signin">Student Sign In</a>
+          <a href="/enroll" className="nav-cta">Enroll Now</a>
+        </div>
       </div>
     </nav>
   );
