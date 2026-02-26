@@ -929,8 +929,25 @@ section { padding: 5rem 0; }
 }
 .mobile-nav-item svg { width: 21px; height: 21px; }
 .mobile-nav-item:active { color: var(--blue); }
-.mobile-nav-item[href="/sign-in"] { color: var(--blue-mid); }
-.mobile-nav-item[href="/sign-in"]:active { color: var(--blue-dark); }
+.mobile-nav-item[href="/sign-in"] {
+  color: var(--blue-mid);
+  position: relative;
+}
+.mobile-nav-item[href="/sign-in"] svg {
+  background: var(--blue-light);
+  border-radius: 8px;
+  padding: 4px;
+  width: 28px;
+  height: 28px;
+  color: var(--blue-mid);
+}
+.mobile-nav-item[href="/sign-in"] span {
+  color: var(--blue-mid);
+  font-weight: 700;
+}
+.mobile-nav-item[href="/sign-in"]:active svg {
+  background: #bae6fd;
+}
 .mobile-nav-cta {
   display: flex;
   flex-direction: column;
