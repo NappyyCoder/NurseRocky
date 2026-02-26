@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
@@ -6,11 +6,12 @@ export const metadata: Metadata = {
   title: "Nurse Rocky – Launch Your CNA Career",
   description:
     "Become a Certified Nursing Assistant in 30–45 days with hands-on training, state exam prep, and career support.",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    viewportFit: "cover",
-  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
