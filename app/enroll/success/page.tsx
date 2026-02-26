@@ -3,177 +3,338 @@ import Link from "next/link";
 export default function EnrollSuccessPage() {
   return (
     <main className="success-page">
+
+      {/* Background decoration */}
+      <div className="success-bg-circle" />
+
       <div className="success-container">
 
-        {/* Check mark */}
-        <div className="success-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
-
-        <h1 className="success-title">Payment Confirmed!</h1>
-        <p className="success-sub">
-          Your spot in the Nurse Rocky CNA program is secured.
-          Now create your student account to access your course.
-        </p>
-
-        {/* Steps */}
-        <div className="success-steps">
-          <div className="success-step done">
-            <div className="step-circle done">
-              <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
-            </div>
-            <div className="step-text">
-              <div className="step-label">Step 1</div>
-              <div className="step-name">Payment complete</div>
-            </div>
-          </div>
-          <div className="step-connector" />
-          <div className="success-step active">
-            <div className="step-circle active">2</div>
-            <div className="step-text">
-              <div className="step-label">Step 2</div>
-              <div className="step-name">Create your account</div>
-            </div>
-          </div>
-          <div className="step-connector" />
-          <div className="success-step">
-            <div className="step-circle">3</div>
-            <div className="step-text">
-              <div className="step-label">Step 3</div>
-              <div className="step-name">Start your course</div>
-            </div>
-          </div>
-        </div>
-
-        <Link href="/sign-up" className="success-cta">
-          Create My Student Account →
+        {/* Logo */}
+        <Link href="/" className="success-logo">
+          Nurse <span>Rocky</span>
         </Link>
 
-        <p className="success-note">
-          Already have an account?{" "}
-          <Link href="/sign-in" className="success-link">Sign in here</Link>
-          {" "}and your enrollment will be applied automatically.
+        {/* Icon */}
+        <div className="success-icon-wrap">
+          <div className="success-icon-ring" />
+          <div className="success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="28" height="28">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+        </div>
+
+        <h1 className="success-title">Payment Confirmed</h1>
+        <p className="success-sub">
+          Your spot in the Nurse Rocky CNA program is secured.
+          One last step — create your student account to unlock your course.
         </p>
+
+        {/* Steps tracker */}
+        <div className="steps-track">
+          <div className="step-item done">
+            <div className="step-dot done">
+              <svg viewBox="0 0 20 20" fill="currentColor" width="12" height="12">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+              </svg>
+            </div>
+            <div className="step-info">
+              <span className="step-label">Step 1</span>
+              <span className="step-name">Payment</span>
+            </div>
+          </div>
+
+          <div className="step-line active" />
+
+          <div className="step-item active">
+            <div className="step-dot active">2</div>
+            <div className="step-info">
+              <span className="step-label">Step 2</span>
+              <span className="step-name">Create account</span>
+            </div>
+          </div>
+
+          <div className="step-line" />
+
+          <div className="step-item">
+            <div className="step-dot">3</div>
+            <div className="step-info">
+              <span className="step-label">Step 3</span>
+              <span className="step-name">Start course</span>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <Link href="/sign-up" className="success-cta">
+          Create My Student Account
+          <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+            <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
+          </svg>
+        </Link>
+
+        <div className="success-divider">
+          <span>Already have an account?</span>
+        </div>
+
+        <Link href="/sign-in" className="success-signin">
+          Sign in — enrollment applies automatically
+        </Link>
 
         <Link href="/" className="success-back">← Back to site</Link>
       </div>
 
       <style>{`
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         .success-page {
           min-height: 100vh;
-          background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 60%, #e0f2fe 100%);
+          background: #f8fafc;
           display: flex;
           align-items: center;
           justify-content: center;
           padding: 2rem 1rem;
           font-family: "DM Sans", system-ui, sans-serif;
+          position: relative;
+          overflow: hidden;
         }
+        .success-bg-circle {
+          position: absolute;
+          top: -200px;
+          right: -200px;
+          width: 600px;
+          height: 600px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #e0f2fe 0%, transparent 70%);
+          pointer-events: none;
+        }
+
         .success-container {
           background: #fff;
+          border: 1px solid #e2e8f0;
           border-radius: 20px;
           padding: 3rem 2.5rem;
-          max-width: 500px;
+          max-width: 480px;
           width: 100%;
           text-align: center;
-          box-shadow: 0 4px 32px rgba(0,0,0,.1);
+          box-shadow: 0 4px 24px rgba(0,0,0,.07);
+          position: relative;
+          z-index: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0;
+        }
+
+        .success-logo {
+          font-family: "Fraunces", serif;
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: #0f172a;
+          text-decoration: none;
+          letter-spacing: -.02em;
+          margin-bottom: 2rem;
+          display: block;
+        }
+        .success-logo span { color: #0c7ab8; }
+
+        /* Icon */
+        .success-icon-wrap {
+          position: relative;
+          width: 72px;
+          height: 72px;
+          margin-bottom: 1.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .success-icon-ring {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          border: 2px solid #bbf7d0;
+          animation: pulse-ring 2s ease-out infinite;
         }
         .success-icon {
-          width: 64px;
-          height: 64px;
-          background: #dcfce7;
+          width: 60px;
+          height: 60px;
+          background: linear-gradient(135deg, #16a34a, #22c55e);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto 1.5rem;
-          color: #16a34a;
+          color: #fff;
+          box-shadow: 0 4px 16px rgba(22,163,74,.3);
         }
-        .success-icon svg { width: 32px; height: 32px; }
+        @keyframes pulse-ring {
+          0% { transform: scale(1); opacity: 1; }
+          80%, 100% { transform: scale(1.35); opacity: 0; }
+        }
+
         .success-title {
           font-family: "Fraunces", serif;
-          font-size: 1.75rem;
+          font-size: 1.65rem;
           font-weight: 700;
           color: #0f172a;
           letter-spacing: -.02em;
-          margin-bottom: .75rem;
+          margin-bottom: .6rem;
         }
         .success-sub {
           color: #64748b;
-          font-size: .95rem;
-          line-height: 1.6;
-          margin-bottom: 2rem;
+          font-size: .9rem;
+          line-height: 1.65;
+          max-width: 36ch;
+          margin: 0 auto 2rem;
         }
 
         /* Steps */
-        .success-steps {
+        .steps-track {
           display: flex;
           align-items: center;
-          justify-content: center;
-          gap: 0;
-          margin-bottom: 2rem;
-          padding: 1.25rem 1rem;
+          width: 100%;
           background: #f8fafc;
+          border: 1px solid #e2e8f0;
           border-radius: 12px;
+          padding: 1.1rem 1.25rem;
+          margin-bottom: 2rem;
+          gap: 0;
         }
-        .success-step {
+        .step-item {
           display: flex;
           align-items: center;
-          gap: .6rem;
+          gap: .55rem;
           flex-shrink: 0;
         }
-        .step-circle {
-          width: 32px;
-          height: 32px;
+        .step-dot {
+          width: 30px;
+          height: 30px;
           border-radius: 50%;
           background: #e2e8f0;
           color: #94a3b8;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: .78rem;
+          font-size: .75rem;
           font-weight: 700;
           flex-shrink: 0;
+          transition: all .2s;
         }
-        .step-circle.done { background: #dcfce7; color: #16a34a; }
-        .step-circle.active { background: #0c7ab8; color: #fff; }
-        .step-text { text-align: left; }
-        .step-label { font-size: .65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
-        .step-name { font-size: .8rem; font-weight: 600; color: #0f172a; white-space: nowrap; }
-        .success-step.done .step-name { color: #16a34a; }
-        .success-step.active .step-name { color: #0c7ab8; }
-        .step-connector {
+        .step-dot.done {
+          background: #dcfce7;
+          color: #16a34a;
+        }
+        .step-dot.active {
+          background: #0c7ab8;
+          color: #fff;
+          box-shadow: 0 0 0 4px rgba(12,122,184,.15);
+        }
+        .step-info {
+          display: flex;
+          flex-direction: column;
+          text-align: left;
+        }
+        .step-label {
+          font-size: .6rem;
+          color: #94a3b8;
+          text-transform: uppercase;
+          letter-spacing: .07em;
+          font-weight: 600;
+          line-height: 1;
+          margin-bottom: .15rem;
+        }
+        .step-name {
+          font-size: .78rem;
+          font-weight: 600;
+          color: #64748b;
+          white-space: nowrap;
+        }
+        .step-item.done .step-name { color: #16a34a; }
+        .step-item.active .step-name { color: #0c7ab8; }
+        .step-line {
           flex: 1;
           height: 2px;
           background: #e2e8f0;
           margin: 0 .5rem;
-          min-width: 20px;
+          border-radius: 99px;
+          min-width: 16px;
         }
+        .step-line.active { background: #bae6fd; }
 
+        /* CTA button */
         .success-cta {
-          display: block;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: .5rem;
+          width: 100%;
           background: #0c7ab8;
           color: #fff;
           border-radius: 10px;
-          padding: 1rem;
+          padding: .95rem 1.5rem;
           font-weight: 700;
-          font-size: 1rem;
+          font-size: .95rem;
           text-decoration: none;
-          transition: background .15s, transform .1s;
-          margin-bottom: 1rem;
-        }
-        .success-cta:hover { background: #085d8c; transform: translateY(-1px); }
-        .success-note {
-          color: #64748b;
-          font-size: .85rem;
-          line-height: 1.5;
+          transition: background .15s, transform .1s, box-shadow .15s;
+          box-shadow: 0 4px 14px rgba(12,122,184,.3);
           margin-bottom: 1.25rem;
         }
-        .success-link { color: #0c7ab8; font-weight: 600; text-decoration: none; }
-        .success-link:hover { text-decoration: underline; }
-        .success-back { display: inline-block; color: #94a3b8; font-size: .85rem; text-decoration: none; }
+        .success-cta:hover {
+          background: #085d8c;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 20px rgba(12,122,184,.35);
+        }
+
+        /* Divider */
+        .success-divider {
+          display: flex;
+          align-items: center;
+          gap: .75rem;
+          width: 100%;
+          margin-bottom: .9rem;
+        }
+        .success-divider::before,
+        .success-divider::after {
+          content: "";
+          flex: 1;
+          height: 1px;
+          background: #e2e8f0;
+        }
+        .success-divider span {
+          font-size: .78rem;
+          color: #94a3b8;
+          white-space: nowrap;
+          font-weight: 500;
+        }
+
+        .success-signin {
+          display: block;
+          width: 100%;
+          border: 1px solid #e2e8f0;
+          border-radius: 10px;
+          padding: .8rem 1.5rem;
+          font-size: .88rem;
+          font-weight: 600;
+          color: #374151;
+          text-decoration: none;
+          transition: border-color .15s, color .15s;
+          margin-bottom: 1.5rem;
+        }
+        .success-signin:hover { border-color: #0c7ab8; color: #0c7ab8; }
+
+        .success-back {
+          display: inline-block;
+          color: #94a3b8;
+          font-size: .82rem;
+          text-decoration: none;
+          transition: color .15s;
+        }
         .success-back:hover { color: #64748b; }
+
+        @media (max-width: 500px) {
+          .success-container { padding: 2rem 1.5rem; }
+          .steps-track { padding: .9rem 1rem; }
+          .step-name { font-size: .72rem; }
+        }
       `}</style>
     </main>
   );
