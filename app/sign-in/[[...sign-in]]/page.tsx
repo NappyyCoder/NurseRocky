@@ -4,17 +4,18 @@ import { redirect } from "next/navigation";
 
 export default async function StudentSignInPage() {
   const { userId } = await auth();
-
-  // Already signed in — go straight to dashboard
   if (userId) redirect("/dashboard");
 
   return (
     <main className="signin-page">
+
+      {/* ── Dark left panel ── */}
       <div className="signin-left">
         <a href="/" className="signin-logo">Nurse <span>Rocky</span></a>
         <h1 className="signin-headline">Welcome back.</h1>
         <p className="signin-desc">
-          Sign in to continue your CNA certification. Your progress is saved and ready to pick up where you left off.
+          Sign in to continue your CNA certification. Your progress is saved
+          and ready to pick up where you left off.
         </p>
         <div className="signin-badge">
           <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
@@ -24,73 +25,60 @@ export default async function StudentSignInPage() {
         </div>
       </div>
 
+      {/* ── Right form panel ── */}
       <div className="signin-right">
-        <div className="signin-form-wrap">
-        <div className="signin-card-header">
-          <h2>Sign in to your account</h2>
-          <p>New student? <a href="/enroll">Enroll first</a></p>
-        </div>
+        <p className="signin-switch">New student? <a href="/enroll">Enroll first</a></p>
         <SignIn
           forceRedirectUrl="/dashboard"
+          afterSignInUrl="/dashboard"
           appearance={{
+            variables: {
+              colorPrimary: "#0c7ab8",
+              borderRadius: "8px",
+              fontFamily: "DM Sans, system-ui, sans-serif",
+              fontSize: "15px",
+            },
             elements: {
-              rootBox: { width: "100%" },
-              card: {
-                boxShadow: "none",
-                padding: "0",
-                border: "none",
-                width: "100%",
-              },
               headerTitle: { display: "none" },
               headerSubtitle: { display: "none" },
-              socialButtonsBlockButton: {
-                border: "1px solid #e2e8f0",
-                borderRadius: "8px",
-                fontSize: ".875rem",
-              },
-              formFieldInput: {
-                borderRadius: "8px",
-                border: "1px solid #e2e8f0",
-                fontSize: ".9rem",
-              },
-              formButtonPrimary: {
-                background: "#0c7ab8",
-                borderRadius: "8px",
-                fontSize: ".9rem",
-                fontWeight: "700",
-              },
+              card: { boxShadow: "0 4px 24px rgba(0,0,0,.08)", borderRadius: "12px" },
+              formButtonPrimary: { backgroundColor: "#0c7ab8", fontWeight: "700" },
               footerAction: { display: "none" },
             },
           }}
         />
-        </div>
       </div>
 
       <style>{`
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         .signin-page {
           min-height: 100vh;
-          display: grid;
-          grid-template-columns: 5fr 6fr;
+          display: flex;
           font-family: "DM Sans", system-ui, sans-serif;
         }
+
+        /* Left panel */
         .signin-left {
-          background: linear-gradient(160deg, #0f172a 0%, #0c7ab8 100%);
-          padding: 3.5rem;
+          width: 45%;
+          flex-shrink: 0;
+          background: linear-gradient(160deg, #0f172a 0%, #0c4a6e 100%);
+          padding: 3.5rem 3rem;
           display: flex;
           flex-direction: column;
           justify-content: center;
-          position: relative;
+          position: sticky;
+          top: 0;
+          height: 100vh;
           overflow: hidden;
-          min-width: 0;
         }
-        .signin-left::before {
+        .signin-left::after {
           content: "";
           position: absolute;
-          top: -100px; right: -100px;
-          width: 400px; height: 400px;
+          bottom: -80px; right: -80px;
+          width: 320px; height: 320px;
           border-radius: 50%;
-          background: rgba(255,255,255,.04);
+          background: rgba(12,122,184,.18);
           pointer-events: none;
         }
         .signin-logo {
@@ -100,82 +88,72 @@ export default async function StudentSignInPage() {
           color: #bae6fd;
           text-decoration: none;
           letter-spacing: -.02em;
-          margin-bottom: 3rem;
+          margin-bottom: 2.5rem;
           display: block;
-          position: relative;
         }
         .signin-logo span { color: #fff; }
         .signin-headline {
           font-family: "Fraunces", serif;
-          font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+          font-size: 2.2rem;
           font-weight: 700;
           color: #fff;
           letter-spacing: -.02em;
           line-height: 1.2;
-          margin-bottom: 1rem;
-          position: relative;
+          margin-bottom: .9rem;
         }
         .signin-desc {
-          color: rgba(255,255,255,.7);
-          font-size: .95rem;
+          color: rgba(255,255,255,.65);
+          font-size: .9rem;
           line-height: 1.7;
           margin-bottom: 2.5rem;
-          max-width: 36ch;
-          position: relative;
         }
         .signin-badge {
           display: inline-flex;
           align-items: center;
-          gap: .5rem;
-          background: rgba(255,255,255,.1);
+          gap: .45rem;
+          background: rgba(255,255,255,.08);
           border: 1px solid rgba(255,255,255,.15);
           border-radius: 99px;
-          padding: .45rem .9rem;
-          font-size: .78rem;
+          padding: .4rem .85rem;
+          font-size: .775rem;
           color: #bae6fd;
           font-weight: 500;
-          position: relative;
         }
+
+        /* Right panel — centers Clerk's natural card */
         .signin-right {
-          background: #f8fafc;
+          flex: 1;
+          background: #f1f5f9;
           display: flex;
           flex-direction: column;
+          align-items: center;
           justify-content: center;
-          padding: 3rem 2.5rem;
-          min-width: 0;
+          padding: 3rem 2rem;
           overflow-y: auto;
+          gap: 1.25rem;
         }
-        .signin-form-wrap {
-          width: 100%;
-          max-width: 420px;
-          margin: 0 auto;
-        }
-        .signin-card-header {
-          margin-bottom: 1.75rem;
-        }
-        .signin-card-header h2 {
-          font-family: "Fraunces", serif;
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: #0f172a;
-          letter-spacing: -.02em;
-          margin-bottom: .35rem;
-        }
-        .signin-card-header p {
+        .signin-switch {
           font-size: .875rem;
           color: #64748b;
+          text-align: center;
         }
-        .signin-card-header a {
+        .signin-switch a {
           color: #0c7ab8;
           font-weight: 600;
           text-decoration: none;
         }
-        .signin-card-header a:hover { text-decoration: underline; }
-        @media (max-width: 768px) {
-          .signin-page { grid-template-columns: 1fr; }
-          .signin-left { padding: 2.5rem 1.5rem; }
-          .signin-right { padding: 2rem 1.5rem; }
-          .signin-logo { margin-bottom: 1.75rem; }
+        .signin-switch a:hover { text-decoration: underline; }
+
+        /* Responsive */
+        @media (max-width: 860px) {
+          .signin-page { flex-direction: column; }
+          .signin-left {
+            width: 100%;
+            position: static;
+            height: auto;
+            padding: 2.5rem 1.75rem;
+          }
+          .signin-right { padding: 2rem 1rem; }
         }
       `}</style>
     </main>
