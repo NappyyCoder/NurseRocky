@@ -31,7 +31,7 @@ export default function EnrollSuccessPage() {
         </p>
 
         {/* Steps tracker */}
-        <div className="steps-track">
+        <div className="success-steps-track">
           {/* Top row: circles + lines */}
           <div className="steps-row">
             <div className="step-dot done">
@@ -186,7 +186,7 @@ export default function EnrollSuccessPage() {
         }
 
         /* Steps */
-        .steps-track {
+        .success-steps-track {
           width: 100%;
           background: #f8fafc;
           border: 1px solid #e2e8f0;
