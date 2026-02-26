@@ -8,64 +8,76 @@ export default async function StudentSignUpPage() {
 
   return (
     <main className="signup-page">
-
-      {/* Background blobs */}
-      <div className="blob blob-1" />
-      <div className="blob blob-2" />
-
-      <div className="signup-wrapper">
-
-        {/* Top branding */}
-        <div className="signup-top">
-          <a href="/" className="signup-logo">Nurse <span>Rocky</span></a>
-          <h1 className="signup-headline">Create your student account</h1>
-          <p className="signup-sub">
-            Your payment is confirmed. Set up your account to unlock your course.
-          </p>
-        </div>
-
-        {/* Perks row */}
-        <div className="signup-perks">
+      {/* ── Left dark panel ── */}
+      <div className="signup-left">
+        <a href="/" className="signup-logo">Nurse <span>Rocky</span></a>
+        <h1 className="signup-headline">Your CNA journey starts here.</h1>
+        <p className="signup-desc">
+          Create your student account to unlock your course, track your progress,
+          and complete your certification in 30–45 days.
+        </p>
+        <ul className="signup-perks">
           {[
-            { icon: "📚", label: "6 online modules" },
-            { icon: "📝", label: "Exam quizzes" },
-            { icon: "🏥", label: "Clinical tracking" },
-            { icon: "🎓", label: "Career support" },
+            "Instant access to all 6 modules",
+            "State exam quizzes included",
+            "Clinical hours tracking",
+            "Career support after graduation",
           ].map(p => (
-            <div key={p.label} className="perk-item">
-              <span className="perk-icon">{p.icon}</span>
-              <span>{p.label}</span>
-            </div>
+            <li key={p}>
+              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+              </svg>
+              {p}
+            </li>
           ))}
+        </ul>
+        <div className="signup-badge">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
+            <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/>
+          </svg>
+          Payment confirmed — this account is free.
         </div>
+      </div>
 
-        {/* Clerk form — centered with plenty of space */}
-        <div className="signup-form-box">
-          <p className="form-label">Already have an account? <a href="/sign-in">Sign in</a></p>
+      {/* ── Right form panel ── */}
+      <div className="signup-right">
+        <div className="signup-form-inner">
+          <div className="signup-form-header">
+            <h2>Create your account</h2>
+            <p>Already have one? <a href="/sign-in">Sign in</a></p>
+          </div>
           <SignUp
             forceRedirectUrl="/dashboard"
             unsafeMetadata={{ source: "enrollment" }}
             appearance={{
+              variables: {
+                colorPrimary: "#0c7ab8",
+                borderRadius: "8px",
+                fontFamily: "DM Sans, system-ui, sans-serif",
+              },
               elements: {
                 rootBox: {
                   width: "100%",
+                  display: "block",
                 },
                 card: {
                   boxShadow: "none",
                   border: "none",
                   padding: "0",
-                  width: "100%",
                   margin: "0",
+                  width: "100%",
+                  maxWidth: "100%",
                   backgroundColor: "transparent",
                 },
                 headerTitle: { display: "none" },
                 headerSubtitle: { display: "none" },
+                main: { width: "100%" },
+                form: { width: "100%" },
                 socialButtonsBlockButton: {
                   border: "1px solid #e2e8f0",
                   borderRadius: "8px",
                   backgroundColor: "#fff",
                   fontSize: ".875rem",
-                  fontWeight: "500",
                 },
                 formFieldLabel: {
                   fontSize: ".85rem",
@@ -74,17 +86,17 @@ export default async function StudentSignUpPage() {
                 },
                 formFieldInput: {
                   borderRadius: "8px",
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid #d1d5db",
                   fontSize: ".9rem",
-                  padding: ".65rem .85rem",
                   backgroundColor: "#fff",
+                  width: "100%",
                 },
                 formButtonPrimary: {
-                  background: "#0c7ab8",
+                  backgroundColor: "#0c7ab8",
                   borderRadius: "8px",
                   fontSize: ".9rem",
                   fontWeight: "700",
-                  padding: ".75rem",
+                  width: "100%",
                 },
                 footerAction: { display: "none" },
                 dividerLine: { backgroundColor: "#e2e8f0" },
@@ -93,8 +105,6 @@ export default async function StudentSignUpPage() {
             }}
           />
         </div>
-
-        <a href="/" className="signup-back">← Back to site</a>
       </div>
 
       <style>{`
@@ -102,126 +112,133 @@ export default async function StudentSignUpPage() {
 
         .signup-page {
           min-height: 100vh;
-          background: #f0f9ff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 2rem 1rem;
+          display: grid;
+          grid-template-columns: 420px 1fr;
           font-family: "DM Sans", system-ui, sans-serif;
-          position: relative;
-          overflow: hidden;
-        }
-        .blob {
-          position: absolute;
-          border-radius: 50%;
-          pointer-events: none;
-          filter: blur(60px);
-          opacity: .4;
-        }
-        .blob-1 {
-          width: 500px; height: 500px;
-          background: #bae6fd;
-          top: -150px; right: -100px;
-        }
-        .blob-2 {
-          width: 400px; height: 400px;
-          background: #c7d2fe;
-          bottom: -100px; left: -100px;
         }
 
-        .signup-wrapper {
-          position: relative;
-          z-index: 1;
-          width: 100%;
-          max-width: 520px;
+        /* Dark left panel */
+        .signup-left {
+          background: linear-gradient(160deg, #0f172a 0%, #0c4a6e 100%);
+          padding: 3.5rem 3rem;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          gap: 1.5rem;
+          justify-content: center;
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          overflow: hidden;
         }
-
-        /* Branding */
-        .signup-top { text-align: center; }
+        .signup-left::after {
+          content: "";
+          position: absolute;
+          bottom: -80px; right: -80px;
+          width: 300px; height: 300px;
+          border-radius: 50%;
+          background: rgba(12,122,184,.2);
+          pointer-events: none;
+        }
         .signup-logo {
           font-family: "Fraunces", serif;
           font-size: 1.3rem;
           font-weight: 700;
-          color: #0f172a;
+          color: #bae6fd;
           text-decoration: none;
           letter-spacing: -.02em;
+          margin-bottom: 2.5rem;
           display: block;
-          margin-bottom: 1rem;
         }
-        .signup-logo span { color: #0c7ab8; }
+        .signup-logo span { color: #fff; }
         .signup-headline {
           font-family: "Fraunces", serif;
-          font-size: 1.6rem;
+          font-size: 1.85rem;
+          font-weight: 700;
+          color: #fff;
+          letter-spacing: -.02em;
+          line-height: 1.25;
+          margin-bottom: .9rem;
+        }
+        .signup-desc {
+          color: rgba(255,255,255,.65);
+          font-size: .9rem;
+          line-height: 1.7;
+          margin-bottom: 2rem;
+          max-width: 34ch;
+        }
+        .signup-perks {
+          list-style: none;
+          display: flex;
+          flex-direction: column;
+          gap: .7rem;
+          margin-bottom: 2.5rem;
+        }
+        .signup-perks li {
+          display: flex;
+          align-items: center;
+          gap: .6rem;
+          color: rgba(255,255,255,.85);
+          font-size: .875rem;
+        }
+        .signup-perks svg { color: #4ade80; flex-shrink: 0; }
+        .signup-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: .45rem;
+          background: rgba(255,255,255,.08);
+          border: 1px solid rgba(255,255,255,.15);
+          border-radius: 99px;
+          padding: .4rem .85rem;
+          font-size: .775rem;
+          color: #bae6fd;
+          font-weight: 500;
+        }
+
+        /* Right form panel */
+        .signup-right {
+          background: #f8fafc;
+          overflow-y: auto;
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          padding: 3rem 2rem;
+        }
+        .signup-form-inner {
+          width: 100%;
+          max-width: 440px;
+          padding-top: 1rem;
+        }
+        .signup-form-header {
+          margin-bottom: 1.75rem;
+        }
+        .signup-form-header h2 {
+          font-family: "Fraunces", serif;
+          font-size: 1.5rem;
           font-weight: 700;
           color: #0f172a;
           letter-spacing: -.02em;
-          margin-bottom: .4rem;
+          margin-bottom: .3rem;
         }
-        .signup-sub {
-          color: #64748b;
-          font-size: .9rem;
-          line-height: 1.5;
-        }
-
-        /* Perks */
-        .signup-perks {
-          display: flex;
-          gap: .5rem;
-          flex-wrap: wrap;
-          justify-content: center;
-        }
-        .perk-item {
-          display: flex;
-          align-items: center;
-          gap: .4rem;
-          background: #fff;
-          border: 1px solid #e0f2fe;
-          border-radius: 99px;
-          padding: .3rem .85rem;
-          font-size: .8rem;
-          color: #374151;
-          font-weight: 500;
-          white-space: nowrap;
-        }
-        .perk-icon { font-size: .85rem; }
-
-        /* Form box */
-        .signup-form-box {
-          background: #fff;
-          border: 1px solid #e2e8f0;
-          border-radius: 16px;
-          padding: 2rem;
-          width: 100%;
-          box-shadow: 0 4px 24px rgba(0,0,0,.07);
-        }
-        .form-label {
+        .signup-form-header p {
           font-size: .85rem;
           color: #64748b;
-          margin-bottom: 1.25rem;
-          text-align: center;
         }
-        .form-label a {
+        .signup-form-header a {
           color: #0c7ab8;
           font-weight: 600;
           text-decoration: none;
         }
-        .form-label a:hover { text-decoration: underline; }
+        .signup-form-header a:hover { text-decoration: underline; }
 
-        .signup-back {
-          color: #94a3b8;
-          font-size: .82rem;
-          text-decoration: none;
-        }
-        .signup-back:hover { color: #64748b; }
-
-        @media (max-width: 560px) {
-          .signup-form-box { padding: 1.5rem 1.25rem; }
-          .signup-headline { font-size: 1.35rem; }
-          .signup-perks { gap: .4rem; }
+        /* Responsive */
+        @media (max-width: 860px) {
+          .signup-page { grid-template-columns: 1fr; }
+          .signup-left {
+            position: static;
+            height: auto;
+            padding: 2.5rem 1.75rem;
+          }
+          .signup-right { padding: 2rem 1.5rem; }
+          .signup-form-inner { max-width: 100%; padding-top: 0; }
         }
       `}</style>
     </main>
