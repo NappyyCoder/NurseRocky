@@ -144,7 +144,7 @@ export default async function StudentSignInPage() {
         }
         .signin-switch a:hover { text-decoration: underline; }
 
-        /* Responsive */
+        /* ── Tablet (≤ 860px) — stack panels */
         @media (max-width: 860px) {
           .signin-page { flex-direction: column; }
           .signin-left {
@@ -153,7 +153,23 @@ export default async function StudentSignInPage() {
             height: auto;
             padding: 2.5rem 1.75rem;
           }
-          .signin-right { padding: 2rem 1rem; }
+          .signin-right { padding: 2rem 1.25rem; }
+        }
+
+        /* ── Mobile (≤ 640px) — compact left panel */
+        @media (max-width: 640px) {
+          .signin-left { padding: 1.75rem 1.25rem; }
+          .signin-logo { margin-bottom: 1rem; font-size: 1.1rem; }
+          .signin-headline { font-size: 1.6rem; margin-bottom: .5rem; }
+          .signin-desc { font-size: .825rem; margin-bottom: 1.25rem; }
+          .signin-badge { font-size: .72rem; }
+          .signin-right { padding: 1.75rem 1rem; }
+        }
+
+        /* ── Small mobile (≤ 400px) */
+        @media (max-width: 400px) {
+          .signin-left { padding: 1.25rem 1rem; }
+          .signin-right { padding: 1.25rem .75rem; }
         }
       `}</style>
     </main>

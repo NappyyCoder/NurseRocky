@@ -175,7 +175,7 @@ export default async function StudentSignUpPage() {
         }
         .signup-switch a:hover { text-decoration: underline; }
 
-        /* Responsive */
+        /* ── Tablet (≤ 860px) — stack panels */
         @media (max-width: 860px) {
           .signup-page { flex-direction: column; }
           .signup-left {
@@ -184,7 +184,24 @@ export default async function StudentSignUpPage() {
             height: auto;
             padding: 2.5rem 1.75rem;
           }
-          .signup-right { padding: 2rem 1rem; }
+          .signup-right { padding: 2rem 1.25rem; }
+        }
+
+        /* ── Mobile (≤ 640px) — compact left panel */
+        @media (max-width: 640px) {
+          .signup-left { padding: 1.75rem 1.25rem; }
+          .signup-logo { margin-bottom: 1rem; font-size: 1.1rem; }
+          .signup-headline { font-size: 1.4rem; margin-bottom: .5rem; }
+          .signup-desc { font-size: .825rem; margin-bottom: 1.25rem; }
+          .signup-perks { display: none; }
+          .signup-badge { font-size: .72rem; }
+          .signup-right { padding: 1.75rem 1rem; }
+        }
+
+        /* ── Small mobile (≤ 400px) */
+        @media (max-width: 400px) {
+          .signup-left { padding: 1.25rem 1rem; }
+          .signup-right { padding: 1.25rem .75rem; }
         }
       `}</style>
     </main>
