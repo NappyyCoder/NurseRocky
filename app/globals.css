@@ -930,23 +930,22 @@ section { padding: 5rem 0; }
 .mobile-nav-item svg { width: 21px; height: 21px; }
 .mobile-nav-item:active { color: var(--blue); }
 .mobile-nav-item[href="/sign-in"] {
-  color: var(--blue-mid);
-  position: relative;
+  color: #fff;
 }
 .mobile-nav-item[href="/sign-in"] svg {
-  background: var(--blue-light);
+  background: var(--blue-dark);
   border-radius: 8px;
   padding: 4px;
   width: 28px;
   height: 28px;
-  color: var(--blue-mid);
+  color: #fff;
 }
 .mobile-nav-item[href="/sign-in"] span {
-  color: var(--blue-mid);
+  color: var(--blue-dark);
   font-weight: 700;
 }
 .mobile-nav-item[href="/sign-in"]:active svg {
-  background: #bae6fd;
+  background: var(--blue-mid);
 }
 .mobile-nav-cta {
   display: flex;
