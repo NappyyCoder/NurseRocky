@@ -1,10 +1,11 @@
 import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
 
-export default function EnrollSuccessPage() {
+export default async function EnrollSuccessPage() {
+  const { userId } = await auth();
+
   return (
     <main className="success-page">
-
-      {/* Background decoration */}
       <div className="success-bg-circle" />
 
       <div className="success-container">
@@ -26,65 +27,78 @@ export default function EnrollSuccessPage() {
 
         <h1 className="success-title">Payment Confirmed</h1>
         <p className="success-sub">
-          Your spot in the Nurse Rocky CNA program is secured.
-          One last step — create your student account to unlock your course.
+          {userId
+            ? "Your enrollment is saved. Head to your dashboard to start your course."
+            : "Your spot is secured. Create your student account below to unlock your course."}
         </p>
 
         {/* Steps tracker */}
         <div className="success-steps-track">
-          {/* Top row: circles + lines */}
           <div className="steps-row">
             <div className="step-dot done">
               <svg viewBox="0 0 20 20" fill="currentColor" width="12" height="12">
                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
               </svg>
             </div>
-            <div className="step-line done" />
-            <div className="step-dot active">2</div>
-            <div className="step-line" />
-            <div className="step-dot">3</div>
+            <div className={`step-line ${userId ? "done" : ""}`} />
+            <div className={`step-dot ${userId ? "done" : "active"}`}>
+              {userId
+                ? <svg viewBox="0 0 20 20" fill="currentColor" width="12" height="12"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+                : "2"}
+            </div>
+            <div className={`step-line ${userId ? "done" : ""}`} />
+            <div className={`step-dot ${userId ? "active" : ""}`}>3</div>
           </div>
-          {/* Bottom row: labels */}
           <div className="steps-labels">
             <div className="step-label-block done">
               <span className="step-num">Step 1</span>
               <span className="step-name">Payment</span>
             </div>
             <div className="step-label-spacer" />
-            <div className="step-label-block active">
+            <div className={`step-label-block ${userId ? "done" : "active"}`}>
               <span className="step-num">Step 2</span>
-              <span className="step-name">Create account</span>
+              <span className="step-name">Account</span>
             </div>
             <div className="step-label-spacer" />
-            <div className="step-label-block">
+            <div className={`step-label-block ${userId ? "active" : ""}`}>
               <span className="step-num">Step 3</span>
               <span className="step-name">Start course</span>
             </div>
           </div>
         </div>
 
-        {/* CTA */}
-        <Link href="/sign-up" className="success-cta">
-          Create My Student Account
-          <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
-            <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
-          </svg>
-        </Link>
+        {/* CTA — changes based on auth state */}
+        {userId ? (
+          <Link href="/dashboard" className="success-cta">
+            Go to my dashboard
+            <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+              <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
+            </svg>
+          </Link>
+        ) : (
+          <>
+            <Link href="/sign-up" className="success-cta">
+              Create My Student Account
+              <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
+              </svg>
+            </Link>
 
-        <div className="success-divider">
-          <span>Already have an account?</span>
-        </div>
+            <div className="success-divider">
+              <span>Already have an account?</span>
+            </div>
 
-        <Link href="/sign-in" className="success-signin">
-          Sign in — enrollment applies automatically
-        </Link>
+            <Link href="/sign-in" className="success-signin">
+              Sign in — enrollment applies automatically
+            </Link>
+          </>
+        )}
 
         <Link href="/" className="success-back">← Back to site</Link>
       </div>
 
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         .success-page {
           min-height: 100vh;
           background: #f8fafc;
@@ -98,15 +112,12 @@ export default function EnrollSuccessPage() {
         }
         .success-bg-circle {
           position: absolute;
-          top: -200px;
-          right: -200px;
-          width: 600px;
-          height: 600px;
+          top: -200px; right: -200px;
+          width: 600px; height: 600px;
           border-radius: 50%;
           background: radial-gradient(circle, #e0f2fe 0%, transparent 70%);
           pointer-events: none;
         }
-
         .success-container {
           background: #fff;
           border: 1px solid #e2e8f0;
@@ -121,9 +132,7 @@ export default function EnrollSuccessPage() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 0;
         }
-
         .success-logo {
           font-family: "Fraunces", serif;
           font-size: 1.1rem;
@@ -136,11 +145,9 @@ export default function EnrollSuccessPage() {
         }
         .success-logo span { color: #0c7ab8; }
 
-        /* Icon */
         .success-icon-wrap {
           position: relative;
-          width: 72px;
-          height: 72px;
+          width: 72px; height: 72px;
           margin-bottom: 1.5rem;
           display: flex;
           align-items: center;
@@ -154,8 +161,7 @@ export default function EnrollSuccessPage() {
           animation: pulse-ring 2s ease-out infinite;
         }
         .success-icon {
-          width: 60px;
-          height: 60px;
+          width: 60px; height: 60px;
           background: linear-gradient(135deg, #16a34a, #22c55e);
           border-radius: 50%;
           display: flex;
@@ -194,7 +200,6 @@ export default function EnrollSuccessPage() {
           padding: 1.25rem 1.5rem 1rem;
           margin-bottom: 2rem;
         }
-        /* Row 1: circles + connector lines — all perfectly centered */
         .steps-row {
           display: flex;
           align-items: center;
@@ -202,8 +207,7 @@ export default function EnrollSuccessPage() {
           margin-bottom: .65rem;
         }
         .step-dot {
-          width: 32px;
-          height: 32px;
+          width: 32px; height: 32px;
           border-radius: 50%;
           background: #e2e8f0;
           color: #94a3b8;
@@ -227,7 +231,6 @@ export default function EnrollSuccessPage() {
           border-radius: 99px;
         }
         .step-line.done { background: #bbf7d0; }
-        /* Row 2: labels — each label centered under its circle */
         .steps-labels {
           display: flex;
           align-items: flex-start;
@@ -256,12 +259,12 @@ export default function EnrollSuccessPage() {
           color: #94a3b8;
           white-space: nowrap;
         }
-        .step-label-block.done .step-name { color: #16a34a; }
+        .step-label-block.done .step-name,
         .step-label-block.done .step-num { color: #16a34a; }
-        .step-label-block.active .step-name { color: #0c7ab8; }
+        .step-label-block.active .step-name,
         .step-label-block.active .step-num { color: #0c7ab8; }
 
-        /* CTA button */
+        /* CTA */
         .success-cta {
           display: flex;
           align-items: center;
@@ -284,8 +287,6 @@ export default function EnrollSuccessPage() {
           transform: translateY(-1px);
           box-shadow: 0 6px 20px rgba(12,122,184,.35);
         }
-
-        /* Divider */
         .success-divider {
           display: flex;
           align-items: center;
@@ -306,7 +307,6 @@ export default function EnrollSuccessPage() {
           white-space: nowrap;
           font-weight: 500;
         }
-
         .success-signin {
           display: block;
           width: 100%;
@@ -321,7 +321,6 @@ export default function EnrollSuccessPage() {
           margin-bottom: 1.5rem;
         }
         .success-signin:hover { border-color: #0c7ab8; color: #0c7ab8; }
-
         .success-back {
           display: inline-block;
           color: #94a3b8;
@@ -333,7 +332,7 @@ export default function EnrollSuccessPage() {
 
         @media (max-width: 500px) {
           .success-container { padding: 2rem 1.5rem; }
-          .steps-track { padding: .9rem 1rem; }
+          .success-steps-track { padding: .9rem 1rem; }
           .step-name { font-size: .72rem; }
         }
       `}</style>
