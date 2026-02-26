@@ -47,6 +47,7 @@ export default async function StudentSignUpPage() {
         </div>
         <SignUp
           forceRedirectUrl="/dashboard"
+          unsafeMetadata={{ source: "enrollment" }}
           appearance={{
             elements: {
               rootBox: { width: "100%" },
