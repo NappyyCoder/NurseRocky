@@ -34,7 +34,7 @@ export function PolicyShell({
         </div>
       </main>
 
-      <footer className="footer">
+      <footer className="footer footer-policy">
         <div className="container">
           <div className="footer-grid">
             <div className="footer-brand">

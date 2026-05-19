@@ -1,14 +1,13 @@
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { enrolledStudentCanVisitModule } from "@/lib/server/course-completion";
+import { requireEnrolledStudentId } from "@/lib/server/student-portal-session";
 import { supabaseAdmin } from "@/lib/supabase";
 import { QuizRunner } from "../../QuizRunner";
 import { getModuleQuizGrades } from "@/lib/server/student-quiz-grades";
-import { canonicalStudentEmail } from "@/lib/stripe-enrollment";
 
 export default async function ModuleQuizPage(props: {
   params: Promise<{ moduleId: string; quizId: string }>;
@@ -17,42 +16,10 @@ export default async function ModuleQuizPage(props: {
   const moduleIdNum = Number.parseInt(params.moduleId, 10);
   if (!Number.isFinite(moduleIdNum)) redirect("/dashboard");
 
-  const { userId } = await auth();
-  if (!userId) redirect("/sign-in");
-
-  const user = await currentUser();
-  const email = canonicalStudentEmail(user?.primaryEmailAddress?.emailAddress ?? "");
-
-  let { data: student } = await supabaseAdmin
-    .from("students")
-    .select("id, enrolled")
-    .eq("clerk_user_id", userId)
-    .maybeSingle();
-
-  if (!student && email) {
-    const { data: byEmail } = await supabaseAdmin
-      .from("students")
-      .select("id, enrolled")
-      .eq("email", email)
-      .is("clerk_user_id", null)
-      .maybeSingle();
-    if (byEmail?.id) {
-      await supabaseAdmin
-        .from("students")
-        .update({
-          clerk_user_id: userId,
-          first_name: user?.firstName ?? null,
-          last_name: user?.lastName ?? null,
-        })
-        .eq("id", byEmail.id);
-      student = byEmail;
-    }
-  }
-
-  if (!student?.enrolled) redirect("/dashboard");
+  const studentId = await requireEnrolledStudentId();
 
   const allowed = await enrolledStudentCanVisitModule({
-    studentId: student.id,
+    studentId,
     moduleId: moduleIdNum,
   });
   if (!allowed) redirect("/dashboard");
@@ -104,7 +71,7 @@ export default async function ModuleQuizPage(props: {
     };
   });
 
-  const grades = await getModuleQuizGrades(student.id, moduleIdNum);
+  const grades = await getModuleQuizGrades(studentId, moduleIdNum);
   const thisGrade = grades.find((g) => g.quiz_id === params.quizId);
   const priorBest = thisGrade?.attempts
     ? {

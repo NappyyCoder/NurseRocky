@@ -6,14 +6,23 @@ const isStudentRoute = createRouteMatcher(["/dashboard(.*)"]);
 const isAdminRoute = createRouteMatcher(["/admin/dashboard(.*)"]);
 
 export default clerkMiddleware(async (auth, req) => {
-  // Protect student dashboard — must be signed in
+  // Student dashboard — redirect to sign-in (avoid auth.protect() rewrite 404 in dev)
   if (isStudentRoute(req)) {
-    await auth.protect();
+    const { userId } = await auth();
+    if (!userId) {
+      const signIn = new URL("/sign-in", req.url);
+      signIn.searchParams.set("redirect_url", req.nextUrl.pathname + req.nextUrl.search);
+      return NextResponse.redirect(signIn);
+    }
+    return;
   }
 
-  // Protect admin dashboard — must be signed in AND have admin role
+  // Admin dashboard — must be signed in AND have admin role
   if (isAdminRoute(req)) {
-    const { sessionClaims } = await auth.protect();
+    const { userId, sessionClaims } = await auth();
+    if (!userId) {
+      return NextResponse.redirect(new URL("/admin/sign-in", req.url));
+    }
     if (!clerkIsAdmin(sessionClaims)) {
       return NextResponse.redirect(new URL("/admin/sign-in", req.url));
     }

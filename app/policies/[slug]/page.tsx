@@ -48,7 +48,9 @@ export default async function PolicyDocumentPage(props: {
           <section key={i} className="policy-section">
             {section.heading && <h2>{section.heading}</h2>}
             {section.paragraphs?.map((p, j) => (
-              <p key={j}>{p}</p>
+              <p key={j} className={!section.heading && i === 0 && j === 0 ? "policy-lead" : undefined}>
+                {p}
+              </p>
             ))}
             {section.list && (
               <ul>

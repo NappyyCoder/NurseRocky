@@ -20,7 +20,6 @@ export const POLICY_PAGES: PolicyPage[] = [
     title: "Privacy Policy",
     subtitle: "How Nurse Rocky collects, uses, and protects your information.",
     lastUpdated: "May 19, 2026",
-    documentImage: "/images/policies/privacy-policy.png",
     sections: [
       {
         paragraphs: [
@@ -87,7 +86,6 @@ export const POLICY_PAGES: PolicyPage[] = [
     title: "Terms of Service",
     subtitle: "Terms governing use of the Nurse Rocky website and online platform.",
     lastUpdated: "May 19, 2026",
-    documentImage: "/images/policies/terms-of-service.png",
     sections: [
       {
         paragraphs: [
@@ -148,7 +146,6 @@ export const POLICY_PAGES: PolicyPage[] = [
     title: "ADA Accommodations",
     subtitle: "Equal access and reasonable accommodations for qualified students.",
     lastUpdated: "May 19, 2026",
-    documentImage: "/images/policies/ada-accommodations.png",
     sections: [
       {
         paragraphs: [
@@ -196,7 +193,6 @@ export const POLICY_PAGES: PolicyPage[] = [
     title: "Academic Integrity Policy",
     subtitle: "Standards for honest, ethical completion of coursework and assessments.",
     lastUpdated: "May 19, 2026",
-    documentImage: "/images/policies/academic-integrity.png",
     sections: [
       {
         paragraphs: [
@@ -240,7 +236,6 @@ export const POLICY_PAGES: PolicyPage[] = [
     title: "Grievance Procedure",
     subtitle: "How to raise concerns and seek resolution within the program.",
     lastUpdated: "May 19, 2026",
-    documentImage: "/images/policies/grievance-procedure.png",
     sections: [
       {
         paragraphs: [
@@ -287,7 +282,6 @@ export const POLICY_PAGES: PolicyPage[] = [
     title: "Policy Handbook",
     subtitle: "Overview of program rules, expectations, and student responsibilities.",
     lastUpdated: "May 19, 2026",
-    documentImage: "/images/policies/policy-handbook.png",
     sections: [
       {
         paragraphs: [
@@ -336,7 +330,6 @@ export const POLICY_PAGES: PolicyPage[] = [
     title: "Attendance Records",
     subtitle: "Attendance requirements, documentation, and make-up procedures.",
     lastUpdated: "May 19, 2026",
-    documentImage: "/images/policies/attendance-records.png",
     sections: [
       {
         paragraphs: [
@@ -380,7 +373,6 @@ export const POLICY_PAGES: PolicyPage[] = [
     title: "Compliance Attestation",
     subtitle: "Student acknowledgment of program policies and regulatory requirements.",
     lastUpdated: "May 19, 2026",
-    documentImage: "/images/policies/compliance-attestation.png",
     sections: [
       {
         paragraphs: [

@@ -1,14 +1,13 @@
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { enrolledStudentCanVisitModule } from "@/lib/server/course-completion";
+import { requireEnrolledStudentId } from "@/lib/server/student-portal-session";
 import { supabaseAdmin } from "@/lib/supabase";
 import type { Lesson, Module as CourseModule } from "@/lib/types";
 import { getModuleQuizGrades } from "@/lib/server/student-quiz-grades";
-import { canonicalStudentEmail } from "@/lib/stripe-enrollment";
 
 function parseModuleId(raw: string) {
   const n = Number.parseInt(raw, 10);
@@ -22,44 +21,10 @@ export default async function ModuleOverviewPage(props: {
   const moduleIdNum = parseModuleId(params.moduleId);
   if (moduleIdNum == null) redirect("/dashboard");
 
-  const { userId } = await auth();
-  if (!userId) redirect("/sign-in");
-
-  const user = await currentUser();
-  const email = canonicalStudentEmail(user?.primaryEmailAddress?.emailAddress ?? "");
-
-  let { data: student } = await supabaseAdmin
-    .from("students")
-    .select("id, enrolled")
-    .eq("clerk_user_id", userId)
-    .maybeSingle();
-
-  if (!student && email) {
-    const { data: byEmail } = await supabaseAdmin
-      .from("students")
-      .select("id, enrolled")
-      .eq("email", email)
-      .is("clerk_user_id", null)
-      .maybeSingle();
-    if (byEmail?.id) {
-      await supabaseAdmin
-        .from("students")
-        .update({
-          clerk_user_id: userId,
-          first_name: user?.firstName ?? null,
-          last_name: user?.lastName ?? null,
-        })
-        .eq("id", byEmail.id);
-      student = byEmail;
-    }
-  }
-
-  if (!student?.enrolled) {
-    redirect("/dashboard");
-  }
+  const studentId = await requireEnrolledStudentId();
 
   const canVisit = await enrolledStudentCanVisitModule({
-    studentId: student.id,
+    studentId,
     moduleId: moduleIdNum,
   });
   if (!canVisit) {
@@ -96,7 +61,7 @@ export default async function ModuleOverviewPage(props: {
     const { data: progressRows } = await supabaseAdmin
       .from("student_progress")
       .select("lesson_id, completed")
-      .eq("student_id", student.id)
+      .eq("student_id", studentId)
       .in("lesson_id", lessonIds);
 
     completedLessons = new Set(
@@ -106,7 +71,7 @@ export default async function ModuleOverviewPage(props: {
     );
   }
 
-  const grades = await getModuleQuizGrades(student.id, moduleIdNum);
+  const grades = await getModuleQuizGrades(studentId, moduleIdNum);
   const lessonsDone = completedLessons.size;
   const lessonsTotal = lessons.length;
   const quizzesPassed = grades.filter((g) => g.passed).length;
@@ -133,7 +98,9 @@ export default async function ModuleOverviewPage(props: {
     <div className="module-view">
       <div className="module-view-inner">
         <nav className="module-crumbs">
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/dashboard">Overview</Link>
+          <span className="slash">/</span>
+          <Link href="/dashboard/modules">Modules</Link>
           <span className="slash">/</span>
           <span>{courseModule.title}</span>
         </nav>
@@ -304,13 +271,12 @@ export default async function ModuleOverviewPage(props: {
 
       <style>{`
         .module-view {
-          min-height: 100vh;
-          background: #f8fafc;
-          padding: 2rem 1.5rem;
+          background: transparent;
+          padding: 0;
         }
         .module-view-inner {
-          max-width: 880px;
-          margin: 0 auto;
+          max-width: 100%;
+          margin: 0;
           font-family: "DM Sans", system-ui, sans-serif;
         }
         .module-crumbs {

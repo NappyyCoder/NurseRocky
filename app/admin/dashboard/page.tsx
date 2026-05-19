@@ -19,7 +19,7 @@ interface Module {
   order_num: number; lessons_count: number; duration_min: number; is_published: boolean;
 }
 
-type Tab = "overview" | "students" | "modules" | "clinical";
+type Tab = "overview" | "students" | "modules" | "clinical" | "comms";
 
 // ── Sidebar ───────────────────────────────────────────────────
 function Sidebar({ active, setTab }: { active: Tab; setTab: (t: Tab) => void }) {
@@ -28,6 +28,7 @@ function Sidebar({ active, setTab }: { active: Tab; setTab: (t: Tab) => void }) 
     { id: "students", label: "Students", icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> },
     { id: "modules",  label: "Modules",  icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> },
     { id: "clinical", label: "Clinical",  icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> },
+    { id: "comms", label: "Communications", icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> },
   ];
   return (
     <aside className="sidebar">
@@ -316,6 +317,165 @@ function ClinicalTab({ students }: { students: Student[] }) {
   );
 }
 
+// ── Communications Tab ────────────────────────────────────────
+function CommunicationsTab() {
+  const [announcements, setAnnouncements] = useState<{ id: string; title: string; body: string; is_active: boolean }[]>([]);
+  const [resources, setResources] = useState<{ id: string; title: string; url: string; description: string | null; module_id: number | null }[]>([]);
+  const [annForm, setAnnForm] = useState({ title: "", body: "", is_active: true });
+  const [resForm, setResForm] = useState({ title: "", url: "", description: "" });
+  const [reminderResult, setReminderResult] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function loadComms() {
+    const [aRes, rRes] = await Promise.all([
+      adminRequest<typeof announcements>("/api/admin/announcements"),
+      adminRequest<typeof resources>("/api/admin/resources"),
+    ]);
+    if (aRes.ok) setAnnouncements(aRes.data);
+    if (rRes.ok) setResources(rRes.data);
+  }
+
+  useEffect(() => { loadComms(); }, []);
+
+  async function createAnnouncement() {
+    setBusy(true);
+    const result = await adminRequest("/api/admin/announcements", {
+      method: "POST",
+      body: JSON.stringify(annForm),
+    });
+    setBusy(false);
+    if (result.ok) {
+      setAnnForm({ title: "", body: "", is_active: true });
+      loadComms();
+    }
+  }
+
+  async function toggleAnnouncement(id: string, is_active: boolean) {
+    await adminRequest("/api/admin/announcements", {
+      method: "PUT",
+      body: JSON.stringify({ id, is_active }),
+    });
+    loadComms();
+  }
+
+  async function createResource() {
+    setBusy(true);
+    const result = await adminRequest("/api/admin/resources", {
+      method: "POST",
+      body: JSON.stringify(resForm),
+    });
+    setBusy(false);
+    if (result.ok) {
+      setResForm({ title: "", url: "", description: "" });
+      loadComms();
+    }
+  }
+
+  async function sendReminders() {
+    setBusy(true);
+    setReminderResult("");
+    const result = await adminRequest<{ sent: number; error?: string }>("/api/admin/send-reminders", {
+      method: "POST",
+      body: "{}",
+    });
+    setBusy(false);
+    if (result.ok === false) {
+      setReminderResult(result.error);
+    } else {
+      setReminderResult(`Sent ${result.data.sent} reminder email(s).`);
+    }
+  }
+
+  return (
+    <div>
+      <div className="form-card">
+        <div className="form-title">Student announcements</div>
+        <div className="form-grid">
+          <label className="form-label">Title
+            <input className="form-input" value={annForm.title} onChange={(e) => setAnnForm((f) => ({ ...f, title: e.target.value }))} />
+          </label>
+          <label className="form-label">Active
+            <select className="form-input" value={annForm.is_active ? "1" : "0"} onChange={(e) => setAnnForm((f) => ({ ...f, is_active: e.target.value === "1" }))}>
+              <option value="1">Yes — show on dashboard</option>
+              <option value="0">No — draft</option>
+            </select>
+          </label>
+          <label className="form-label" style={{ gridColumn: "1 / -1" }}>Message
+            <textarea className="form-input" rows={3} value={annForm.body} onChange={(e) => setAnnForm((f) => ({ ...f, body: e.target.value }))} />
+          </label>
+        </div>
+        <div className="form-actions">
+          <button className="admin-btn" disabled={busy || !annForm.title || !annForm.body} onClick={createAnnouncement}>Post announcement</button>
+        </div>
+      </div>
+
+      {announcements.length > 0 && (
+        <div className="table-wrap" style={{ marginBottom: "2rem" }}>
+          <table className="admin-table">
+            <thead><tr><th>Title</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              {announcements.map((a) => (
+                <tr key={a.id}>
+                  <td className="td-name">{a.title}</td>
+                  <td>{a.is_active ? "Active" : "Draft"}</td>
+                  <td>
+                    <button type="button" className="row-btn" onClick={() => toggleAnnouncement(a.id, !a.is_active)}>
+                      {a.is_active ? "Deactivate" : "Activate"}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <div className="form-card">
+        <div className="form-title">Course resources</div>
+        <div className="form-grid">
+          <label className="form-label">Title
+            <input className="form-input" value={resForm.title} onChange={(e) => setResForm((f) => ({ ...f, title: e.target.value }))} />
+          </label>
+          <label className="form-label">URL
+            <input className="form-input" value={resForm.url} onChange={(e) => setResForm((f) => ({ ...f, url: e.target.value }))} placeholder="/policies or https://…" />
+          </label>
+          <label className="form-label" style={{ gridColumn: "1 / -1" }}>Description
+            <input className="form-input" value={resForm.description} onChange={(e) => setResForm((f) => ({ ...f, description: e.target.value }))} />
+          </label>
+        </div>
+        <div className="form-actions">
+          <button className="admin-btn" disabled={busy || !resForm.title || !resForm.url} onClick={createResource}>Add resource</button>
+        </div>
+      </div>
+
+      {resources.length > 0 && (
+        <div className="table-wrap" style={{ marginBottom: "2rem" }}>
+          <table className="admin-table">
+            <thead><tr><th>Title</th><th>URL</th></tr></thead>
+            <tbody>
+              {resources.map((r) => (
+                <tr key={r.id}>
+                  <td className="td-name">{r.title}</td>
+                  <td className="td-muted">{r.url}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <div className="form-card">
+        <div className="form-title">Inactive student reminders</div>
+        <p className="section-hint">Email enrolled students who have not accessed lessons in 7+ days (requires RESEND_API_KEY).</p>
+        <div className="form-actions">
+          <button className="admin-btn" disabled={busy} onClick={sendReminders}>Send reminders</button>
+          {reminderResult && <span style={{ fontSize: ".9rem", color: "#475569" }}>{reminderResult}</span>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Main Page ─────────────────────────────────────────────────
 export default function AdminDashboard() {
   const [tab, setTab] = useState<Tab>("overview");
@@ -374,6 +534,7 @@ export default function AdminDashboard() {
               {!managingModuleId && !managingStudentId && tab === "students" && "Students"}
               {!managingModuleId && !managingStudentId && tab === "modules" && "Course Modules"}
               {!managingModuleId && !managingStudentId && tab === "clinical" && "Clinical Hours"}
+              {!managingModuleId && !managingStudentId && tab === "comms" && "Communications"}
             </h1>
             <p className="portal-subtitle">Nurse Rocky Admin Panel</p>
           </div>
@@ -456,6 +617,7 @@ export default function AdminDashboard() {
             )}
             {tab === "modules"   && <ModulesTab modules={modules} reload={load} onManage={setManagingModuleId} />}
             {tab === "clinical"  && <ClinicalTab students={students} />}
+            {tab === "comms"     && <CommunicationsTab />}
           </>
         )}
 

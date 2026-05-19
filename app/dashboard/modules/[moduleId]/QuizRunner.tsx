@@ -109,6 +109,29 @@ export function QuizRunner({
           </div>
         </div>
 
+        {!result.passed && (
+          <section className="study-plan">
+            <h3>Your study plan</h3>
+            <p>Focus on these items before your retake:</p>
+            <ol>
+              {result.breakdown
+                .filter((item) => !item.is_correct)
+                .map((item) => (
+                  <li key={item.index}>
+                    Review question {item.index}: {item.question.slice(0, 80)}
+                    {item.question.length > 80 ? "…" : ""}
+                    {item.rationale && (
+                      <span className="study-tip"> — {item.rationale.slice(0, 120)}{item.rationale.length > 120 ? "…" : ""}</span>
+                    )}
+                  </li>
+                ))}
+            </ol>
+            <Link href={`/dashboard/modules/${moduleId}`} className="study-link">
+              Review module lessons →
+            </Link>
+          </section>
+        )}
+
         <section className="review-section">
           <h3>Answer review</h3>
           <ol className="review-list">
@@ -438,6 +461,27 @@ const quizStyles = `
   }
   .grade-copy p { font-size: 0.9rem; color: #475569; margin: 0; }
   .grade-tip { margin-top: 0.5rem !important; font-size: 0.85rem !important; }
+  .study-plan {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .study-plan h3 {
+    font-family: Fraunces, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+  }
+  .study-plan ol {
+    margin: 0.75rem 0 1rem;
+    padding-left: 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #334155;
+  }
+  .study-tip { color: #64748b; font-style: italic; }
+  .study-link { color: #0c7ab8; font-weight: 600; font-size: 0.875rem; }
   .review-section h3 {
     font-family: Fraunces, serif;
     font-size: 1.05rem;

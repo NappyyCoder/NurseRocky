@@ -1,15 +1,16 @@
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { CompleteLessonButton } from "./CompleteLessonButton";
+import { LessonTimeTracker } from "@/app/dashboard/components/LessonTimeTracker";
+import { InteractiveSimulations } from "@/app/dashboard/components/InteractiveSimulations";
 import { enrolledStudentCanVisitModule } from "@/lib/server/course-completion";
+import { requireEnrolledStudentId } from "@/lib/server/student-portal-session";
 import { supabaseAdmin } from "@/lib/supabase";
 import { getAugmentedLessonHtml } from "@/lib/course/lesson-html";
 import type { Lesson } from "@/lib/types";
-import { canonicalStudentEmail } from "@/lib/stripe-enrollment";
 
 export default async function LessonPage(props: {
   params: Promise<{ moduleId: string; lessonId: string }>;
@@ -18,42 +19,10 @@ export default async function LessonPage(props: {
   const moduleIdNum = Number.parseInt(params.moduleId, 10);
   if (!Number.isFinite(moduleIdNum)) redirect("/dashboard");
 
-  const { userId } = await auth();
-  if (!userId) redirect("/sign-in");
-
-  const user = await currentUser();
-  const email = canonicalStudentEmail(user?.primaryEmailAddress?.emailAddress ?? "");
-
-  let { data: student } = await supabaseAdmin
-    .from("students")
-    .select("id, enrolled")
-    .eq("clerk_user_id", userId)
-    .maybeSingle();
-
-  if (!student && email) {
-    const { data: byEmail } = await supabaseAdmin
-      .from("students")
-      .select("id, enrolled")
-      .eq("email", email)
-      .is("clerk_user_id", null)
-      .maybeSingle();
-    if (byEmail?.id) {
-      await supabaseAdmin
-        .from("students")
-        .update({
-          clerk_user_id: userId,
-          first_name: user?.firstName ?? null,
-          last_name: user?.lastName ?? null,
-        })
-        .eq("id", byEmail.id);
-      student = byEmail;
-    }
-  }
-
-  if (!student?.enrolled) redirect("/dashboard");
+  const studentId = await requireEnrolledStudentId();
 
   const allowed = await enrolledStudentCanVisitModule({
-    studentId: student.id,
+    studentId,
     moduleId: moduleIdNum,
   });
   if (!allowed) redirect("/dashboard");
@@ -87,7 +56,7 @@ export default async function LessonPage(props: {
   const { data: prog } = await supabaseAdmin
     .from("student_progress")
     .select("completed")
-    .eq("student_id", student.id)
+    .eq("student_id", studentId)
     .eq("lesson_id", lesson.id)
     .maybeSingle();
 
@@ -97,7 +66,9 @@ export default async function LessonPage(props: {
     <div className="lesson-shell">
       <div className="lesson-inner">
         <nav className="lesson-crumb">
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/dashboard">Overview</Link>
+          <span className="sep">/</span>
+          <Link href="/dashboard/modules">Modules</Link>
           <span className="sep">/</span>
           <Link href={`/dashboard/modules/${moduleIdNum}`}>Module</Link>
           <span className="sep">/</span>
@@ -125,10 +96,24 @@ export default async function LessonPage(props: {
           </div>
         </div>
 
+        {lesson.video_url && (
+          <div className="lesson-video">
+            <iframe
+              src={lesson.video_url}
+              title={lesson.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        )}
+
         <article
           className="lesson-body"
           dangerouslySetInnerHTML={{ __html: bodyHtml }}
         />
+
+        {lesson.module_id === 1 && lesson.order_num === 8 && <InteractiveSimulations />}
+        <LessonTimeTracker lessonId={lesson.id} moduleId={moduleIdNum} />
 
         <div className="lesson-footer">
           <CompleteLessonButton
@@ -212,6 +197,23 @@ export default async function LessonPage(props: {
           color: #94a3b8;
           font-size: 0.85rem;
           margin-bottom: 1rem;
+        }
+        .lesson-video {
+          position: relative;
+          padding-bottom: 56.25%;
+          height: 0;
+          margin-bottom: 1.5rem;
+          border-radius: 8px;
+          overflow: hidden;
+          background: #0f172a;
+        }
+        .lesson-video iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border: 0;
         }
         .lesson-progress-strip {
           margin-bottom: 1.6rem;

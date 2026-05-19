@@ -184,3 +184,65 @@ CREATE INDEX IF NOT EXISTS idx_attempts_student     ON quiz_attempts(student_id)
 CREATE INDEX IF NOT EXISTS idx_clinical_student     ON clinical_hours(student_id);
 CREATE INDEX IF NOT EXISTS idx_lessons_module       ON lessons(module_id);
 CREATE INDEX IF NOT EXISTS idx_questions_quiz       ON quiz_questions(quiz_id);
+
+-- ============================================================
+-- STUDENT PORTAL ENHANCEMENTS (patch 004)
+-- ============================================================
+ALTER TABLE student_progress
+  ADD COLUMN IF NOT EXISTS time_spent_sec INT DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS last_accessed_at TIMESTAMPTZ;
+
+ALTER TABLE students
+  ADD COLUMN IF NOT EXISTS last_lesson_id UUID REFERENCES lessons(id) ON DELETE SET NULL,
+  ADD COLUMN IF NOT EXISTS last_module_id INT REFERENCES modules(id) ON DELETE SET NULL,
+  ADD COLUMN IF NOT EXISTS policies_acknowledged_at TIMESTAMPTZ;
+
+CREATE TABLE IF NOT EXISTS announcements (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title           TEXT NOT NULL,
+  body            TEXT NOT NULL,
+  is_active       BOOLEAN DEFAULT TRUE,
+  expires_at      TIMESTAMPTZ,
+  created_at      TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS course_resources (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  module_id       INT REFERENCES modules(id) ON DELETE SET NULL,
+  title           TEXT NOT NULL,
+  url             TEXT NOT NULL,
+  resource_type   TEXT DEFAULT 'link',
+  description     TEXT,
+  order_num       INT DEFAULT 1,
+  created_at      TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS student_policy_acknowledgments (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  student_id      UUID REFERENCES students(id) ON DELETE CASCADE,
+  policy_slug     TEXT NOT NULL,
+  acknowledged_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(student_id, policy_slug)
+);
+
+CREATE TABLE IF NOT EXISTS student_checklist (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  student_id      UUID REFERENCES students(id) ON DELETE CASCADE,
+  item_key        TEXT NOT NULL,
+  completed       BOOLEAN DEFAULT FALSE,
+  completed_at    TIMESTAMPTZ,
+  UNIQUE(student_id, item_key)
+);
+
+CREATE TABLE IF NOT EXISTS support_messages (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  student_id      UUID REFERENCES students(id) ON DELETE CASCADE,
+  subject         TEXT NOT NULL,
+  message         TEXT NOT NULL,
+  created_at      TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_announcements_active ON announcements(is_active);
+CREATE INDEX IF NOT EXISTS idx_resources_module ON course_resources(module_id);
+CREATE INDEX IF NOT EXISTS idx_policy_ack_student ON student_policy_acknowledgments(student_id);
+CREATE INDEX IF NOT EXISTS idx_checklist_student ON student_checklist(student_id);

@@ -66,11 +66,17 @@ export async function POST(req: NextRequest) {
         lesson_id: lesson.id,
         completed: true,
         completed_at: new Date().toISOString(),
+        last_accessed_at: new Date().toISOString(),
       },
       { onConflict: "student_id,lesson_id" }
     );
 
     if (upErr) throw upErr;
+
+    await supabaseAdmin
+      .from("students")
+      .update({ last_lesson_id: lesson.id, last_module_id: lesson.module_id })
+      .eq("id", student.id);
 
     return NextResponse.json({ ok: true });
   } catch (e: unknown) {

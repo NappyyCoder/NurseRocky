@@ -815,16 +815,28 @@ section { padding: 5rem 0; }
 .footer-bottom a { color: var(--text-light); transition: color var(--transition); }
 .footer-bottom a:hover { color: var(--blue-mid); }
 
+.footer-policy {
+  padding-top: 2.5rem;
+}
+
 /* ─── Policy pages ─────────────────────────────────────────── */
 .policy-page {
-  padding: 2.5rem 0 4rem;
-  min-height: 60vh;
+  padding: 1.75rem 0 2.5rem;
+  min-height: auto;
 }
 .policy-page-inner {
-  max-width: 780px;
+  max-width: 720px;
 }
 .policy-page-index {
   max-width: var(--max-w);
+}
+.policy-page-index .policy-header {
+  margin-bottom: 1.5rem;
+}
+/* Policy sections must not inherit homepage `section { padding: 5rem 0 }` */
+.policy-page section,
+.policy-prose section {
+  padding: 0;
 }
 .policy-bc {
   display: flex;
@@ -833,7 +845,7 @@ section { padding: 5rem 0; }
   align-items: center;
   font-size: .8rem;
   color: var(--text-muted);
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.25rem;
 }
 .policy-bc a {
   color: var(--blue);
@@ -841,7 +853,7 @@ section { padding: 5rem 0; }
 }
 .policy-bc a:hover { text-decoration: underline; }
 .policy-header {
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 }
 .policy-header h1 {
   font-family: "Fraunces", serif;
@@ -850,20 +862,21 @@ section { padding: 5rem 0; }
   letter-spacing: -.02em;
   color: var(--text);
   line-height: 1.2;
+  margin: 0;
 }
 .policy-subtitle {
-  margin-top: .65rem;
-  font-size: 1.05rem;
+  margin-top: .5rem;
+  font-size: 1rem;
   color: var(--text-muted);
-  line-height: 1.6;
+  line-height: 1.55;
 }
 .policy-updated {
-  margin-top: .5rem;
+  margin-top: .35rem;
   font-size: .82rem;
   color: var(--text-light);
 }
 .policy-doc-figure {
-  margin: 0 0 2rem;
+  margin: 0 0 1.25rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   overflow: hidden;
@@ -876,59 +889,97 @@ section { padding: 5rem 0; }
   display: block;
 }
 .policy-prose {
-  font-size: .95rem;
-  line-height: 1.75;
+  font-size: .9375rem;
+  line-height: 1.7;
   color: #334155;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.35rem 1.5rem;
+  box-shadow: var(--shadow-sm);
 }
 .policy-section {
-  margin-bottom: 1.75rem;
+  margin-bottom: 0;
+  padding-bottom: 1.15rem;
+  margin-top: 1.15rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+.policy-section:first-child {
+  margin-top: 0;
+}
+.policy-section:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
 }
 .policy-section h2 {
   font-family: "Fraunces", serif;
-  font-size: 1.15rem;
+  font-size: 1.08rem;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: .65rem;
+  margin: 0 0 .5rem;
+  letter-spacing: -.01em;
 }
 .policy-section p {
-  margin-bottom: .75rem;
+  margin: 0 0 .55rem;
+}
+.policy-section p:last-child {
+  margin-bottom: 0;
 }
 .policy-section ul {
-  margin: .5rem 0 .75rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: .4rem;
+  margin: .4rem 0 0;
+  padding-left: 1.25rem;
+  list-style-type: disc;
+  display: block;
 }
 .policy-section li {
-  padding-left: .25rem;
+  padding-left: .1rem;
+  margin-bottom: .35rem;
+  line-height: 1.6;
+}
+.policy-section li:last-child {
+  margin-bottom: 0;
+}
+.policy-section li::marker {
+  color: var(--blue);
+}
+.policy-lead {
+  font-size: .975rem;
+  color: #334155;
+  line-height: 1.65;
+  margin-bottom: 0 !important;
 }
 .policy-related {
-  margin-top: 2.5rem;
-  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.15rem;
   border-top: 1px solid var(--border);
 }
 .policy-related h3 {
   font-family: "Fraunces", serif;
-  font-size: 1rem;
+  font-size: .95rem;
   font-weight: 700;
-  margin-bottom: .75rem;
+  margin: 0 0 .5rem;
 }
 .policy-related ul {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: .45rem;
+  gap: .35rem;
+  margin: 0;
+  padding: 0;
 }
 .policy-related a {
   color: var(--blue);
-  font-size: .9rem;
+  font-size: .875rem;
   font-weight: 500;
 }
 .policy-related a:hover { text-decoration: underline; }
 .policy-index-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: .85rem;
+}
+.policy-index-grid-full {
+  margin-top: 0;
 }
 @media (max-width: 640px) {
   .policy-index-grid { grid-template-columns: 1fr; }
@@ -963,6 +1014,100 @@ section { padding: 5rem 0; }
   font-size: .82rem;
   font-weight: 600;
   color: var(--blue);
+}
+
+/* ─── Policy acknowledgment modal (student portal) ─────────── */
+.policy-ack-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+.policy-ack-modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+.policy-ack-modal h2 {
+  font-family: "Fraunces", serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.policy-ack-intro {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+}
+.policy-ack-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.policy-ack-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.policy-ack-item input {
+  margin-top: 0.2rem;
+  accent-color: var(--blue);
+  flex-shrink: 0;
+}
+.policy-ack-row {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+.policy-ack-row label {
+  cursor: pointer;
+  font-weight: 500;
+}
+a.policy-ack-link {
+  color: var(--blue) !important;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--blue-mid);
+}
+a.policy-ack-link:hover {
+  color: var(--blue-dark) !important;
+  text-decoration-color: var(--blue);
+}
+.policy-ack-btn {
+  width: 100%;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.policy-ack-btn:hover:not(:disabled) {
+  background: var(--blue-dark);
+}
+.policy-ack-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 
