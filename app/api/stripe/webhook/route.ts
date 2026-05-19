@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
-import { supabaseAdmin } from "@/lib/supabase";
 import Stripe from "stripe";
+import {
+  canonicalStudentEmail,
+  upsertEnrollmentFromPaidSession,
+} from "@/lib/stripe-enrollment";
 
 export const runtime = "nodejs";
 
@@ -24,35 +27,24 @@ export async function POST(req: NextRequest) {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
 
-    const email =
-      session.customer_details?.email ??
-      session.customer_email ??
-      "";
+    const rawEmail =
+      session.customer_details?.email ?? session.customer_email ?? "";
+    const email = canonicalStudentEmail(rawEmail);
 
     if (!email) {
       console.error("No email found in Stripe session:", session.id);
       return NextResponse.json({ error: "No email" }, { status: 400 });
     }
 
-    // Create or update a student record by email.
-    // clerk_user_id is null until the student creates their account.
-    const { error } = await supabaseAdmin
-      .from("students")
-      .upsert(
-        {
-          email,
-          enrolled: true,
-          enrolled_at: new Date().toISOString(),
-          stripe_customer_id: (session.customer as string) ?? null,
-          stripe_payment_intent: (session.payment_intent as string) ?? null,
-          // clerk_user_id intentionally omitted — linked on first sign-in
-        },
-        { onConflict: "email" }
-      );
+    const { ok, error: enrollErr } = await upsertEnrollmentFromPaidSession({
+      email,
+      stripe_customer_id: (session.customer as string) ?? null,
+      stripe_payment_intent: (session.payment_intent as string) ?? null,
+    });
 
-    if (error) {
-      console.error("Supabase upsert error:", error);
-      return NextResponse.json({ error: "DB error" }, { status: 500 });
+    if (!ok) {
+      console.error("Supabase enrollment error:", enrollErr);
+      return NextResponse.json({ error: enrollErr ?? "DB error" }, { status: 500 });
     }
 
     console.log(`Student enrolled via Stripe: ${email}`);

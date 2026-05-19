@@ -1,16 +1,21 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 import { supabaseAdmin } from "@/lib/supabase";
-import type { Module, StudentProgress } from "@/lib/types";
+import type { Module } from "@/lib/types";
+import { canonicalStudentEmail } from "@/lib/stripe-enrollment";
+import { computeFinishedModuleIds } from "@/lib/server/course-completion";
+import {
+  countPassedQuizzes,
+  countTotalPublishedQuizzes,
+} from "@/lib/server/student-quiz-grades";
 
 export default async function StudentDashboard() {
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
-
-  const user = await currentUser();
-  const firstName = user?.firstName ?? "Student";
-  const email = user?.primaryEmailAddress?.emailAddress ?? "";
 
   // Fetch modules in parallel with the student lookup
   const [{ data: modules }, { data: studentByClerkId }] = await Promise.all([
@@ -21,29 +26,40 @@ export default async function StudentDashboard() {
       .order("order_num"),
     supabaseAdmin
       .from("students")
-      .select("id, enrolled")
+      .select("id, enrolled, first_name, email")
       .eq("clerk_user_id", userId)
       .maybeSingle(),
   ]);
 
   let student = studentByClerkId;
 
-  // First login after guest checkout: link their payment record by email
-  if (!student && email) {
-    const { data: studentByEmail } = await supabaseAdmin
-      .from("students")
-      .select("id, enrolled")
-      .eq("email", email)
-      .is("clerk_user_id", null)
-      .maybeSingle();
+  let firstName = student?.first_name?.trim() || "Student";
 
-    if (studentByEmail) {
-      // Claim this record for the newly created Clerk account
-      await supabaseAdmin
+  // Guest checkout claims (needs Clerk profile) — avoid currentUser() for normal visits (it is slow vs session-only auth())
+  if (!student) {
+    const user = await currentUser();
+    const email = canonicalStudentEmail(user?.primaryEmailAddress?.emailAddress ?? "");
+    firstName = user?.firstName?.trim() || "Student";
+
+    if (email) {
+      const { data: studentByEmail } = await supabaseAdmin
         .from("students")
-        .update({ clerk_user_id: userId, first_name: user?.firstName ?? null, last_name: user?.lastName ?? null })
-        .eq("id", studentByEmail.id);
-      student = studentByEmail;
+        .select("id, enrolled, first_name, email")
+        .eq("email", email)
+        .is("clerk_user_id", null)
+        .maybeSingle();
+
+      if (studentByEmail) {
+        await supabaseAdmin
+          .from("students")
+          .update({
+            clerk_user_id: userId,
+            first_name: user?.firstName ?? null,
+            last_name: user?.lastName ?? null,
+          })
+          .eq("id", studentByEmail.id);
+        student = studentByEmail;
+      }
     }
   }
 
@@ -51,17 +67,14 @@ export default async function StudentDashboard() {
 
   const studentId = student?.id ?? null;
 
-  const { data: progress } = studentId
-    ? await supabaseAdmin
-        .from("student_progress")
-        .select("module_id, completed")
-        .eq("student_id", studentId)
-        .eq("completed", true)
-    : { data: [] };
+  const finishedModuleIds = await computeFinishedModuleIds(studentId ?? null);
 
-  const completedModuleIds = new Set(
-    (progress ?? []).map((p: StudentProgress) => p.module_id)
-  );
+  const [passedQuizCount, totalQuizCount] = studentId
+    ? await Promise.all([
+        countPassedQuizzes(studentId),
+        countTotalPublishedQuizzes(),
+      ])
+    : [0, 0];
 
   const { data: clinicalData } = studentId
     ? await supabaseAdmin
@@ -75,7 +88,7 @@ export default async function StudentDashboard() {
   );
 
   const allModules: Module[] = modules ?? [];
-  const completedCount = completedModuleIds.size;
+  const completedCount = finishedModuleIds.size;
   const overallPct = allModules.length
     ? Math.round((completedCount / allModules.length) * 100)
     : 0;
@@ -95,9 +108,9 @@ export default async function StudentDashboard() {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             Modules
           </a>
-          <a href="#quizzes" className="sidebar-link">
+          <a href="#grades" className="sidebar-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            Quizzes
+            Grades
           </a>
           <a href="#clinical" className="sidebar-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
@@ -156,8 +169,8 @@ export default async function StudentDashboard() {
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
             </div>
             <div>
-              <div className="progress-num">0 / {allModules.length}</div>
-              <div className="progress-label">Quizzes Passed</div>
+              <div className="progress-num">{passedQuizCount} / {totalQuizCount || allModules.length}</div>
+              <div className="progress-label">Assignments Passed</div>
             </div>
           </div>
           <div className="progress-card">
@@ -185,8 +198,10 @@ export default async function StudentDashboard() {
           <h2 className="portal-section-title">Course Modules</h2>
           <div className="modules-list">
             {allModules.map((mod: Module, idx: number) => {
-              const isComplete = completedModuleIds.has(mod.id);
-              const isAvailable = isEnrolled && (idx === 0 || completedModuleIds.has(allModules[idx - 1].id));
+              const isComplete = finishedModuleIds.has(mod.id);
+              const isAvailable =
+                isEnrolled &&
+                (idx === 0 || finishedModuleIds.has(allModules[idx - 1].id));
               return (
                 <div key={mod.id} className={`module-card ${isAvailable ? "available" : "locked"}`}>
                   <div className="module-num">{String(mod.order_num).padStart(2, "0")}</div>
@@ -202,7 +217,9 @@ export default async function StudentDashboard() {
                         Done
                       </span>
                     ) : isAvailable ? (
-                      <button className="module-btn start">Start →</button>
+                      <a href={`/dashboard/modules/${mod.id}`} className="module-btn start">
+                        Start →
+                      </a>
                     ) : (
                       <span className="module-locked">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -220,6 +237,31 @@ export default async function StudentDashboard() {
             )}
           </div>
         </section>
+
+        {isEnrolled && allModules.length > 0 && (
+          <section id="grades" className="portal-section">
+            <h2 className="portal-section-title">Grades &amp; assignments</h2>
+            <p style={{ color: "#64748b", fontSize: ".9rem", marginBottom: "1rem" }}>
+              Open a module to submit assignments and view your grade report.
+            </p>
+            <div className="modules-list">
+              {allModules.slice(0, 3).map((mod: Module) => (
+                <a
+                  key={mod.id}
+                  href={`/dashboard/modules/${mod.id}#grades`}
+                  className="module-card available"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <div className="module-num">{String(mod.order_num).padStart(2, "0")}</div>
+                  <div className="module-info">
+                    <div className="module-title">{mod.title}</div>
+                    <div className="module-meta">View lessons, submit assignments, check grades →</div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
 
       </main>
 
@@ -364,10 +406,12 @@ export default async function StudentDashboard() {
         .module-desc { font-size: .85rem; color: #64748b; line-height: 1.5; }
         .module-action { flex-shrink: 0; }
         .module-btn.start {
+          display: inline-block;
           background: #0c7ab8; color: #fff;
           border: none; border-radius: 6px;
           padding: .5rem 1.1rem; font-size: .85rem; font-weight: 600;
           cursor: pointer; transition: background .15s;
+          text-decoration: none;
         }
         .module-btn.start:hover { background: #085d8c; }
         .module-locked {

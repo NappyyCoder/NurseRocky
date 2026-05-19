@@ -7,7 +7,7 @@
 -- One row per enrolled student, linked to their Clerk user ID.
 CREATE TABLE IF NOT EXISTS students (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  clerk_user_id   TEXT UNIQUE NOT NULL,
+  clerk_user_id   TEXT UNIQUE, -- nullable until Stripe paid row is claimed on first Clerk sign-in
   email           TEXT UNIQUE NOT NULL,
   first_name      TEXT,
   last_name       TEXT,
@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS quiz_questions (
   question        TEXT NOT NULL,
   options         JSONB NOT NULL,
   correct_answer  INT NOT NULL,   -- index into options array (0-based)
+  rationale       TEXT,
   order_num       INT NOT NULL
 );
 

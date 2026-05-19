@@ -2,7 +2,7 @@
 
 export interface Student {
   id: string;
-  clerk_user_id: string;
+  clerk_user_id: string | null;
   email: string;
   first_name: string | null;
   last_name: string | null;
@@ -48,6 +48,7 @@ export interface QuizQuestion {
   options: string[];
   correct_answer: number;
   order_num: number;
+  rationale?: string | null;
 }
 
 export interface StudentProgress {

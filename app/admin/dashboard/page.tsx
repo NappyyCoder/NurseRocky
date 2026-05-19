@@ -2,13 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { UserButton } from "@clerk/nextjs";
+import { adminRequest } from "@/lib/admin-fetch";
+import { ModuleDetailPanel } from "./ModuleDetailPanel";
+import { EmailModal } from "./EmailModal";
+import { StudentDetailPanel } from "./StudentDetailPanel";
 
 // ── Types ─────────────────────────────────────────────────────
 interface Student {
-  id: string; clerk_user_id: string; email: string;
+  id: string; clerk_user_id: string | null; email: string;
   first_name: string | null; last_name: string | null;
   enrolled: boolean; enrolled_at: string | null; created_at: string;
-  completed_modules: number; clinical_hours: number;
+  completed_modules: number; clinical_hours: number; quizzes_passed: number;
 }
 interface Module {
   id: number; title: string; description: string | null;
@@ -75,14 +79,27 @@ function Overview({ students, modules }: { students: Student[]; modules: Module[
 }
 
 // ── Student Table ─────────────────────────────────────────────
-function StudentTable({ students, modules, compact }: { students: Student[]; modules: Module[]; compact?: boolean }) {
+function StudentTable({
+  students,
+  modules,
+  compact,
+  onEmail,
+  onManage,
+}: {
+  students: Student[];
+  modules: Module[];
+  compact?: boolean;
+  onEmail?: (s: Student) => void;
+  onManage?: (s: Student) => void;
+}) {
   return (
     <div className="table-wrap">
       <table className="admin-table">
         <thead><tr>
           <th>Name</th><th>Email</th>
           {!compact && <th>Enrolled</th>}
-          <th>Modules</th><th>Clinical Hrs</th><th>Status</th>
+          <th>Modules</th><th>Quizzes</th><th>Clinical Hrs</th><th>Status</th>
+          {onEmail && !compact && <th>Actions</th>}
         </tr></thead>
         <tbody>
           {students.map(s => (
@@ -96,11 +113,18 @@ function StudentTable({ students, modules, compact }: { students: Student[]; mod
                   <span>{s.completed_modules}/{modules.length}</span>
                 </div>
               </td>
+              <td className="td-muted">{s.quizzes_passed ?? 0} passed</td>
               <td className="td-muted">{s.clinical_hours} / 16 hrs</td>
               <td><span className={`status-badge ${s.enrolled ? "active" : "pending"}`}>{s.enrolled ? "active" : "pending"}</span></td>
+              {onEmail && !compact && (
+                <td>
+                  <button type="button" className="admin-btn small" onClick={() => onManage?.(s)}>Manage</button>
+                  <button type="button" className="row-btn" onClick={() => onEmail(s)} disabled={!s.email}>Email</button>
+                </td>
+              )}
             </tr>
           ))}
-          {students.length === 0 && <tr><td colSpan={6} style={{ textAlign: "center", color: "#94a3b8", padding: "2rem" }}>No students yet.</td></tr>}
+          {students.length === 0 && <tr><td colSpan={onEmail && !compact ? 8 : 6} style={{ textAlign: "center", color: "#94a3b8", padding: "2rem" }}>No students yet.</td></tr>}
         </tbody>
       </table>
     </div>
@@ -108,30 +132,52 @@ function StudentTable({ students, modules, compact }: { students: Student[]; mod
 }
 
 // ── Modules Tab ───────────────────────────────────────────────
-function ModulesTab({ modules, reload }: { modules: Module[]; reload: () => void }) {
+function ModulesTab({ modules, reload, onManage }: { modules: Module[]; reload: () => void; onManage: (id: number) => void }) {
   const [editing, setEditing] = useState<Module | null>(null);
   const [adding, setAdding] = useState(false);
   const [form, setForm] = useState({ title: "", description: "", order_num: modules.length + 1, lessons_count: 0, duration_min: 0, is_published: true });
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   async function save() {
     setSaving(true);
-    if (editing) {
-      await fetch("/api/admin/modules", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editing.id, ...form }) });
-    } else {
-      await fetch("/api/admin/modules", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+    setSaveError("");
+    const result = await adminRequest("/api/admin/modules", {
+      method: editing ? "PUT" : "POST",
+      body: JSON.stringify(editing ? { id: editing.id, ...form } : form),
+    });
+    setSaving(false);
+    if (result.ok === false) {
+      setSaveError(result.error);
+      return;
     }
-    setSaving(false); setEditing(null); setAdding(false); reload();
+    setEditing(null);
+    setAdding(false);
+    reload();
   }
 
   async function remove(id: number) {
     if (!confirm("Delete this module? This cannot be undone.")) return;
-    await fetch("/api/admin/modules", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+    const result = await adminRequest("/api/admin/modules", {
+      method: "DELETE",
+      body: JSON.stringify({ id }),
+    });
+    if (result.ok === false) {
+      setSaveError(result.error);
+      return;
+    }
     reload();
   }
 
   async function togglePublish(mod: Module) {
-    await fetch("/api/admin/modules", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: mod.id, is_published: !mod.is_published }) });
+    const result = await adminRequest("/api/admin/modules", {
+      method: "PUT",
+      body: JSON.stringify({ id: mod.id, is_published: !mod.is_published }),
+    });
+    if (result.ok === false) {
+      setSaveError(result.error);
+      return;
+    }
     reload();
   }
 
@@ -152,6 +198,7 @@ function ModulesTab({ modules, reload }: { modules: Module[]; reload: () => void
         <h2 className="portal-section-title">Modules</h2>
         <button className="admin-btn" onClick={startAdd}>+ Add Module</button>
       </div>
+      {saveError && <p className="admin-error-banner">{saveError}</p>}
 
       {(adding || editing) && (
         <div className="form-card">
@@ -194,9 +241,10 @@ function ModulesTab({ modules, reload }: { modules: Module[]; reload: () => void
             <div className="module-admin-footer">
               <span className={`status-badge ${mod.is_published ? "active" : "pending"}`}>{mod.is_published ? "Published" : "Draft"}</span>
               <div className="module-admin-actions">
-                <button className="row-btn" onClick={() => startEdit(mod)}>Edit</button>
-                <button className="row-btn" onClick={() => togglePublish(mod)}>{mod.is_published ? "Unpublish" : "Publish"}</button>
-                <button className="row-btn danger" onClick={() => remove(mod.id)}>Delete</button>
+                <button type="button" className="admin-btn small" onClick={() => onManage(mod.id)}>Manage</button>
+                <button type="button" className="row-btn" onClick={() => startEdit(mod)}>Edit</button>
+                <button type="button" className="row-btn" onClick={() => togglePublish(mod)}>{mod.is_published ? "Unpublish" : "Publish"}</button>
+                <button type="button" className="row-btn danger" onClick={() => remove(mod.id)}>Delete</button>
               </div>
             </div>
           </div>
@@ -274,14 +322,42 @@ export default function AdminDashboard() {
   const [students, setStudents] = useState<Student[]>([]);
   const [modules, setModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
+  const [managingModuleId, setManagingModuleId] = useState<number | null>(null);
+  const [managingStudentId, setManagingStudentId] = useState<string | null>(null);
+  const [emailTarget, setEmailTarget] = useState<{ student_id?: string; student_ids?: string[]; all_enrolled?: boolean; label: string } | null>(null);
+  const [systemStatus, setSystemStatus] = useState<{
+    ready: boolean;
+    supabase: { configured: boolean; reachable: boolean; schemaReady: boolean; configError: string | null; hint: string | null };
+    admin: boolean;
+    adminError: string | null;
+    canWrite: boolean;
+    writeError: string | null;
+  } | null>(null);
+  const [loadError, setLoadError] = useState("");
 
   async function load() {
+    const statusRes = await fetch("/api/admin/status");
+    if (statusRes.ok) {
+      setSystemStatus(await statusRes.json());
+    }
+
     const [sRes, mRes] = await Promise.all([
       fetch("/api/admin/students"),
       fetch("/api/admin/modules"),
     ]);
-    if (sRes.ok) setStudents(await sRes.json());
-    if (mRes.ok) setModules(await mRes.json());
+
+    if (!sRes.ok || !mRes.ok) {
+      const errBody = await (sRes.ok ? mRes : sRes).json().catch(() => ({}));
+      setLoadError(
+        errBody.error === "Unauthorized"
+          ? 'Cannot load course data — your account is not recognized as admin. In Clerk Dashboard set public metadata { "role": "admin" } and add "metadata": {{user.public_metadata}} to the session token, then sign out and back in.'
+          : errBody.error ?? "Failed to load admin data"
+      );
+    } else {
+      setLoadError("");
+      setStudents(await sRes.json());
+      setModules(await mRes.json());
+    }
     setLoading(false);
   }
 
@@ -294,10 +370,10 @@ export default function AdminDashboard() {
         <header className="portal-header">
           <div>
             <h1 className="portal-welcome">
-              {tab === "overview" && "Overview"}
-              {tab === "students" && "Students"}
-              {tab === "modules" && "Course Modules"}
-              {tab === "clinical" && "Clinical Hours"}
+              {managingModuleId ? "Manage Module" : managingStudentId ? "Manage Student" : tab === "overview" && "Overview"}
+              {!managingModuleId && !managingStudentId && tab === "students" && "Students"}
+              {!managingModuleId && !managingStudentId && tab === "modules" && "Course Modules"}
+              {!managingModuleId && !managingStudentId && tab === "clinical" && "Clinical Hours"}
             </h1>
             <p className="portal-subtitle">Nurse Rocky Admin Panel</p>
           </div>
@@ -306,15 +382,85 @@ export default function AdminDashboard() {
           </div>
         </header>
 
+        {systemStatus && !systemStatus.ready && (
+          <div className="admin-error-banner" role="alert">
+            {!systemStatus.supabase.configured || !systemStatus.supabase.reachable ? (
+              <>
+                <strong>Supabase not connected.</strong>{" "}
+                {systemStatus.supabase.configError ?? systemStatus.supabase.hint ?? "Check .env.local and restart npm run dev."}
+              </>
+            ) : !systemStatus.admin ? (
+              <>
+                <strong>Admin access required.</strong>{" "}
+                {systemStatus.adminError === "Unauthorized"
+                  ? "Set role: admin in Clerk public metadata and add metadata to your session token, then sign out and back in."
+                  : systemStatus.adminError}
+              </>
+            ) : !systemStatus.canWrite ? (
+              <>
+                <strong>Cannot write to database.</strong> {systemStatus.writeError}
+              </>
+            ) : null}
+          </div>
+        )}
+
+        {loadError && (
+          <div className="admin-error-banner" role="alert">{loadError}</div>
+        )}
+
+        {systemStatus?.ready && (
+          <p className="admin-ok-banner">✓ Connected to Supabase — course edits save for all students.</p>
+        )}
+
         {loading ? (
           <div className="loading">Loading…</div>
+        ) : managingStudentId ? (
+          <StudentDetailPanel
+            studentId={managingStudentId}
+            onBack={() => setManagingStudentId(null)}
+            onEmail={(label) => setEmailTarget({ student_id: managingStudentId, label })}
+            onUpdated={load}
+          />
+        ) : managingModuleId ? (
+          <ModuleDetailPanel
+            moduleId={managingModuleId}
+            onBack={() => setManagingModuleId(null)}
+            onSaved={load}
+          />
         ) : (
           <>
             {tab === "overview"  && <Overview students={students} modules={modules} />}
-            {tab === "students"  && <StudentTable students={students} modules={modules} />}
-            {tab === "modules"   && <ModulesTab modules={modules} reload={load} />}
+            {tab === "students"  && (
+              <>
+                <div className="section-head">
+                  <p className="section-hint" style={{ margin: 0 }}>Manage progress, allow quiz retakes, or email students.</p>
+                  <button
+                    type="button"
+                    className="admin-btn"
+                    onClick={() => setEmailTarget({ all_enrolled: true, label: "all enrolled students" })}
+                    disabled={!students.some((s) => s.enrolled)}
+                  >
+                    Email all enrolled
+                  </button>
+                </div>
+                <StudentTable
+                  students={students}
+                  modules={modules}
+                  onManage={(s) => setManagingStudentId(s.id)}
+                  onEmail={(s) => setEmailTarget({
+                    student_id: s.id,
+                    label: [s.first_name, s.last_name].filter(Boolean).join(" ") || s.email,
+                  })}
+                />
+              </>
+            )}
+            {tab === "modules"   && <ModulesTab modules={modules} reload={load} onManage={setManagingModuleId} />}
             {tab === "clinical"  && <ClinicalTab students={students} />}
           </>
+        )}
+
+        {emailTarget && (
+          <EmailModal target={emailTarget} onClose={() => setEmailTarget(null)} />
         )}
       </main>
 
@@ -342,7 +488,10 @@ export default function AdminDashboard() {
         .progress-icon.blue { background: #e0f4ff; } .progress-icon.green { background: #dcfce7; } .progress-icon.orange { background: #ffedd5; } .progress-icon.purple { background: #f3e8ff; }
         .progress-num { font-family: "Fraunces", serif; font-size: 1.3rem; font-weight: 700; color: #0f172a; line-height: 1; }
         .progress-label { font-size: .78rem; color: #64748b; margin-top: .2rem; }
-        .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 1rem; flex-wrap: wrap; }
+        .section-hint { font-size: .85rem; color: #64748b; }
+        .admin-error-banner { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: .85rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: .875rem; line-height: 1.5; }
+        .admin-ok-banner { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: .65rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: .85rem; }
         .portal-section-title { font-family: "Fraunces", serif; font-size: 1.2rem; font-weight: 700; color: #0f172a; }
         .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid #e2e8f0; }
         .admin-table { width: 100%; border-collapse: collapse; background: #fff; font-size: .875rem; }
@@ -357,6 +506,7 @@ export default function AdminDashboard() {
         .status-badge.active { background: #dcfce7; color: #15803d; } .status-badge.pending { background: #fef9c3; color: #a16207; }
         .admin-btn { background: #0c7ab8; color: #fff; border: none; border-radius: 6px; padding: .5rem 1rem; font-size: .85rem; font-weight: 600; cursor: pointer; transition: background .15s; }
         .admin-btn:hover:not(:disabled) { background: #085d8c; } .admin-btn:disabled { opacity: .5; cursor: not-allowed; }
+        .admin-btn.small { padding: .35rem .75rem; font-size: .78rem; }
         .row-btn { background: transparent; border: 1px solid #e2e8f0; border-radius: 5px; padding: .3rem .7rem; font-size: .8rem; font-weight: 500; color: #64748b; cursor: pointer; transition: all .15s; margin-right: .35rem; }
         .row-btn:hover { border-color: #0c7ab8; color: #0c7ab8; } .row-btn.danger:hover { border-color: #ef4444; color: #ef4444; }
         .modules-admin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }

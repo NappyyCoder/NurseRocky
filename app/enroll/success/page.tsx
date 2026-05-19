@@ -2,6 +2,10 @@ import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import { stripe } from "@/lib/stripe";
 import { supabaseAdmin } from "@/lib/supabase";
+import {
+  canonicalStudentEmail,
+  upsertEnrollmentFromPaidSession,
+} from "@/lib/stripe-enrollment";
 
 interface Props {
   searchParams: Promise<{ session_id?: string }>;
@@ -20,29 +24,20 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
       const session = await stripe.checkout.sessions.retrieve(session_id);
 
       if (session.payment_status === "paid") {
-        const email =
-          session.customer_details?.email ??
-          session.customer_email ??
-          "";
+        const raw =
+          session.customer_details?.email ?? session.customer_email ?? "";
+        const email = canonicalStudentEmail(raw);
 
         if (email) {
           enrolledEmail = email;
 
-          // Save enrollment to Supabase
-          const { error } = await supabaseAdmin
-            .from("students")
-            .upsert(
-              {
-                email,
-                enrolled: true,
-                enrolled_at: new Date().toISOString(),
-                stripe_customer_id: (session.customer as string) ?? null,
-                stripe_payment_intent: (session.payment_intent as string) ?? null,
-              },
-              { onConflict: "email" }
-            );
+          const { ok } = await upsertEnrollmentFromPaidSession({
+            email,
+            stripe_customer_id: (session.customer as string) ?? null,
+            stripe_payment_intent: (session.payment_intent as string) ?? null,
+          });
 
-          if (!error) enrollmentSaved = true;
+          enrollmentSaved = ok;
         }
       }
     } catch (e) {

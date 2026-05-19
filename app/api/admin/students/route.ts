@@ -1,17 +1,12 @@
-import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { adminErrorResponse, requireAdminSession } from "@/lib/admin-auth";
+import { computeFinishedModuleIds } from "@/lib/server/course-completion";
+import { countPassedQuizzes } from "@/lib/server/student-quiz-grades";
 
-async function requireAdmin() {
-  const { sessionClaims } = await auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-  if (role !== "admin") throw new Error("Unauthorized");
-}
-
-// GET — list all students with their progress summary
 export async function GET() {
   try {
-    await requireAdmin();
+    await requireAdminSession();
 
     const { data: students, error } = await supabaseAdmin
       .from("students")
@@ -20,28 +15,24 @@ export async function GET() {
 
     if (error) throw error;
 
-    // Attach progress counts and clinical hours for each student
     const enriched = await Promise.all(
       (students ?? []).map(async (s) => {
-        const [{ count: completedModules }, { data: clinical }] = await Promise.all([
-          supabaseAdmin
-            .from("student_progress")
-            .select("*", { count: "exact", head: true })
-            .eq("student_id", s.id)
-            .eq("completed", true),
-          supabaseAdmin
-            .from("clinical_hours")
-            .select("hours")
-            .eq("student_id", s.id),
+        const studentId = s.id as string;
+        const [finished, passedQuizzes, { data: clinical }] = await Promise.all([
+          computeFinishedModuleIds(studentId),
+          countPassedQuizzes(studentId),
+          supabaseAdmin.from("clinical_hours").select("hours").eq("student_id", studentId),
         ]);
 
         const totalClinical = (clinical ?? []).reduce(
-          (sum, r) => sum + Number(r.hours), 0
+          (sum, r) => sum + Number(r.hours),
+          0
         );
 
         return {
           ...s,
-          completed_modules: completedModules ?? 0,
+          completed_modules: finished.size,
+          quizzes_passed: passedQuizzes,
           clinical_hours: totalClinical,
         };
       })
@@ -49,7 +40,7 @@ export async function GET() {
 
     return NextResponse.json(enriched);
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : "Error";
-    return NextResponse.json({ error: msg }, { status: msg === "Unauthorized" ? 401 : 500 });
+    const { error, status } = adminErrorResponse(e);
+    return NextResponse.json({ error }, { status });
   }
 }

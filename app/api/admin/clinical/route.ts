@@ -1,11 +1,11 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { clerkIsAdmin } from "@/lib/clerk-admin";
 
 async function requireAdmin() {
   const { sessionClaims } = await auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-  if (role !== "admin") throw new Error("Unauthorized");
+  if (!clerkIsAdmin(sessionClaims)) throw new Error("Unauthorized");
 }
 
 // POST — log clinical hours for a student

@@ -1,13 +1,13 @@
 import { SignIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { clerkIsAdmin } from "@/lib/clerk-admin";
 
 export default async function AdminSignInPage() {
   const { userId, sessionClaims } = await auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
 
   // Already signed in as admin — go straight to dashboard
-  if (userId && role === "admin") {
+  if (userId && clerkIsAdmin(sessionClaims)) {
     redirect("/admin/dashboard");
   }
 
