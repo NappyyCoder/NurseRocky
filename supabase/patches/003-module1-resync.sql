@@ -26,8 +26,31 @@ BEGIN
   UPDATE modules SET
     title = 'Introduction to Healthcare & CNA Role',
     description = 'Learn the fundamentals of healthcare, the CNA role, scope of practice, the healthcare team, professionalism, HIPAA, and legal and ethical standards.',
+    lessons_count = 8,
     is_published = true
   WHERE id = v_mod_id;
+
+  -- ── Lessons ──────────────────────────────────────────────────
+  -- Content is NULL on purpose: the app renders the curated Module 1
+  -- lesson HTML keyed by order_num. We only need the rows to exist.
+  -- Insert each lesson only if that order_num is missing (safe re-run,
+  -- preserves any existing student progress).
+  INSERT INTO lessons (module_id, title, content, duration_min, order_num)
+  SELECT v_mod_id, t.title, NULL, 45, t.order_num
+  FROM (VALUES
+    ('Welcome to Nurse Rocky', 1),
+    ('Role of the Certified Nursing Assistant (CNA)', 2),
+    ('Scope of Practice for Certified Nursing Assistants', 3),
+    ('Healthcare Team', 4),
+    ('Professional Behavior', 5),
+    ('HIPAA & Confidentiality', 6),
+    ('Legal & Ethical Standards', 7),
+    ('Sample Simulation', 8)
+  ) AS t(title, order_num)
+  WHERE NOT EXISTS (
+    SELECT 1 FROM lessons l
+    WHERE l.module_id = v_mod_id AND l.order_num = t.order_num
+  );
 
   -- Remove ALL existing Module 1 quizzes (clears duplicates + old format).
   DELETE FROM quizzes WHERE module_id = v_mod_id;
@@ -89,5 +112,5 @@ BEGIN
    '["Blaming others for mistakes","Accepting responsibility for one''s actions","Avoiding tasks","Delegating care without instructions"]', 1,
    'CNAs must be responsible for their actions to ensure safe, ethical care.', 10);
 
-  RAISE NOTICE 'Module 1 re-sync complete: 1 module updated, 2 quizzes, 15 questions.';
+  RAISE NOTICE 'Module 1 re-sync complete: title updated, 8 lessons ensured, 2 quizzes, 15 questions.';
 END $$;
