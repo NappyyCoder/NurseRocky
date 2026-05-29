@@ -79,6 +79,7 @@ export default async function ModuleOverviewPage(props: {
   const lessonPct = lessonsTotal
     ? Math.round((lessonsDone / lessonsTotal) * 100)
     : 0;
+  const allLessonsDone = lessonsTotal > 0 && lessonsDone >= lessonsTotal;
 
   const firstOpenLesson = lessons.find((l) => !completedLessons.has(l.id));
   const firstOpenQuiz = grades.find((g) => !g.passed);
@@ -108,7 +109,10 @@ export default async function ModuleOverviewPage(props: {
         <header className="module-h">
           <h1>{courseModule.title}</h1>
           <p className="module-meta">
-            {lessonsTotal} lessons · ~6 hours · Quiz &amp; Test
+            {lessonsTotal} lesson{lessonsTotal === 1 ? "" : "s"}
+            {quizzesTotal > 0
+              ? ` · ${quizzesTotal} assessment${quizzesTotal === 1 ? "" : "s"}`
+              : ""}
           </p>
           {courseModule.description && (
             <p className="module-desc">{courseModule.description}</p>
@@ -134,39 +138,58 @@ export default async function ModuleOverviewPage(props: {
           )}
         </header>
 
-        <section className="module-section flow-section">
-          <h2>Recommended flow</h2>
-          <ol className="flow-steps">
-            <li className={lessonsDone >= 7 ? "done" : lessonsDone > 0 ? "active" : ""}>
-              <span className="flow-num">1</span>
-              <div>
-                <strong>Study lessons 1–7</strong>
-                <span>Orientation, CNA role, scope, team, professionalism, HIPAA, ethics</span>
-              </div>
-            </li>
-            <li className={completedLessons.has(lessons.find(l => l.order_num === 8)?.id ?? "") ? "done" : lessonsDone >= 7 ? "active" : ""}>
-              <span className="flow-num">2</span>
-              <div>
-                <strong>Lesson 8 — Sample Simulation</strong>
-                <span>Practice scenarios before the quiz and test</span>
-              </div>
-            </li>
-            <li className={grades[0]?.passed ? "done" : lessonsDone >= 8 ? "active" : ""}>
-              <span className="flow-num">3</span>
-              <div>
-                <strong>Quiz — CNA True/False Quiz: Modules 1</strong>
-                <span>5 questions · Module 1 – Introduction to Healthcare &amp; CNA Role</span>
-              </div>
-            </li>
-            <li className={grades[1]?.passed ? "done" : grades[0]?.passed ? "active" : ""}>
-              <span className="flow-num">4</span>
-              <div>
-                <strong>Test — CNA Mini Exam</strong>
-                <span>10 questions · Module 1 – Introduction to Healthcare &amp; CNA Role</span>
-              </div>
-            </li>
-          </ol>
-        </section>
+        {(lessonsTotal > 0 || quizzesTotal > 0) && (
+          <section className="module-section flow-section">
+            <h2>Recommended flow</h2>
+            <ol className="flow-steps">
+              {lessonsTotal > 0 && (
+                <li
+                  className={
+                    allLessonsDone ? "done" : lessonsDone > 0 ? "active" : "active"
+                  }
+                >
+                  <span className="flow-num">{allLessonsDone ? "✓" : "1"}</span>
+                  <div>
+                    <strong>
+                      Study all {lessonsTotal} lesson{lessonsTotal === 1 ? "" : "s"}
+                    </strong>
+                    <span>
+                      Work through each lesson in order, then mark it complete
+                      ({lessonsDone}/{lessonsTotal} done)
+                    </span>
+                  </div>
+                </li>
+              )}
+              {grades.map((g, idx) => {
+                const prevPassed =
+                  idx === 0 ? allLessonsDone : grades[idx - 1]?.passed;
+                const label = g.title
+                  .replace(/^CNA True\/False Quiz:.*/i, "True/False Quiz")
+                  .replace(/^True\/False Quiz.*/i, "True/False Quiz")
+                  .replace(/^CNA Mini Exam.*/i, "Mini Exam")
+                  .replace(/^Mini Exam.*/i, "Mini Exam");
+                return (
+                  <li
+                    key={g.quiz_id}
+                    className={g.passed ? "done" : prevPassed ? "active" : ""}
+                  >
+                    <span className="flow-num">
+                      {g.passed ? "✓" : (lessonsTotal > 0 ? idx + 2 : idx + 1)}
+                    </span>
+                    <div>
+                      <strong>{label}</strong>
+                      <span>
+                        {label === "Mini Exam"
+                          ? "Multiple-choice test · pass to continue"
+                          : "Quick check of the key concepts in this module"}
+                      </span>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+        )}
 
         <section className="module-section">
           <h2>Lessons</h2>

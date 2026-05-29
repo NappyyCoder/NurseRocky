@@ -83,7 +83,7 @@ export default async function LessonPage(props: {
 
         <div className="lesson-progress-strip">
           <div className="lps-meta">
-            <span>Module 1 progress</span>
+            <span>Lesson progress</span>
             <span>Lesson {lesson.order_num} of {siblings.length || 1}</span>
           </div>
           <div className="lps-bar">
