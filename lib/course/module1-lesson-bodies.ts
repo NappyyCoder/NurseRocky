@@ -6,36 +6,7 @@
 export const MODULE_1_LESSON_HTML: Record<number, string> = {
   1: `
 <section class="lesson-block">
-<h2>Module 1</h2>
-<h3>Curriculum Breakdown</h3>
-<p class="lead"><strong>Module 1: Introduction to Healthcare &amp; CNA Role (6 Hours)</strong></p>
-
-<h3>Learning Objectives</h3>
-<ul class="lesson-list objectives">
-<li>Define CNA scope of practice</li>
-<li>Identify healthcare team roles</li>
-<li>Understand workplace professionalism</li>
-</ul>
-
-<h3>Topics</h3>
-<ul class="lesson-list">
-<li>Healthcare settings</li>
-<li>CNA responsibilities</li>
-<li>Legal scope of practice</li>
-<li>Professional conduct</li>
-<li>HIPAA</li>
-</ul>
-
-<h3>Assessment</h3>
-<ul class="lesson-list">
-<li>Quiz</li>
-<li>Test</li>
-</ul>
-
-<h2>Module 1: Orientation &amp; Foundations</h2>
-
-<h2>Welcome to Nurse Rocky</h2>
-<p>Welcome to Nurse Rocky, where your journey into the healthcare profession begins. We are honored that you have chosen to take the first step toward becoming a Certified Nursing Assistant (CNA)—a career dedicated to compassion, service, and making a meaningful difference in the lives of others.</p>
+<p class="lead">Welcome to Nurse Rocky, where your journey into the healthcare profession begins. We are honored that you have chosen to take the first step toward becoming a Certified Nursing Assistant (CNA)—a career dedicated to compassion, service, and making a meaningful difference in the lives of others.</p>
 <p>At Nurse Rocky, we believe that great caregivers are built through knowledge, confidence, and hands-on skills. Our program is designed to prepare you for success by combining clear instruction, practical training, and real-world healthcare scenarios that reflect the responsibilities of today’s CNAs.</p>
 <p>During your training, you will learn essential skills such as patient care, infection control, communication, safety procedures, and professional ethics. More importantly, you will develop the confidence and compassion needed to care for patients with dignity and respect.</p>
 <p>Our goal is not only to help you pass your state CNA certification exam, but also to prepare you for a rewarding career in healthcare with opportunities in hospitals, long-term care facilities, home health, and other healthcare settings.</p>
@@ -205,7 +176,7 @@ export const MODULE_1_LESSON_HTML: Record<number, string> = {
 </ul>
 </article>
 
-<p class="lesson-next-hint">After completing the simulations, submit the <strong>CNA True/False Quiz: Modules 1</strong>, then the <strong>CNA Mini Exam</strong> from your module overview.</p>
+<p class="lesson-next-hint">After completing the simulations, submit the <strong>True/False Quiz</strong>, then the <strong>Mini Exam</strong> from your module overview.</p>
 </section>`,
 };
 
