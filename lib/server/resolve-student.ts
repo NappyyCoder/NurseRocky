@@ -1,39 +1,58 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { canonicalStudentEmail } from "@/lib/stripe-enrollment";
+import {
+  attachClerkToStudent,
+  syncEnrollmentForClerkUser,
+} from "@/lib/server/enrollment-link";
 
-/** Resolve enrolled student id from Clerk session (shared by student APIs). */
+/** Resolve student id from Clerk session; links paid enrollment when possible. */
 export async function resolveStudentId(userId: string): Promise<string | null> {
-  const { data: byClerk } = await supabaseAdmin
-    .from("students")
-    .select("id")
-    .eq("clerk_user_id", userId)
-    .maybeSingle();
-
-  if (byClerk?.id) return byClerk.id as string;
+  await syncEnrollmentForClerkUser(userId);
 
   const user = await currentUser();
   const email = canonicalStudentEmail(user?.primaryEmailAddress?.emailAddress ?? "");
-  if (!email) return null;
 
-  const { data: byEmail } = await supabaseAdmin
+  const { data: byClerk } = await supabaseAdmin
     .from("students")
-    .select("id")
-    .eq("email", email)
+    .select("id, enrolled")
+    .eq("clerk_user_id", userId)
     .maybeSingle();
 
-  if (byEmail?.id) {
-    await supabaseAdmin
+  if (byClerk?.enrolled) return byClerk.id as string;
+
+  if (email) {
+    const { data: byEmail } = await supabaseAdmin
       .from("students")
-      .update({
-        clerk_user_id: userId,
-        first_name: user?.firstName ?? null,
-        last_name: user?.lastName ?? null,
-      })
-      .eq("id", byEmail.id);
-    return byEmail.id as string;
+      .select("id, enrolled")
+      .eq("email", email)
+      .maybeSingle();
+
+    if (byEmail?.id) {
+      const shouldLink =
+        byEmail.enrolled ||
+        !byClerk?.id ||
+        byClerk.id === byEmail.id;
+
+      if (shouldLink) {
+        await attachClerkToStudent(
+          userId,
+          byEmail.id as string,
+          {
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+          },
+          byClerk?.id && byClerk.id !== byEmail.id
+            ? (byClerk.id as string)
+            : undefined
+        );
+      }
+
+      if (byEmail.enrolled) return byEmail.id as string;
+    }
   }
 
+  if (byClerk?.id) return byClerk.id as string;
   return null;
 }
 

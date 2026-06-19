@@ -1,7 +1,7 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
-import { canonicalStudentEmail } from "@/lib/stripe-enrollment";
+import { requireEnrolledStudent } from "@/lib/server/resolve-student";
 import { rationaleForQuestion } from "@/lib/course/module1-quiz-rationales";
 import type { QuizQuestion } from "@/lib/types";
 
@@ -18,37 +18,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "quiz_id and answers[] required" }, { status: 400 });
     }
 
-    const user = await currentUser();
-    const email = canonicalStudentEmail(user?.primaryEmailAddress?.emailAddress ?? "");
-
-    let { data: student } = await supabaseAdmin
-      .from("students")
-      .select("id, enrolled")
-      .eq("clerk_user_id", userId)
-      .maybeSingle();
-
-    if (!student && email) {
-      const { data: byEmail } = await supabaseAdmin
-        .from("students")
-        .select("id, enrolled")
-        .eq("email", email)
-        .is("clerk_user_id", null)
-        .maybeSingle();
-
-      if (byEmail?.id) {
-        await supabaseAdmin
-          .from("students")
-          .update({
-            clerk_user_id: userId,
-            first_name: user?.firstName ?? null,
-            last_name: user?.lastName ?? null,
-          })
-          .eq("id", byEmail.id);
-        student = byEmail;
-      }
-    }
-
-    if (!student?.enrolled) {
+    const studentId = await requireEnrolledStudent(userId);
+    if (!studentId) {
       return NextResponse.json({ error: "Enrollment required" }, { status: 403 });
     }
 
@@ -105,7 +76,7 @@ export async function POST(req: NextRequest) {
     const passed = score >= (quiz.passing_score ?? 70);
 
     const { error: attErr } = await supabaseAdmin.from("quiz_attempts").insert({
-      student_id: student.id,
+      student_id: studentId,
       quiz_id: quiz.id,
       score,
       passed,

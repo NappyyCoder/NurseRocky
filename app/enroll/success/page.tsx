@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { auth } from "@clerk/nextjs/server";
 import { stripe } from "@/lib/stripe";
 import { supabaseAdmin } from "@/lib/supabase";
@@ -6,6 +7,10 @@ import {
   canonicalStudentEmail,
   upsertEnrollmentFromPaidSession,
 } from "@/lib/stripe-enrollment";
+import {
+  CHECKOUT_SESSION_COOKIE,
+  attachClerkToStudent,
+} from "@/lib/server/enrollment-link";
 
 interface Props {
   searchParams: Promise<{ session_id?: string }>;
@@ -17,6 +22,7 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
 
   let enrolledEmail: string | null = null;
   let enrollmentSaved = false;
+  let enrollmentError: string | null = null;
 
   // Verify the Stripe payment directly and save the student record
   if (session_id) {
@@ -31,27 +37,51 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
         if (email) {
           enrolledEmail = email;
 
-          const { ok } = await upsertEnrollmentFromPaidSession({
+          const { ok, error } = await upsertEnrollmentFromPaidSession({
             email,
             stripe_customer_id: (session.customer as string) ?? null,
             stripe_payment_intent: (session.payment_intent as string) ?? null,
           });
 
           enrollmentSaved = ok;
+          if (!ok) enrollmentError = error ?? "Could not save enrollment";
+        } else {
+          enrollmentError = "No email on payment — contact support with your receipt.";
         }
+      } else {
+        enrollmentError = "Payment was not completed. Please try checkout again.";
       }
     } catch (e) {
       console.error("Could not verify Stripe session:", e);
+      enrollmentError = "Could not verify payment. Sign in after creating your account and we will retry automatically.";
     }
+
+    // Remember checkout session so sign-up can link even if emails differ
+    if (session_id && enrollmentSaved) {
+      const cookieStore = await cookies();
+      cookieStore.set(CHECKOUT_SESSION_COOKIE, session_id, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+      });
+    }
+  } else {
+    enrollmentError = "Missing payment session. If you already paid, sign in and we will link your enrollment.";
   }
 
-  // If already signed in, try to link their account to the payment
-  if (userId && enrolledEmail) {
-    await supabaseAdmin
+  // If already signed in, link account to the paid enrollment immediately
+  if (userId && enrolledEmail && enrollmentSaved) {
+    const { data: student } = await supabaseAdmin
       .from("students")
-      .update({ clerk_user_id: userId })
+      .select("id")
       .eq("email", enrolledEmail)
-      .is("clerk_user_id", null);
+      .maybeSingle();
+
+    if (student?.id) {
+      await attachClerkToStudent(userId, student.id as string);
+    }
   }
 
   const showSignUp = !userId;
@@ -77,6 +107,12 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
         </div>
 
         <h1 className="success-title">Payment Confirmed</h1>
+
+        {enrollmentError && (
+          <div className="enrollment-error">
+            {enrollmentError}
+          </div>
+        )}
 
         {enrollmentSaved && (
           <div className="enrollment-badge">
@@ -242,6 +278,17 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
           padding: .3rem .8rem;
           border-radius: 99px;
           margin-bottom: .75rem;
+        }
+        .enrollment-error {
+          background: #fff7ed;
+          border: 1px solid #fed7aa;
+          color: #9a3412;
+          font-size: .82rem;
+          line-height: 1.55;
+          padding: .65rem .85rem;
+          border-radius: 8px;
+          margin-bottom: .75rem;
+          max-width: 100%;
         }
         .success-sub {
           color: #64748b;

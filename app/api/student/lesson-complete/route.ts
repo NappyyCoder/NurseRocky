@@ -1,7 +1,7 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
-import { canonicalStudentEmail } from "@/lib/stripe-enrollment";
+import { requireEnrolledStudent } from "@/lib/server/resolve-student";
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,37 +15,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "lesson_id required" }, { status: 400 });
     }
 
-    const user = await currentUser();
-    const email = canonicalStudentEmail(user?.primaryEmailAddress?.emailAddress ?? "");
-
-    let { data: student } = await supabaseAdmin
-      .from("students")
-      .select("id, enrolled")
-      .eq("clerk_user_id", userId)
-      .maybeSingle();
-
-    if (!student && email) {
-      const { data: byEmail } = await supabaseAdmin
-        .from("students")
-        .select("id, enrolled")
-        .eq("email", email)
-        .is("clerk_user_id", null)
-        .maybeSingle();
-
-      if (byEmail?.id) {
-        await supabaseAdmin
-          .from("students")
-          .update({
-            clerk_user_id: userId,
-            first_name: user?.firstName ?? null,
-            last_name: user?.lastName ?? null,
-          })
-          .eq("id", byEmail.id);
-        student = byEmail;
-      }
-    }
-
-    if (!student?.enrolled) {
+    const studentId = await requireEnrolledStudent(userId);
+    if (!studentId) {
       return NextResponse.json({ error: "Enrollment required" }, { status: 403 });
     }
 
@@ -61,7 +32,7 @@ export async function POST(req: NextRequest) {
 
     const { error: upErr } = await supabaseAdmin.from("student_progress").upsert(
       {
-        student_id: student.id,
+        student_id: studentId,
         module_id: lesson.module_id,
         lesson_id: lesson.id,
         completed: true,
@@ -76,7 +47,7 @@ export async function POST(req: NextRequest) {
     await supabaseAdmin
       .from("students")
       .update({ last_lesson_id: lesson.id, last_module_id: lesson.module_id })
-      .eq("id", student.id);
+      .eq("id", studentId);
 
     return NextResponse.json({ ok: true });
   } catch (e: unknown) {
