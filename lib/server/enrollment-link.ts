@@ -79,16 +79,23 @@ export async function enrollAndLinkCheckoutSession(
   sessionId: string,
   userId: string,
   profile?: ClerkProfile
-) {
+): Promise<
+  | { ok: true; studentId: string }
+  | { ok: false; reason: string; error?: string }
+> {
   const verified = await verifyPaidCheckoutSession(sessionId);
-  if (!verified.ok) return verified;
+  if (!verified.ok) {
+    return { ok: false as const, reason: verified.reason };
+  }
 
   const saved = await upsertEnrollmentFromPaidSession({
     email: verified.email,
     stripe_customer_id: verified.stripe_customer_id,
     stripe_payment_intent: verified.stripe_payment_intent,
   });
-  if (!saved.ok) return { ok: false as const, reason: "db_error" as const, error: saved.error };
+  if (!saved.ok) {
+    return { ok: false as const, reason: "db_error", error: saved.error };
+  }
 
   const { data: student } = await supabaseAdmin
     .from("students")
@@ -97,7 +104,7 @@ export async function enrollAndLinkCheckoutSession(
     .maybeSingle();
 
   if (!student?.id) {
-    return { ok: false as const, reason: "student_missing" as const };
+    return { ok: false as const, reason: "student_missing" };
   }
 
   await attachClerkToStudent(userId, student.id as string, profile);
@@ -123,7 +130,24 @@ async function findPaidCheckoutSessionForEmail(email: string) {
  * 1) checkout session cookie from /enroll/success
  * 2) Stripe lookup by Clerk email
  */
-export async function syncEnrollmentForClerkUser(userId: string) {
+export async function syncEnrollmentForClerkUser(userId: string): Promise<{
+  ok: boolean;
+  reason?: string;
+  error?: string;
+  hint?: string;
+  studentId?: string;
+}> {
+  const { checkSupabaseReachability } = await import("@/lib/supabase-health");
+  const db = await checkSupabaseReachability();
+  if (!db.ok) {
+    return {
+      ok: false,
+      reason: "database_unreachable",
+      error: db.error ?? "Cannot reach Supabase database.",
+      hint: db.hint ?? "Fix NEXT_PUBLIC_SUPABASE_URL and keys in .env.local, then restart the dev server.",
+    };
+  }
+
   const user = await currentUser();
   const profile: ClerkProfile = {
     firstName: user?.firstName,
@@ -136,9 +160,18 @@ export async function syncEnrollmentForClerkUser(userId: string) {
   if (sessionId) {
     try {
       const result = await enrollAndLinkCheckoutSession(sessionId, userId, profile);
-      if (result.ok) {
+      if (result.ok === false) {
+        if (result.reason === "db_error") {
+          return {
+            ok: false,
+            reason: result.reason,
+            error: result.error ?? "Could not save enrollment to the database.",
+            hint: "Check Supabase is active and .env.local has the correct SUPABASE_SERVICE_ROLE_KEY.",
+          };
+        }
+      } else {
         cookieStore.delete(CHECKOUT_SESSION_COOKIE);
-        return result;
+        return { ok: true, studentId: result.studentId };
       }
     } catch (e) {
       console.error("[enrollment-link] cookie session sync failed:", e);
@@ -148,17 +181,46 @@ export async function syncEnrollmentForClerkUser(userId: string) {
   const clerkEmail = canonicalStudentEmail(
     user?.primaryEmailAddress?.emailAddress ?? ""
   );
-  if (!clerkEmail) return { ok: false as const, reason: "no_clerk_email" as const };
+  if (!clerkEmail) {
+    return {
+      ok: false,
+      reason: "no_clerk_email",
+      error: "No email on your account.",
+      hint: "Sign up with the same email you used at Stripe checkout, or pay again while signed in.",
+    };
+  }
 
   try {
     const checkoutSessionId = await findPaidCheckoutSessionForEmail(clerkEmail);
     if (!checkoutSessionId) {
-      return { ok: false as const, reason: "no_paid_session" as const };
+      return {
+        ok: false,
+        reason: "no_paid_session",
+        error: "No paid Stripe checkout found for this email.",
+        hint: `We looked for payments tied to ${clerkEmail}. Use that email at checkout and sign-up, or click Enroll to pay again.`,
+      };
     }
 
-    return await enrollAndLinkCheckoutSession(checkoutSessionId, userId, profile);
+    const linked = await enrollAndLinkCheckoutSession(checkoutSessionId, userId, profile);
+    if (linked.ok === false) {
+      if (linked.reason === "db_error") {
+        return {
+          ok: false,
+          reason: linked.reason,
+          error: linked.error ?? "Could not save enrollment to the database.",
+          hint: "Check Supabase is active and .env.local has the correct SUPABASE_SERVICE_ROLE_KEY.",
+        };
+      }
+      return { ok: false, reason: linked.reason };
+    }
+    return { ok: true, studentId: linked.studentId };
   } catch (e) {
     console.error("[enrollment-link] stripe email sync failed:", e);
-    return { ok: false as const, reason: "stripe_lookup_failed" as const };
+    return {
+      ok: false,
+      reason: "stripe_lookup_failed",
+      error: e instanceof Error ? e.message : "Stripe lookup failed",
+      hint: "Verify STRIPE_SECRET_KEY in .env.local matches your Stripe dashboard (test mode).",
+    };
   }
 }

@@ -16,24 +16,26 @@ export function NotEnrolledBanner() {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [hint, setHint] = useState<string | null>(null);
 
   async function retryLink() {
     setBusy(true);
     setMessage(null);
+    setHint(null);
     try {
       const res = await fetch("/api/student/sync-enrollment", { method: "POST" });
       const data = await res.json();
       if (!res.ok) {
         setMessage(data.error ?? "Could not link payment yet.");
+        if (data.hint) setHint(data.hint);
         return;
       }
       if (data.enrolled) {
         router.refresh();
         return;
       }
-      setMessage(
-        "Account linked, but enrollment is still pending. Use the same email you paid with, or contact support."
-      );
+      setMessage("Account linked, but enrollment is still pending.");
+      if (data.hint) setHint(data.hint);
     } catch {
       setMessage("Network error — try again in a moment.");
     } finally {
@@ -53,6 +55,11 @@ export function NotEnrolledBanner() {
         {message && (
           <p style={{ color: "#9a3412", fontSize: "0.82rem", marginTop: "0.5rem" }}>
             {message}
+          </p>
+        )}
+        {hint && (
+          <p style={{ color: "#7c2d12", fontSize: "0.78rem", marginTop: "0.35rem", lineHeight: 1.5 }}>
+            {hint}
           </p>
         )}
       </div>
