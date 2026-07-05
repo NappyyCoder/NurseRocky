@@ -20,7 +20,7 @@ const certStyles = `
 }
 .cert-card {
   background: #fff;
-  border: 2px solid #0c7ab8;
+  border: 2px solid #93b7a9;
   border-radius: 12px;
   padding: 3rem 2.5rem;
   max-width: 720px;
@@ -46,13 +46,13 @@ const certStyles = `
   font-family: "Fraunces", serif;
   font-size: 1.75rem;
   font-weight: 700;
-  color: #0c7ab8;
+  color: #93b7a9;
   margin: 0.5rem 0 1.5rem;
 }
 .cert-body { color: #475569; line-height: 1.65; max-width: 520px; margin: 0 auto 1.5rem; }
 .cert-date { font-weight: 600; color: #334155; }
 .cert-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
-.cert-actions a { color: #0c7ab8; font-weight: 600; align-self: center; text-decoration: none; }
+.cert-actions a { color: #93b7a9; font-weight: 600; align-self: center; text-decoration: none; }
 @media print {
   .cert-actions { display: none; }
   .cert-page { background: #fff; padding: 0; }

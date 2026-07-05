@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function CompleteLessonButton({
@@ -9,6 +10,7 @@ export function CompleteLessonButton({
   lessonId: string;
   initialDone?: boolean;
 }) {
+  const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [locked, setLocked] = useState(!!initialDone);
   const [doneLabel, setDoneLabel] = useState(
@@ -22,14 +24,16 @@ export function CompleteLessonButton({
       const res = await fetch("/api/student/lesson-complete", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         body: JSON.stringify({ lesson_id: lessonId }),
       });
+      const j = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
-        const j = await res.json();
-        throw new Error(j.error ?? "Unable to save");
+        throw new Error(j.error ?? "Unable to save progress");
       }
       setDoneLabel("Marked complete ✓");
       setLocked(true);
+      router.refresh();
     } catch (e: unknown) {
       alert(e instanceof Error ? e.message : "Save failed");
     } finally {
@@ -44,7 +48,7 @@ export function CompleteLessonButton({
         disabled={busy || locked}
         onClick={onClick}
         style={{
-          background: locked ? "#dcfce7" : "#0c7ab8",
+          background: locked ? "#dcfce7" : "#93b7a9",
           color: locked ? "#15803d" : "#ffffff",
           border: locked ? "1px solid #bbf7d0" : "none",
           fontWeight: 700,

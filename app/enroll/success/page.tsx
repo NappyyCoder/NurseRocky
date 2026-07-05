@@ -1,89 +1,24 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
-import { stripe } from "@/lib/stripe";
-import { supabaseAdmin } from "@/lib/supabase";
-import {
-  canonicalStudentEmail,
-  upsertEnrollmentFromPaidSession,
-} from "@/lib/stripe-enrollment";
-import {
-  CHECKOUT_SESSION_COOKIE,
-  attachClerkToStudent,
-} from "@/lib/server/enrollment-link";
 
 interface Props {
-  searchParams: Promise<{ session_id?: string }>;
+  searchParams: Promise<{ session_id?: string; enrolled?: string; error?: string }>;
 }
 
 export default async function EnrollSuccessPage({ searchParams }: Props) {
-  const { session_id } = await searchParams;
+  const params = await searchParams;
+
+  // Legacy Stripe URLs — hand off to route handler (can set cookies)
+  if (params.session_id) {
+    redirect(
+      `/api/enroll/complete?session_id=${encodeURIComponent(params.session_id)}`
+    );
+  }
+
   const { userId } = await auth();
-
-  let enrolledEmail: string | null = null;
-  let enrollmentSaved = false;
-  let enrollmentError: string | null = null;
-
-  // Verify the Stripe payment directly and save the student record
-  if (session_id) {
-    try {
-      const session = await stripe.checkout.sessions.retrieve(session_id);
-
-      if (session.payment_status === "paid") {
-        const raw =
-          session.customer_details?.email ?? session.customer_email ?? "";
-        const email = canonicalStudentEmail(raw);
-
-        if (email) {
-          enrolledEmail = email;
-
-          const { ok, error } = await upsertEnrollmentFromPaidSession({
-            email,
-            stripe_customer_id: (session.customer as string) ?? null,
-            stripe_payment_intent: (session.payment_intent as string) ?? null,
-          });
-
-          enrollmentSaved = ok;
-          if (!ok) enrollmentError = error ?? "Could not save enrollment";
-        } else {
-          enrollmentError = "No email on payment — contact support with your receipt.";
-        }
-      } else {
-        enrollmentError = "Payment was not completed. Please try checkout again.";
-      }
-    } catch (e) {
-      console.error("Could not verify Stripe session:", e);
-      enrollmentError = "Could not verify payment. Sign in after creating your account and we will retry automatically.";
-    }
-
-    // Remember checkout session so sign-up can link even if emails differ
-    if (session_id && enrollmentSaved) {
-      const cookieStore = await cookies();
-      cookieStore.set(CHECKOUT_SESSION_COOKIE, session_id, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7,
-      });
-    }
-  } else {
-    enrollmentError = "Missing payment session. If you already paid, sign in and we will link your enrollment.";
-  }
-
-  // If already signed in, link account to the paid enrollment immediately
-  if (userId && enrolledEmail && enrollmentSaved) {
-    const { data: student } = await supabaseAdmin
-      .from("students")
-      .select("id")
-      .eq("email", enrolledEmail)
-      .maybeSingle();
-
-    if (student?.id) {
-      await attachClerkToStudent(userId, student.id as string);
-    }
-  }
-
+  const enrollmentSaved = params.enrolled === "1";
+  const enrollmentError = params.error ?? null;
   const showSignUp = !userId;
 
   return (
@@ -96,7 +31,6 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
           Nurse <span>Rocky</span>
         </Link>
 
-        {/* Icon */}
         <div className="success-icon-wrap">
           <div className="success-icon-ring" />
           <div className="success-icon">
@@ -129,7 +63,6 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
             : "Your enrollment is linked to your account. Head to your dashboard to start."}
         </p>
 
-        {/* Step tracker */}
         <div className="success-steps-track">
           <div className="steps-row">
             <div className="step-dot done">
@@ -207,7 +140,7 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
           top: -200px; right: -200px;
           width: 600px; height: 600px;
           border-radius: 50%;
-          background: radial-gradient(circle, #e0f2fe 0%, transparent 70%);
+          background: radial-gradient(circle, #e8f2ef 0%, transparent 70%);
           pointer-events: none;
         }
         .success-container {
@@ -234,7 +167,7 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
           letter-spacing: -.02em;
           margin-bottom: 2rem;
         }
-        .success-logo span { color: #0c7ab8; }
+        .success-logo span { color: #93b7a9; }
         .success-icon-wrap {
           position: relative;
           width: 72px; height: 72px;
@@ -316,10 +249,10 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
           font-size: .78rem; font-weight: 700; flex-shrink: 0;
         }
         .step-dot.done { background: #dcfce7; color: #16a34a; }
-        .step-dot.active { background: #0c7ab8; color: #fff; box-shadow: 0 0 0 4px rgba(12,122,184,.15); }
+        .step-dot.active { background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%); color: #fff; box-shadow: 0 0 0 4px rgba(147,183,169,.15); }
         .step-line { flex: 1; height: 2px; background: #e2e8f0; border-radius: 99px; }
         .step-line.done { background: #bbf7d0; }
-        .step-line.active { background: #bae6fd; }
+        .step-line.active { background: #c3d9d2; }
         .steps-labels { display: flex; align-items: flex-start; width: 100%; }
         .step-label-block { width: 32px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: .1rem; }
         .step-label-spacer { flex: 1; }
@@ -328,17 +261,17 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
         .step-label-block.done .step-name,
         .step-label-block.done .step-num { color: #16a34a; }
         .step-label-block.active .step-name,
-        .step-label-block.active .step-num { color: #0c7ab8; }
+        .step-label-block.active .step-num { color: #93b7a9; }
         .success-cta {
           display: flex; align-items: center; justify-content: center; gap: .5rem;
-          width: 100%; background: #0c7ab8; color: #fff;
+          width: 100%; background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%); color: #fff;
           border-radius: 10px; padding: .95rem 1.5rem;
           font-weight: 700; font-size: .95rem; text-decoration: none;
           transition: background .15s, transform .1s, box-shadow .15s;
-          box-shadow: 0 4px 14px rgba(12,122,184,.3);
+          box-shadow: 0 4px 14px rgba(147,183,169,.3);
           margin-bottom: 1.25rem;
         }
-        .success-cta:hover { background: #085d8c; transform: translateY(-1px); }
+        .success-cta:hover { background: linear-gradient(180deg, #aaccc4 0%, #7aab9b 100%); transform: translateY(-1px); }
         .success-divider {
           display: flex; align-items: center; gap: .75rem;
           width: 100%; margin-bottom: .9rem;
@@ -354,7 +287,7 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
           color: #374151; text-decoration: none;
           transition: border-color .15s, color .15s; margin-bottom: 1.5rem;
         }
-        .success-signin:hover { border-color: #0c7ab8; color: #0c7ab8; }
+        .success-signin:hover { border-color: #93b7a9; color: #93b7a9; }
         .success-back { display: inline-block; color: #94a3b8; font-size: .82rem; text-decoration: none; }
         .success-back:hover { color: #64748b; }
         @media (max-width: 500px) {

@@ -6,7 +6,7 @@ export function PrintButton({ label = "Print certificate" }: { label?: string })
       {label}
       <style jsx>{`
         .print-btn {
-          background: #0c7ab8;
+          background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%);
           color: #fff;
           border: none;
           border-radius: 6px;

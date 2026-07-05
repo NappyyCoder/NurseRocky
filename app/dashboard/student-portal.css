@@ -23,7 +23,7 @@
   font-family: "Fraunces", serif;
   font-size: 1.35rem;
   font-weight: 700;
-  color: #bae6fd;
+  color: #c3d9d2;
   text-decoration: none;
   letter-spacing: -0.02em;
   padding: 0 0.75rem;
@@ -76,8 +76,8 @@
 }
 
 .student-portal-nav-link.active {
-  background: rgba(12, 122, 184, 0.22);
-  color: #bae6fd;
+  background: rgba(147, 183, 169, 0.22);
+  color: #c3d9d2;
   font-weight: 600;
 }
 
@@ -191,7 +191,7 @@
 }
 
 .sp-stat-icon svg { width: 20px; height: 20px; }
-.sp-stat-icon.blue { background: #e0f4ff; color: #0c7ab8; }
+.sp-stat-icon.blue { background: #e8f2ef; color: #93b7a9; }
 .sp-stat-icon.green { background: #dcfce7; color: #16a34a; }
 .sp-stat-icon.orange { background: #ffedd5; color: #ea580c; }
 .sp-stat-icon.purple { background: #f3e8ff; color: #9333ea; }
@@ -215,12 +215,12 @@
   justify-content: space-between;
   align-items: center;
   gap: 1.25rem;
-  background: linear-gradient(135deg, #0c7ab8 0%, #0369a1 100%);
+  background: linear-gradient(135deg, #c0d9d2 0%, #6b9e8e 100%);
   color: #fff;
   border-radius: 12px;
   padding: 1.5rem 1.75rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 8px 24px rgba(12, 122, 184, 0.22);
+  box-shadow: 0 8px 24px rgba(147, 183, 169, 0.22);
   flex-wrap: wrap;
 }
 
@@ -249,7 +249,7 @@
   align-items: center;
   gap: 0.35rem;
   background: #fff;
-  color: #0c7ab8;
+  color: #6b9e8e;
   padding: 0.65rem 1.25rem;
   border-radius: 8px;
   font-weight: 700;
@@ -263,7 +263,7 @@
 .sp-btn-secondary {
   display: inline-flex;
   align-items: center;
-  background: #0c7ab8;
+  background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%);
   color: #fff;
   padding: 0.55rem 1.1rem;
   border-radius: 8px;
@@ -275,7 +275,7 @@
 }
 
 .sp-btn-ghost {
-  color: #0c7ab8;
+  color: #93b7a9;
   font-weight: 600;
   font-size: 0.875rem;
   text-decoration: none;
@@ -340,7 +340,7 @@
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
 }
 
-.sp-module-card.available { border-left: 4px solid #0c7ab8; }
+.sp-module-card.available { border-left: 4px solid #93b7a9; }
 .sp-module-card.locked { opacity: 0.72; }
 
 .sp-module-num {
@@ -353,7 +353,7 @@
   flex-shrink: 0;
 }
 
-.sp-module-card.available .sp-module-num { color: #0c7ab8; }
+.sp-module-card.available .sp-module-num { color: #93b7a9; }
 
 .sp-module-body { flex: 1; min-width: 0; }
 
@@ -393,7 +393,7 @@
 
 .sp-progress-bar > div {
   height: 100%;
-  background: #0c7ab8;
+  background: linear-gradient(90deg, #c0d9d2 0%, #93b7a9 100%);
   border-radius: 99px;
 }
 
@@ -441,7 +441,7 @@
 }
 
 .sp-table tr:last-child td { border-bottom: none; }
-.sp-table a { color: #0c7ab8; font-weight: 600; text-decoration: none; }
+.sp-table a { color: #93b7a9; font-weight: 600; text-decoration: none; }
 .sp-table a:hover { text-decoration: underline; }
 
 .sp-badge {
@@ -495,8 +495,8 @@
 }
 
 .sp-quick-link:hover {
-  border-color: #bae6fd;
-  box-shadow: 0 4px 12px rgba(12, 122, 184, 0.08);
+  border-color: #c3d9d2;
+  box-shadow: 0 4px 12px rgba(147, 183, 169, 0.08);
 }
 
 .sp-quick-link strong {
@@ -536,7 +536,7 @@
 
 .sp-checklist input {
   margin-top: 0.2rem;
-  accent-color: #0c7ab8;
+  accent-color: #93b7a9;
 }
 
 .sp-resource-list {
@@ -558,11 +558,11 @@
   transition: border-color 0.15s;
 }
 
-.sp-resource-item:hover { border-color: #0c7ab8; }
+.sp-resource-item:hover { border-color: #93b7a9; }
 
 .sp-resource-item strong {
   display: block;
-  color: #0c7ab8;
+  color: #93b7a9;
   font-size: 0.95rem;
   margin-bottom: 0.2rem;
 }
@@ -601,8 +601,8 @@
 .sp-form input:focus,
 .sp-form textarea:focus {
   outline: none;
-  border-color: #0c7ab8;
-  box-shadow: 0 0 0 3px rgba(12, 122, 184, 0.12);
+  border-color: #93b7a9;
+  box-shadow: 0 0 0 3px rgba(147, 183, 169, 0.12);
 }
 
 .sp-search {
@@ -652,7 +652,7 @@
   font-size: 2rem;
   font-family: "Fraunces", serif;
   font-weight: 700;
-  color: #0c7ab8;
+  color: #93b7a9;
   line-height: 1;
 }
 
@@ -667,6 +667,31 @@
   padding: 3rem 1.5rem;
   color: #64748b;
   font-size: 0.95rem;
+}
+
+/* ─── Welcome letter ─────────────────────────────────────────── */
+.sp-welcome-letter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.sp-welcome-letter p {
+  font-size: 0.925rem;
+  color: #334155;
+  line-height: 1.7;
+  margin: 0;
+}
+.sp-welcome-letter-heading {
+  font-family: "Fraunces", serif;
+  font-size: 1.15rem !important;
+  font-weight: 700;
+  color: #0f172a !important;
+}
+.sp-welcome-letter-footer {
+  color: #6b9e8e !important;
+  font-size: 0.9rem !important;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 0.75rem;
 }
 
 /* ─── Mobile nav ─────────────────────────────────────────────── */
@@ -703,7 +728,7 @@
 }
 
 .student-portal-mobile-link.active {
-  color: #0c7ab8;
+  color: #93b7a9;
 }
 
 /* ─── Responsive ─────────────────────────────────────────────── */

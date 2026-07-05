@@ -175,7 +175,7 @@ export default async function LessonPage(props: {
           align-items: center;
         }
         .lesson-crumb a {
-          color: #0c7ab8;
+          color: #93b7a9;
           font-weight: 600;
           text-decoration: none;
         }
@@ -238,7 +238,7 @@ export default async function LessonPage(props: {
         }
         .lps-fill {
           height: 100%;
-          background: #0c7ab8;
+          background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%);
           border-radius: 99px;
         }
         .lesson-body .lesson-block .lesson-callout {
@@ -248,8 +248,8 @@ export default async function LessonPage(props: {
         }
         .lesson-body .lesson-block .lesson-callout.info {
           background: #f0f9ff;
-          border: 1px solid #bae6fd;
-          border-left: 4px solid #0c7ab8;
+          border: 1px solid #c3d9d2;
+          border-left: 4px solid #93b7a9;
         }
         .lesson-body .lesson-block .lesson-callout.path {
           background: #f8fafc;
@@ -267,24 +267,61 @@ export default async function LessonPage(props: {
           font-size: 0.9rem;
           color: #475569;
         }
+        .lesson-body {
+          margin: 0;
+        }
         .lesson-body .lesson-block {
           padding-bottom: 0.25rem;
+          padding-top: 0;
+          margin-top: 0;
         }
-        .lesson-body .lesson-block h2,
-        .lesson-body .lesson-block h3 {
+        .lesson-body .lesson-block > :first-child {
+          margin-top: 0;
+        }
+        /* ── Lesson heading hierarchy ───────────────────────── */
+        .lesson-body .lesson-block h2.lc-h2 {
           font-family: "Fraunces", serif;
+          font-size: 1.28rem;
+          font-weight: 700;
           color: #0f172a;
           letter-spacing: -0.02em;
+          line-height: 1.35;
+          margin-top: 2.25rem;
+          margin-bottom: 0.5rem;
+          padding-bottom: 0.45rem;
+          border-bottom: 2px solid #c3d9d2;
         }
-        .lesson-body .lesson-block h2 {
-          margin-top: 1.85rem;
-          margin-bottom: 0.85rem;
-          font-size: 1.38rem;
+        .lesson-body .lesson-block h2.lc-h2:first-child {
+          margin-top: 0;
+          font-size: 1.42rem;
+          line-height: 1.3;
+          letter-spacing: -0.025em;
         }
-        .lesson-body .lesson-block h3 {
-          margin-top: 1.75rem;
-          margin-bottom: 0.65rem;
-          font-size: 1.06rem;
+        .lesson-body .lesson-block > h2.lc-h2:first-child + p,
+        .lesson-body .lesson-block > p.lead + p {
+          margin-top: 0.25rem;
+        }
+        .lesson-body .lesson-block h3.lc-h3 {
+          font-family: "DM Sans", system-ui, sans-serif;
+          font-size: 1rem;
+          font-weight: 700;
+          color: #1e3a34;
+          letter-spacing: 0;
+          margin-top: 1.6rem;
+          margin-bottom: 0.35rem;
+          padding-left: 0.75rem;
+          border-left: 3px solid #93b7a9;
+          line-height: 1.4;
+        }
+        .lesson-body .lesson-block h4.lc-h4 {
+          font-family: "DM Sans", system-ui, sans-serif;
+          font-size: 0.92rem;
+          font-weight: 700;
+          color: #475569;
+          letter-spacing: 0.01em;
+          text-transform: uppercase;
+          margin-top: 1.25rem;
+          margin-bottom: 0.3rem;
         }
         .lesson-body .lesson-block p {
           line-height: 1.73;
@@ -294,7 +331,9 @@ export default async function LessonPage(props: {
         }
         .lesson-body .lesson-block p.lead {
           margin-top: 0;
+          margin-bottom: 0.35rem;
           color: #334155;
+          font-weight: 600;
         }
         .lesson-body .lesson-block .lesson-list {
           padding-left: 1.35rem;
@@ -310,7 +349,7 @@ export default async function LessonPage(props: {
           font-weight: 500;
         }
         .lesson-body .lesson-block .sim-card {
-          border-left: 3px solid #0c7ab8;
+          border-left: 3px solid #93b7a9;
           background: #f8fafc;
           padding: 1rem 1.15rem;
           margin: 1.5rem 0;
@@ -326,7 +365,7 @@ export default async function LessonPage(props: {
         }
         .lesson-body .lesson-block details.sim-rationale summary {
           cursor: pointer;
-          color: #0c7ab8;
+          color: #93b7a9;
           font-weight: 700;
           font-size: 0.88rem;
         }
@@ -366,7 +405,7 @@ export default async function LessonPage(props: {
         }
         .lesson-nav-links .ln.prev,
         .lesson-nav-links .ln.next {
-          color: #0c7ab8;
+          color: #93b7a9;
         }
         .lesson-nav-links .ln.next:hover,
         .lesson-nav-links .ln.prev:hover {

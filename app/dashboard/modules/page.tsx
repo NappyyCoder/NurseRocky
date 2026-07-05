@@ -12,7 +12,7 @@ export default async function ModulesPage() {
     <>
       <PageHeader
         title="Course modules"
-        description="Work through lessons and assignments in order. Each module unlocks when the previous one is fully complete."
+        description="Work through all 18 competency modules at your own pace — lessons, assignments, and exam prep included."
       />
 
       {!isEnrolled && <NotEnrolledBanner />}

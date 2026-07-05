@@ -170,7 +170,11 @@ export async function syncEnrollmentForClerkUser(userId: string): Promise<{
           };
         }
       } else {
-        cookieStore.delete(CHECKOUT_SESSION_COOKIE);
+        try {
+          cookieStore.delete(CHECKOUT_SESSION_COOKIE);
+        } catch {
+          // Cookie delete is only allowed in Route Handlers; ignore in RSC.
+        }
         return { ok: true, studentId: result.studentId };
       }
     } catch (e) {

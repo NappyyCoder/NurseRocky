@@ -26,6 +26,37 @@ export default async function DashboardOverviewPage() {
 
       {!isEnrolled && <NotEnrolledBanner />}
 
+      {isEnrolled && (
+        <div className="sp-welcome-letter sp-card" style={{ marginBottom: "1.5rem" }}>
+          <p className="sp-welcome-letter-heading">Welcome to Nurse Rocky Institute</p>
+          <p>
+            We are honored that you have chosen to take the first step toward becoming a Certified
+            Nursing Assistant (CNA) — a career dedicated to compassion, service, and making a
+            meaningful difference in the lives of others.
+          </p>
+          <p>
+            At Nurse Rocky Institute, we believe that great caregivers are built through knowledge,
+            confidence, and hands-on skills. Our program is designed to prepare you for success by
+            combining clear instruction, practical training, and real-world healthcare scenarios
+            that reflect the responsibilities of today&apos;s CNAs.
+          </p>
+          <p>
+            During your training, you will learn essential skills such as patient care, infection
+            control, communication, safety procedures, and professional ethics. More importantly,
+            you will develop the confidence and compassion needed to care for patients with dignity
+            and respect.
+          </p>
+          <p>
+            Our goal is not only to help you pass your state CNA certification exam, but also to
+            prepare you for a rewarding career in healthcare — with opportunities in hospitals,
+            long-term care facilities, home health, and other healthcare settings.
+          </p>
+          <p className="sp-welcome-letter-footer">
+            <em>Welcome to Nurse Rocky Institute — Where Compassion Meets Career.</em>
+          </p>
+        </div>
+      )}
+
       {isEnrolled && data?.announcements.map((a) => (
         <div key={a.id} className="sp-banner info sp-announcement">
           <div>

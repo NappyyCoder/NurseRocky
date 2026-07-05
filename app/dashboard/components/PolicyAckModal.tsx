@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import { POLICY_BY_SLUG } from "@/lib/policies/content";
@@ -11,6 +12,7 @@ const POLICIES = REQUIRED_POLICY_SLUGS.map((slug) => ({
 }));
 
 export function PolicyAckModal({ onDone }: { onDone: () => void }) {
+  const router = useRouter();
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [busy, setBusy] = useState(false);
 
@@ -23,6 +25,7 @@ export function PolicyAckModal({ onDone }: { onDone: () => void }) {
       const res = await fetch("/api/student/policy-ack", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         body: JSON.stringify({ slugs: POLICIES.map((p) => p.slug) }),
       });
       if (!res.ok) {
@@ -30,6 +33,7 @@ export function PolicyAckModal({ onDone }: { onDone: () => void }) {
         throw new Error(d.error ?? "Could not save");
       }
       onDone();
+      router.refresh();
     } catch (e: unknown) {
       alert(e instanceof Error ? e.message : "Error");
     } finally {

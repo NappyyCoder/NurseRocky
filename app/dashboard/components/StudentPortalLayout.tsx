@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 import { PolicyAckModal } from "./PolicyAckModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const NAV = [
   {
@@ -87,6 +87,12 @@ export function StudentPortalLayout({
 }) {
   const pathname = usePathname();
   const [showPolicy, setShowPolicy] = useState(needsPolicyAck && isEnrolled);
+
+  useEffect(() => {
+    if (!needsPolicyAck || !isEnrolled) {
+      setShowPolicy(false);
+    }
+  }, [needsPolicyAck, isEnrolled]);
 
   const isLessonFlow = pathname.includes("/lessons/") || pathname.includes("/quiz/");
 

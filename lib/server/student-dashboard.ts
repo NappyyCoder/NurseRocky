@@ -1,9 +1,9 @@
 import { supabaseAdmin } from "@/lib/supabase";
 import { getAllStudentQuizGradesByModule } from "@/lib/server/module-completion";
 import type { QuizGradeRow } from "@/lib/server/student-quiz-grades";
+import { studentNeedsPolicyAck } from "@/lib/server/policy-ack-status";
 import {
   CLINICAL_CHECKLIST_ITEMS,
-  REQUIRED_POLICY_SLUGS,
   computeMilestones,
 } from "@/lib/student-portal/constants";
 import type { Module } from "@/lib/types";
@@ -123,7 +123,7 @@ export async function getStudentDashboardData(studentId: string): Promise<Studen
     const lessonsComplete = lessonsTotal > 0 && lessonsDone >= lessonsTotal;
     const quizzesComplete = qStats.total === 0 || qStats.passed >= qStats.total;
     const fullyComplete = lessonsComplete && quizzesComplete;
-    const available = prevFullyComplete;
+    const available = true; // all modules open for preview
 
     moduleRows.push({
       module: mod,
@@ -172,7 +172,10 @@ export async function getStudentDashboardData(studentId: string): Promise<Studen
   );
 
   const policiesAcked = (policyAcks ?? []).map((p) => p.policy_slug as string);
-  const needsPolicyAck = REQUIRED_POLICY_SLUGS.some((s) => !policiesAcked.includes(s));
+  const needsPolicyAck = studentNeedsPolicyAck(
+    studentRow?.policies_acknowledged_at as string | null | undefined,
+    policiesAcked
+  );
 
   let continueTarget: ContinueTarget | null = null;
   const activeMod = moduleRows.find((m) => m.available && !m.fullyComplete);

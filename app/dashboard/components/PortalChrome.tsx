@@ -67,7 +67,7 @@ export function NotEnrolledBanner() {
         <button
           type="button"
           className="sp-btn-secondary"
-          style={{ background: "#0c7ab8", color: "#fff", border: "none", cursor: "pointer" }}
+          style={{ background: "linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%)", color: "#fff", border: "none", cursor: "pointer" }}
           onClick={retryLink}
           disabled={busy}
         >

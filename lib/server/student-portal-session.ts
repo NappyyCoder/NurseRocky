@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { resolveStudentId } from "@/lib/server/resolve-student";
 import { getStudentDashboardData } from "@/lib/server/student-dashboard";
-import { REQUIRED_POLICY_SLUGS } from "@/lib/student-portal/constants";
+import { studentNeedsPolicyAck } from "@/lib/server/policy-ack-status";
 import { supabaseAdmin } from "@/lib/supabase";
 
 export const getCachedStudentDashboard = cache(async (studentId: string) => {
@@ -22,7 +22,7 @@ export const getPortalShell = cache(async (studentId: string) => {
   const [{ data: student }, { data: policyAcks }] = await Promise.all([
     supabaseAdmin
       .from("students")
-      .select("first_name, enrolled")
+      .select("first_name, enrolled, policies_acknowledged_at")
       .eq("id", studentId)
       .single(),
     supabaseAdmin
@@ -31,8 +31,11 @@ export const getPortalShell = cache(async (studentId: string) => {
       .eq("student_id", studentId),
   ]);
 
-  const acked = new Set((policyAcks ?? []).map((p) => p.policy_slug as string));
-  const needsPolicyAck = REQUIRED_POLICY_SLUGS.some((s) => !acked.has(s));
+  const ackedSlugs = (policyAcks ?? []).map((p) => p.policy_slug as string);
+  const needsPolicyAck = studentNeedsPolicyAck(
+    student?.policies_acknowledged_at as string | null | undefined,
+    ackedSlugs
+  );
 
   return {
     firstName: student?.first_name?.trim() || "Student",

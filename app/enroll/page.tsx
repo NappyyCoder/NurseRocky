@@ -56,7 +56,7 @@ export default function EnrollPage() {
       <style>{`
         .enroll-page {
           min-height: 100vh;
-          background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+          background: linear-gradient(135deg, #f0f9ff 0%, #e8f2ef 100%);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -73,20 +73,20 @@ export default function EnrollPage() {
           text-decoration: none;
           letter-spacing: -.02em;
         }
-        .enroll-logo span { color: #0c7ab8; }
+        .enroll-logo span { color: #93b7a9; }
         .enroll-tagline { color: #64748b; font-size: .9rem; margin-top: .3rem; }
         .pricing-card {
           background: #fff;
           border-radius: 16px;
           padding: 2.5rem 2rem;
           box-shadow: 0 4px 24px rgba(0,0,0,.1);
-          border: 1px solid #e0f2fe;
+          border: 1px solid #e8f2ef;
           margin-bottom: 1.25rem;
         }
         .pricing-badge {
           display: inline-block;
-          background: #e0f2fe;
-          color: #0369a1;
+          background: #e8f2ef;
+          color: #6b9e8e;
           font-size: .72rem;
           font-weight: 700;
           text-transform: uppercase;
@@ -114,7 +114,7 @@ export default function EnrollPage() {
         .check-icon { width: 18px; height: 18px; color: #16a34a; flex-shrink: 0; }
         .enroll-btn {
           width: 100%;
-          background: #0c7ab8;
+          background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%);
           color: #fff;
           border: none;
           border-radius: 10px;
@@ -126,7 +126,7 @@ export default function EnrollPage() {
           margin-bottom: .75rem;
           font-family: inherit;
         }
-        .enroll-btn:hover:not(:disabled) { background: #085d8c; transform: translateY(-1px); }
+        .enroll-btn:hover:not(:disabled) { background: linear-gradient(180deg, #aaccc4 0%, #7aab9b 100%); transform: translateY(-1px); }
         .enroll-btn:disabled { opacity: .6; cursor: not-allowed; }
         .enroll-secure {
           display: flex;
@@ -138,7 +138,7 @@ export default function EnrollPage() {
         }
         .enroll-existing {
           display: block;
-          color: #0c7ab8;
+          color: #93b7a9;
           font-size: .88rem;
           text-decoration: none;
           font-weight: 600;

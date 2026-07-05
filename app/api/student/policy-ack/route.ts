@@ -1,8 +1,38 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase";
+import { formatDbError } from "@/lib/server/format-db-error";
+import { studentNeedsPolicyAck } from "@/lib/server/policy-ack-status";
 import { resolveStudentId } from "@/lib/server/resolve-student";
 import { REQUIRED_POLICY_SLUGS } from "@/lib/student-portal/constants";
+import { supabaseAdmin } from "@/lib/supabase";
+
+async function upsertPolicyAck(studentId: string, slug: string) {
+  const now = new Date().toISOString();
+
+  const { data: existing, error: lookupErr } = await supabaseAdmin
+    .from("student_policy_acknowledgments")
+    .select("id")
+    .eq("student_id", studentId)
+    .eq("policy_slug", slug)
+    .maybeSingle();
+
+  if (lookupErr) return lookupErr;
+
+  if (existing?.id) {
+    const { error } = await supabaseAdmin
+      .from("student_policy_acknowledgments")
+      .update({ acknowledged_at: now })
+      .eq("id", existing.id);
+    return error;
+  }
+
+  const { error } = await supabaseAdmin.from("student_policy_acknowledgments").insert({
+    student_id: studentId,
+    policy_slug: slug,
+    acknowledged_at: now,
+  });
+  return error;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,23 +46,40 @@ export async function POST(req: NextRequest) {
     const toAck = slugs?.length ? slugs : [...REQUIRED_POLICY_SLUGS];
 
     for (const slug of toAck) {
-      await supabaseAdmin.from("student_policy_acknowledgments").upsert(
-        { student_id: studentId, policy_slug: slug, acknowledged_at: new Date().toISOString() },
-        { onConflict: "student_id,policy_slug" }
-      );
+      const err = await upsertPolicyAck(studentId, slug);
+      if (err) {
+        console.error("[policy-ack] save failed:", formatDbError(err));
+        return NextResponse.json({ error: formatDbError(err) }, { status: 500 });
+      }
     }
 
-    const acked = new Set(toAck);
-    const allDone = REQUIRED_POLICY_SLUGS.every((s) => acked.has(s));
+    const { data: ackRows, error: ackErr } = await supabaseAdmin
+      .from("student_policy_acknowledgments")
+      .select("policy_slug")
+      .eq("student_id", studentId);
+
+    if (ackErr) {
+      return NextResponse.json({ error: formatDbError(ackErr) }, { status: 500 });
+    }
+
+    const ackedSlugs = (ackRows ?? []).map((row) => row.policy_slug as string);
+    const allDone = !studentNeedsPolicyAck(null, ackedSlugs);
+
     if (allDone) {
-      await supabaseAdmin
+      const { error: studentErr } = await supabaseAdmin
         .from("students")
         .update({ policies_acknowledged_at: new Date().toISOString() })
         .eq("id", studentId);
+
+      if (studentErr) {
+        console.warn("[policy-ack] student timestamp:", formatDbError(studentErr));
+      }
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, allDone });
   } catch (e: unknown) {
-    return NextResponse.json({ error: e instanceof Error ? e.message : "Error" }, { status: 500 });
+    const msg = formatDbError(e);
+    console.error("[policy-ack] unexpected:", msg, e);
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

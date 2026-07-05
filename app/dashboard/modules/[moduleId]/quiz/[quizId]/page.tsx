@@ -133,7 +133,7 @@ export default async function ModuleQuizPage(props: {
           align-items: center;
         }
         .quiz-bc a {
-          color: #0c7ab8;
+          color: #93b7a9;
           font-weight: 600;
           text-decoration: none;
         }

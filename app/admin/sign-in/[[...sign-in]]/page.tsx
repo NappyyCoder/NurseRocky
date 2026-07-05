@@ -48,14 +48,14 @@ export default async function AdminSignInPage() {
           justify-content: center;
           padding: 2rem 1rem;
           font-family: "DM Sans", system-ui, sans-serif;
-          background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0c7ab8 100%);
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #93b7a9 100%);
         }
         .auth-brand { text-align: center; margin-bottom: 1.5rem; }
         .auth-logo {
           font-family: "Fraunces", serif;
           font-size: 1.75rem;
           font-weight: 700;
-          color: #bae6fd;
+          color: #c3d9d2;
           text-decoration: none;
           letter-spacing: -.02em;
         }
@@ -63,7 +63,7 @@ export default async function AdminSignInPage() {
         .admin-badge {
           display: inline-block;
           font-size: .75rem;
-          color: #bae6fd;
+          color: #c3d9d2;
           margin-top: .4rem;
           font-weight: 600;
           text-transform: uppercase;
@@ -84,11 +84,11 @@ export default async function AdminSignInPage() {
           color: #e2e8f0;
         }
         .already-text { font-size: .95rem; margin-bottom: .5rem; line-height: 1.5; }
-        .already-text strong { color: #bae6fd; }
+        .already-text strong { color: #c3d9d2; }
         .already-sub { font-size: .85rem; color: #94a3b8; margin-bottom: 1.5rem; line-height: 1.5; }
         .signout-btn {
           display: block;
-          background: #0c7ab8;
+          background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%);
           color: #fff;
           border: none;
           border-radius: 8px;
@@ -100,8 +100,8 @@ export default async function AdminSignInPage() {
           margin-bottom: .75rem;
           transition: background .15s;
         }
-        .signout-btn:hover { background: #085d8c; }
-        .back-link { display: block; color: #bae6fd; font-size: .85rem; text-decoration: none; opacity: .8; }
+        .signout-btn:hover { background: linear-gradient(180deg, #aaccc4 0%, #7aab9b 100%); }
+        .back-link { display: block; color: #c3d9d2; font-size: .85rem; text-decoration: none; opacity: .8; }
         .back-link:hover { opacity: 1; }
       `}</style>
     </main>

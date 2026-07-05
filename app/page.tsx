@@ -59,8 +59,8 @@ export default function Home() {
         <div className="container">
           <div className="stats-inner">
             <div className="stat-item">
-              <div className="stat-num">30–45</div>
-              <div className="stat-label">Days to Certification</div>
+              <div className="stat-num">18</div>
+              <div className="stat-label">Core Competency Modules</div>
             </div>
             <div className="stat-item">
               <div className="stat-num">100%</div>

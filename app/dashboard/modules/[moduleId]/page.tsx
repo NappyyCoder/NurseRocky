@@ -308,7 +308,7 @@ export default async function ModuleOverviewPage(props: {
           margin-bottom: 1.35rem;
         }
         .module-crumbs a {
-          color: #0c7ab8;
+          color: #93b7a9;
           text-decoration: none;
           font-weight: 600;
         }
@@ -371,11 +371,11 @@ export default async function ModuleOverviewPage(props: {
           transition: box-shadow 0.15s, border-color 0.15s;
         }
         .lesson-row-link:hover {
-          border-color: #bae6fd;
-          box-shadow: 0 2px 8px rgba(12, 122, 184, 0.12);
+          border-color: #c3d9d2;
+          box-shadow: 0 2px 8px rgba(147, 183, 169, 0.12);
         }
         .lesson-ord {
-          color: #0c7ab8;
+          color: #93b7a9;
           font-family: "Fraunces", serif;
           font-weight: 700;
           flex-shrink: 0;
@@ -411,8 +411,8 @@ export default async function ModuleOverviewPage(props: {
           transition: border-color 0.15s, box-shadow 0.15s;
         }
         .quiz-card:hover {
-          border-color: #0c7ab8;
-          box-shadow: 0 2px 8px rgba(12, 122, 184, 0.12);
+          border-color: #93b7a9;
+          box-shadow: 0 2px 8px rgba(147, 183, 169, 0.12);
         }
         .empty {
           color: #94a3b8;
@@ -436,12 +436,12 @@ export default async function ModuleOverviewPage(props: {
           height: 6px; background: #e2e8f0; border-radius: 99px; margin-top: 0.5rem; overflow: hidden;
         }
         .mpc-fill { height: 100%; border-radius: 99px; }
-        .mpc-fill.blue { background: #0c7ab8; }
+        .mpc-fill.blue { background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%); }
         .mpc-fill.green { background: #16a34a; }
         .continue-cta {
           display: inline-block;
           margin-top: 1.25rem;
-          background: #0c7ab8;
+          background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%);
           color: #fff;
           font-weight: 700;
           font-size: 0.9rem;
@@ -449,7 +449,7 @@ export default async function ModuleOverviewPage(props: {
           border-radius: 8px;
           text-decoration: none;
         }
-        .continue-cta:hover { background: #085d8c; }
+        .continue-cta:hover { background: linear-gradient(180deg, #aaccc4 0%, #7aab9b 100%); }
         .flow-section { margin-top: 1.5rem; }
         .flow-steps {
           margin: 0; padding: 0; list-style: none;
@@ -461,7 +461,7 @@ export default async function ModuleOverviewPage(props: {
           background: #fff;
         }
         .flow-steps li.done { border-color: #bbf7d0; background: #fafffe; }
-        .flow-steps li.active { border-color: #bae6fd; background: #f0f9ff; }
+        .flow-steps li.active { border-color: #c3d9d2; background: #f0f9ff; }
         .flow-num {
           width: 28px; height: 28px; border-radius: 50%;
           background: #e2e8f0; color: #64748b;
@@ -469,7 +469,7 @@ export default async function ModuleOverviewPage(props: {
           font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
         }
         .flow-steps li.done .flow-num { background: #dcfce7; color: #15803d; }
-        .flow-steps li.active .flow-num { background: #0c7ab8; color: #fff; }
+        .flow-steps li.active .flow-num { background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%); color: #fff; }
         .flow-steps strong { display: block; font-size: 0.9rem; color: #0f172a; }
         .flow-steps span { font-size: 0.8rem; color: #64748b; }
         .section-hint { font-size: 0.85rem; color: #64748b; margin: -0.5rem 0 1rem; }
@@ -485,7 +485,7 @@ export default async function ModuleOverviewPage(props: {
         .grade-pill.pass { background: #dcfce7; color: #15803d; }
         .grade-pill.fail { background: #ffedd5; color: #c2410c; }
         .grade-pill.open { background: #f1f5f9; color: #64748b; }
-        .quiz-arrow { color: #0c7ab8; font-weight: 600; }
+        .quiz-arrow { color: #93b7a9; font-weight: 600; }
         .grades-table {
           width: 100%; border-collapse: collapse; font-size: 0.85rem;
         }
@@ -497,7 +497,7 @@ export default async function ModuleOverviewPage(props: {
         .grades-table td {
           padding: 0.75rem; border-bottom: 1px solid #f1f5f9; color: #334155;
         }
-        .grades-table a { color: #0c7ab8; font-weight: 600; text-decoration: none; }
+        .grades-table a { color: #93b7a9; font-weight: 600; text-decoration: none; }
         .grades-table a:hover { text-decoration: underline; }
         .status-chip {
           font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 99px;

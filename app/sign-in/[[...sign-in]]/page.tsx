@@ -33,7 +33,7 @@ export default async function StudentSignInPage() {
           afterSignInUrl="/dashboard"
           appearance={{
             variables: {
-              colorPrimary: "#0c7ab8",
+              colorPrimary: "#93b7a9",
               borderRadius: "8px",
               fontFamily: "DM Sans, system-ui, sans-serif",
               fontSize: "15px",
@@ -42,7 +42,7 @@ export default async function StudentSignInPage() {
               headerTitle: { display: "none" },
               headerSubtitle: { display: "none" },
               card: { boxShadow: "0 4px 24px rgba(0,0,0,.08)", borderRadius: "12px" },
-              formButtonPrimary: { backgroundColor: "#0c7ab8", fontWeight: "700" },
+              formButtonPrimary: { backgroundColor: "#93b7a9", fontWeight: "700" },
               footerAction: { display: "none" },
             },
           }}
@@ -78,14 +78,14 @@ export default async function StudentSignInPage() {
           bottom: -80px; right: -80px;
           width: 320px; height: 320px;
           border-radius: 50%;
-          background: rgba(12,122,184,.18);
+          background: rgba(147,183,169,.18);
           pointer-events: none;
         }
         .signin-logo {
           font-family: "Fraunces", serif;
           font-size: 1.3rem;
           font-weight: 700;
-          color: #bae6fd;
+          color: #c3d9d2;
           text-decoration: none;
           letter-spacing: -.02em;
           margin-bottom: 2.5rem;
@@ -116,7 +116,7 @@ export default async function StudentSignInPage() {
           border-radius: 99px;
           padding: .4rem .85rem;
           font-size: .775rem;
-          color: #bae6fd;
+          color: #c3d9d2;
           font-weight: 500;
         }
 
@@ -138,7 +138,7 @@ export default async function StudentSignInPage() {
           text-align: center;
         }
         .signin-switch a {
-          color: #0c7ab8;
+          color: #93b7a9;
           font-weight: 600;
           text-decoration: none;
         }

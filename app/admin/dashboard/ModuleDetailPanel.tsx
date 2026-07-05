@@ -505,7 +505,7 @@ export function ModuleDetailPanel({
       </section>
 
       <style>{`
-        .sync-notice { margin: 0; padding: .75rem 1rem; background: #e0f4ff; border-radius: 8px; border: 1px solid #bae6fd; color: #0c4a6e; }
+        .sync-notice { margin: 0; padding: .75rem 1rem; background: #e8f2ef; border-radius: 8px; border: 1px solid #c3d9d2; color: #0c4a6e; }
         .detail-top { display: flex; align-items: center; gap: 1rem; }
         .flash-msg { color: #16a34a; font-weight: 600; font-size: .9rem; }
         .flash-msg.err { color: #dc2626; max-width: 520px; line-height: 1.4; }

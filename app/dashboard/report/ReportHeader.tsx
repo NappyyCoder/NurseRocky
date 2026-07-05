@@ -18,7 +18,7 @@ export function ReportHeader() {
             align-items: center;
           }
           .report-header a {
-            color: #0c7ab8;
+            color: #93b7a9;
             font-weight: 600;
             text-decoration: none;
           }
