@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 import { PolicyAckModal } from "./PolicyAckModal";
+import { BrandLogo } from "@/components/BrandLogo";
 import { useEffect, useState } from "react";
 
 const NAV = [
@@ -105,9 +106,7 @@ export function StudentPortalLayout({
       {showPolicy && <PolicyAckModal onDone={() => setShowPolicy(false)} />}
 
       <aside className="student-portal-sidebar">
-        <Link href="/" className="student-portal-logo">
-          Nurse <span>Rocky</span>
-        </Link>
+        <BrandLogo href="/" className="student-portal-logo" height={150} />
         <div className="student-portal-badge">Student Portal</div>
         <nav className="student-portal-nav" aria-label="Student portal">
           {NAV.map((item) => (
@@ -129,9 +128,7 @@ export function StudentPortalLayout({
 
       <div className="student-portal-main">
         <div className="student-portal-topbar">
-          <Link href="/" className="student-portal-logo">
-            Nurse <span>Rocky</span>
-          </Link>
+          <BrandLogo href="/" className="student-portal-logo" height={150} />
           <UserButton afterSignOutUrl="/" />
         </div>
         {children}

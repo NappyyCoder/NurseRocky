@@ -2,6 +2,7 @@ import { SignIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { clerkIsAdmin } from "@/lib/clerk-admin";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export default async function AdminSignInPage() {
   const { userId, sessionClaims } = await auth();
@@ -14,7 +15,7 @@ export default async function AdminSignInPage() {
   return (
     <main className="auth-page admin">
       <div className="auth-brand">
-        <a href="/" className="auth-logo">Nurse <span>Rocky</span></a>
+        <BrandLogo href="/" className="auth-logo" height={150} />
         <p className="admin-badge">Administrator Access</p>
       </div>
 
@@ -51,15 +52,7 @@ export default async function AdminSignInPage() {
           background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #93b7a9 100%);
         }
         .auth-brand { text-align: center; margin-bottom: 1.5rem; }
-        .auth-logo {
-          font-family: "Fraunces", serif;
-          font-size: 1.75rem;
-          font-weight: 700;
-          color: #c3d9d2;
-          text-decoration: none;
-          letter-spacing: -.02em;
-        }
-        .auth-logo span { color: #fff; }
+        .auth-logo.brand-logo { display: inline-flex; justify-content: center; }
         .admin-badge {
           display: inline-block;
           font-size: .75rem;

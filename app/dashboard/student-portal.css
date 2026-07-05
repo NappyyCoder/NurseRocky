@@ -1,7 +1,7 @@
 /* ─── Student portal shell ─────────────────────────────────── */
 .student-portal {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 400px 1fr;
   min-height: 100vh;
   font-family: "DM Sans", system-ui, sans-serif;
   background: #f1f5f9;
@@ -19,19 +19,16 @@
   border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.student-portal-logo {
-  font-family: "Fraunces", serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #c3d9d2;
-  text-decoration: none;
-  letter-spacing: -0.02em;
-  padding: 0 0.75rem;
-  margin-bottom: 0.35rem;
+.student-portal-logo.brand-logo {
+  padding: 0 0.5rem;
+  margin-bottom: 0.75rem;
   display: block;
 }
 
-.student-portal-logo span { color: #fff; }
+.student-portal-topbar .student-portal-logo.brand-logo {
+  padding: 0;
+  margin-bottom: 0;
+}
 
 .student-portal-badge {
   font-size: 0.68rem;

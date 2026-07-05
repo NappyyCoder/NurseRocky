@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   title: "Nurse Rocky – Launch Your CNA Career",
   description:
     "Become a Certified Nursing Assistant in 30–45 days with hands-on training, state exam prep, and career support.",
+  icons: {
+    icon: "/images/logo/nurse-rocky-logo.png",
+    apple: "/images/logo/nurse-rocky-logo.png",
+  },
 };
 
 export const viewport: Viewport = {

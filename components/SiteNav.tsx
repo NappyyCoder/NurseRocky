@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const NAV_LINKS = [
   { href: "/#careers", label: "Careers" },
@@ -13,9 +14,7 @@ export function SiteNav() {
     <>
       <nav className="nav">
         <div className="nav-inner">
-          <Link href="/" className="nav-logo">
-            Nurse <span>Rocky</span>
-          </Link>
+          <BrandLogo href="/" className="nav-logo" height={360} priority />
           <ul className="nav-links">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>

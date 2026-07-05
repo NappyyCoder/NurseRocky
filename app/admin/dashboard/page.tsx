@@ -6,6 +6,7 @@ import { adminRequest } from "@/lib/admin-fetch";
 import { ModuleDetailPanel } from "./ModuleDetailPanel";
 import { EmailModal } from "./EmailModal";
 import { StudentDetailPanel } from "./StudentDetailPanel";
+import { BrandLogo } from "@/components/BrandLogo";
 
 // ── Types ─────────────────────────────────────────────────────
 interface Student {
@@ -32,7 +33,7 @@ function Sidebar({ active, setTab }: { active: Tab; setTab: (t: Tab) => void }) 
   ];
   return (
     <aside className="sidebar">
-      <a href="/" className="sidebar-logo">Nurse <span>Rocky</span></a>
+      <BrandLogo href="/" className="sidebar-logo" height={150} />
       <div className="sidebar-badge">Admin Panel</div>
       <nav className="sidebar-nav">
         {links.map(l => (
@@ -627,10 +628,9 @@ export default function AdminDashboard() {
       </main>
 
       <style>{`
-        .portal { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; font-family: "DM Sans", system-ui, sans-serif; background: #f8fafc; }
+        .portal { display: grid; grid-template-columns: 400px 1fr; min-height: 100vh; font-family: "DM Sans", system-ui, sans-serif; background: #f8fafc; }
         .sidebar { background: #0f172a; display: flex; flex-direction: column; padding: 1.75rem 1.25rem; position: sticky; top: 0; height: 100vh; }
-        .sidebar-logo { font-family: "Fraunces", serif; font-size: 1.3rem; font-weight: 700; color: #c3d9d2; text-decoration: none; letter-spacing: -.02em; display: block; }
-        .sidebar-logo span { color: #fff; }
+        .sidebar-logo.brand-logo { display: block; margin-bottom: 0.75rem; }
         .sidebar-badge { display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #c3d9d2; border: 1px solid rgba(186,230,253,.3); border-radius: 99px; padding: .15rem .6rem; margin: .5rem 0 2rem; }
         .sidebar-nav { display: flex; flex-direction: column; gap: .25rem; flex: 1; }
         .sidebar-link { display: flex; align-items: center; gap: .75rem; padding: .65rem .9rem; border-radius: 6px; color: #94a3b8; font-size: .9rem; font-weight: 500; background: none; border: none; cursor: pointer; width: 100%; text-align: left; transition: all .15s; }

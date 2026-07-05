@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { SiteNav } from "@/components/SiteNav";
+import { BrandLogo } from "@/components/BrandLogo";
 
 function img(name: string) {
   return `/images/${encodeURIComponent(name)}`;
@@ -458,7 +459,7 @@ export default function Home() {
         <div className="container">
           <div className="footer-grid">
             <div className="footer-brand">
-              <div className="logo">Nurse <span>Rocky</span></div>
+              <BrandLogo href="/" height={150} />
               <p>Providing accelerated CNA training with hands-on clinical experience and career support.</p>
             </div>
             <div className="footer-col">

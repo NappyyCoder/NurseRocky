@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { POLICY_PAGES } from "@/lib/policies/content";
 import { SiteNav } from "@/components/SiteNav";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export function PolicyShell({
   title,
@@ -38,7 +39,7 @@ export function PolicyShell({
         <div className="container">
           <div className="footer-grid">
             <div className="footer-brand">
-              <div className="logo">Nurse <span>Rocky</span></div>
+              <BrandLogo href="/" height={150} />
               <p>Accelerated CNA training with clinical experience and career support.</p>
             </div>
             <div className="footer-col">

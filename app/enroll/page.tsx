@@ -1,4 +1,5 @@
 import EnrollButton from "./EnrollButton";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export default function EnrollPage() {
   return (
@@ -6,7 +7,7 @@ export default function EnrollPage() {
       <div className="enroll-container">
 
         <div className="enroll-header">
-          <a href="/" className="enroll-logo">Nurse <span>Rocky</span></a>
+          <BrandLogo href="/" className="enroll-logo" height={150} />
           <p className="enroll-tagline">CNA Certification Program</p>
         </div>
 
@@ -65,15 +66,7 @@ export default function EnrollPage() {
         }
         .enroll-container { width: 100%; max-width: 480px; text-align: center; }
         .enroll-header { margin-bottom: 2rem; }
-        .enroll-logo {
-          font-family: "Fraunces", serif;
-          font-size: 1.75rem;
-          font-weight: 700;
-          color: #0f172a;
-          text-decoration: none;
-          letter-spacing: -.02em;
-        }
-        .enroll-logo span { color: #93b7a9; }
+        .enroll-logo.brand-logo { display: inline-flex; justify-content: center; }
         .enroll-tagline { color: #64748b; font-size: .9rem; margin-top: .3rem; }
         .pricing-card {
           background: #fff;

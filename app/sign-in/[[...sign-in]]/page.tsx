@@ -1,6 +1,7 @@
 import { SignIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export default async function StudentSignInPage() {
   const { userId } = await auth();
@@ -11,7 +12,7 @@ export default async function StudentSignInPage() {
 
       {/* ── Dark left panel ── */}
       <div className="signin-left">
-        <a href="/" className="signin-logo">Nurse <span>Rocky</span></a>
+        <BrandLogo href="/" className="signin-logo" height={150} />
         <h1 className="signin-headline">Welcome back.</h1>
         <p className="signin-desc">
           Sign in to continue your CNA certification. Your progress is saved
@@ -81,17 +82,10 @@ export default async function StudentSignInPage() {
           background: rgba(147,183,169,.18);
           pointer-events: none;
         }
-        .signin-logo {
-          font-family: "Fraunces", serif;
-          font-size: 1.3rem;
-          font-weight: 700;
-          color: #c3d9d2;
-          text-decoration: none;
-          letter-spacing: -.02em;
+        .signin-logo.brand-logo {
           margin-bottom: 2.5rem;
           display: block;
         }
-        .signin-logo span { color: #fff; }
         .signin-headline {
           font-family: "Fraunces", serif;
           font-size: 2.2rem;
@@ -159,7 +153,7 @@ export default async function StudentSignInPage() {
         /* ── Mobile (≤ 640px) — compact left panel */
         @media (max-width: 640px) {
           .signin-left { padding: 1.75rem 1.25rem; }
-          .signin-logo { margin-bottom: 1rem; font-size: 1.1rem; }
+          .signin-logo.brand-logo { margin-bottom: 1rem; }
           .signin-headline { font-size: 1.6rem; margin-bottom: .5rem; }
           .signin-desc { font-size: .825rem; margin-bottom: 1.25rem; }
           .signin-badge { font-size: .72rem; }

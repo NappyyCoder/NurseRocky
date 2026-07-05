@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
+import { BrandLogo } from "@/components/BrandLogo";
 
 interface Props {
   searchParams: Promise<{ session_id?: string; enrolled?: string; error?: string }>;
@@ -27,9 +28,7 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
 
       <div className="success-container">
 
-        <Link href="/" className="success-logo">
-          Nurse <span>Rocky</span>
-        </Link>
+        <BrandLogo href="/" className="success-logo" height={150} />
 
         <div className="success-icon-wrap">
           <div className="success-icon-ring" />
@@ -158,16 +157,7 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
           flex-direction: column;
           align-items: center;
         }
-        .success-logo {
-          font-family: "Fraunces", serif;
-          font-size: 1.1rem;
-          font-weight: 700;
-          color: #0f172a;
-          text-decoration: none;
-          letter-spacing: -.02em;
-          margin-bottom: 2rem;
-        }
-        .success-logo span { color: #93b7a9; }
+        .success-logo.brand-logo { margin-bottom: 2rem; }
         .success-icon-wrap {
           position: relative;
           width: 72px; height: 72px;

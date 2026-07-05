@@ -1,6 +1,7 @@
 import { SignUp } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export default async function StudentSignUpPage() {
   const { userId } = await auth();
@@ -11,7 +12,7 @@ export default async function StudentSignUpPage() {
 
       {/* ── Dark left panel ── */}
       <div className="signup-left">
-        <a href="/" className="signup-logo">Nurse <span>Rocky</span></a>
+        <BrandLogo href="/" className="signup-logo" height={150} />
         <h1 className="signup-headline">Your CNA journey starts here.</h1>
         <p className="signup-desc">
           Create your student account to unlock your course, track your progress,
@@ -97,17 +98,10 @@ export default async function StudentSignUpPage() {
           background: rgba(147,183,169,.18);
           pointer-events: none;
         }
-        .signup-logo {
-          font-family: "Fraunces", serif;
-          font-size: 1.3rem;
-          font-weight: 700;
-          color: #c3d9d2;
-          text-decoration: none;
-          letter-spacing: -.02em;
+        .signup-logo.brand-logo {
           margin-bottom: 2.5rem;
           display: block;
         }
-        .signup-logo span { color: #fff; }
         .signup-headline {
           font-family: "Fraunces", serif;
           font-size: 1.85rem;
@@ -190,7 +184,7 @@ export default async function StudentSignUpPage() {
         /* ── Mobile (≤ 640px) — compact left panel */
         @media (max-width: 640px) {
           .signup-left { padding: 1.75rem 1.25rem; }
-          .signup-logo { margin-bottom: 1rem; font-size: 1.1rem; }
+          .signup-logo.brand-logo { margin-bottom: 1rem; }
           .signup-headline { font-size: 1.4rem; margin-bottom: .5rem; }
           .signup-desc { font-size: .825rem; margin-bottom: 1.25rem; }
           .signup-perks { display: none; }

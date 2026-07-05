@@ -18,7 +18,8 @@
   --shadow-lg:   0 12px 32px rgba(147,183,169,.14), 0 4px 12px rgba(0,0,0,.06);
   --shadow-blue: 0 8px 28px rgba(147,183,169,.28);
 
-  --nav-h:       68px;
+  --nav-h:       120px;
+  --nav-logo-h:  360px;
   --transition:  .2s ease;
   --max-w:       1120px;
   --gutter:      1.5rem;
@@ -56,27 +57,44 @@ a { color: inherit; text-decoration: none; }
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
+  overflow: visible;
 }
 /* Nav inner is constrained to the same max-width as all content */
 .nav-inner {
   max-width: var(--max-w);
   width: 100%;
+  height: var(--nav-h);
   margin: 0 auto;
   padding: 0 var(--gutter);
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 3rem;
+  overflow: visible;
 }
-.nav-logo {
-  font-family: "Fraunces", serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--blue);
-  letter-spacing: -.02em;
-  white-space: nowrap;
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  text-decoration: none;
+  flex-shrink: 0;
 }
-.nav-logo span { color: var(--text); }
+.brand-logo__img {
+  display: block;
+  object-fit: contain;
+}
+.nav-logo.brand-logo {
+  margin-right: 0.25rem;
+  margin-left: -25px;
+  height: var(--nav-h);
+  overflow: visible;
+  position: relative;
+  z-index: 101;
+}
+.nav-logo .brand-logo__img {
+  height: var(--nav-logo-h) !important;
+  width: auto;
+}
 .nav-links {
   display: flex;
   align-items: center;
@@ -128,6 +146,7 @@ a { color: inherit; text-decoration: none; }
   box-shadow: var(--shadow-blue);
 }
 @media (max-width: 768px) {
+  :root { --nav-logo-h: 260px; }
   .nav-links { display: none; }
   .nav-signin { display: none; }
   /* With links hidden, collapse the ghost 1fr column */
@@ -779,14 +798,7 @@ section { padding: 5rem 0; }
 }
 @media (max-width: 860px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
-.footer-brand .logo {
-  font-family: "Fraunces", serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--white);
-  margin-bottom: .75rem;
-}
-.footer-brand .logo span { color: var(--blue-mid); }
+.footer-brand .brand-logo { margin-bottom: .75rem; }
 .footer-brand p { font-size: .875rem; line-height: 1.7; max-width: 26ch; }
 .footer-col h4 {
   font-size: .75rem;
@@ -1279,7 +1291,6 @@ a.policy-ack-link:hover {
 /* ── Small mobile (≤ 400px) ─────────────────────────────── */
 @media (max-width: 400px) {
   :root { --gutter: .875rem; }
-  .nav-logo { font-size: 1.1rem; }
   .btn { padding: .7rem 1.2rem; font-size: .9rem; }
   .hero h1 { font-size: 2rem; }
   .step-circle { width: 40px; height: 40px; }
