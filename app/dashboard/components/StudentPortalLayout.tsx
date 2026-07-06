@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 import { PolicyAckModal } from "./PolicyAckModal";
 import { BrandLogo } from "@/components/BrandLogo";
+import { clerkUserButtonAppearance } from "@/lib/clerk-theme";
 import { useEffect, useState } from "react";
 
 const NAV = [
@@ -106,7 +107,7 @@ export function StudentPortalLayout({
       {showPolicy && <PolicyAckModal onDone={() => setShowPolicy(false)} />}
 
       <aside className="student-portal-sidebar">
-        <BrandLogo href="/" className="student-portal-logo" height={150} />
+        <BrandLogo href="/" className="student-portal-logo" height={150} variant="dark" />
         <div className="student-portal-badge">Student Portal</div>
         <nav className="student-portal-nav" aria-label="Student portal">
           {NAV.map((item) => (
@@ -121,7 +122,7 @@ export function StudentPortalLayout({
           ))}
         </nav>
         <div className="student-portal-sidebar-footer">
-          <UserButton afterSignOutUrl="/" />
+          <UserButton afterSignOutUrl="/" appearance={clerkUserButtonAppearance} />
           <span className="student-portal-username">{firstName}</span>
         </div>
       </aside>
@@ -129,7 +130,7 @@ export function StudentPortalLayout({
       <div className="student-portal-main">
         <div className="student-portal-topbar">
           <BrandLogo href="/" className="student-portal-logo" height={150} />
-          <UserButton afterSignOutUrl="/" />
+          <UserButton afterSignOutUrl="/" appearance={clerkUserButtonAppearance} />
         </div>
         {children}
       </div>

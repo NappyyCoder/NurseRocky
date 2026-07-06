@@ -125,7 +125,7 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
         * { box-sizing: border-box; margin: 0; padding: 0; }
         .success-page {
           min-height: 100vh;
-          background: #f8fafc;
+          background: #f4f8f6;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -144,7 +144,7 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
         }
         .success-container {
           background: #fff;
-          border: 1px solid #e2e8f0;
+          border: 1px solid #d8e4df;
           border-radius: 20px;
           padding: 3rem 2.5rem;
           max-width: 480px;
@@ -167,16 +167,16 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
         .success-icon-ring {
           position: absolute; inset: 0;
           border-radius: 50%;
-          border: 2px solid #bbf7d0;
+          border: 2px solid #c3d9d2;
           animation: pulse-ring 2s ease-out infinite;
         }
         .success-icon {
           width: 60px; height: 60px;
-          background: linear-gradient(135deg, #16a34a, #22c55e);
+          background: linear-gradient(135deg, #93b7a9, #6b9e8e);
           border-radius: 50%;
           display: flex; align-items: center; justify-content: center;
           color: #fff;
-          box-shadow: 0 4px 16px rgba(22,163,74,.3);
+          box-shadow: 0 4px 16px rgba(107,158,142,.3);
         }
         @keyframes pulse-ring {
           0% { transform: scale(1); opacity: 1; }
@@ -186,7 +186,7 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
           font-family: "Fraunces", serif;
           font-size: 1.65rem;
           font-weight: 700;
-          color: #0f172a;
+          color: #0f1a17;
           letter-spacing: -.02em;
           margin-bottom: .75rem;
         }
@@ -194,8 +194,8 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
           display: inline-flex;
           align-items: center;
           gap: .4rem;
-          background: #dcfce7;
-          color: #15803d;
+          background: #e8f2ef;
+          color: #6b9e8e;
           font-size: .78rem;
           font-weight: 600;
           padding: .3rem .8rem;
@@ -214,7 +214,7 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
           max-width: 100%;
         }
         .success-sub {
-          color: #64748b;
+          color: #5c6b66;
           font-size: .9rem;
           line-height: 1.65;
           max-width: 36ch;
@@ -222,8 +222,8 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
         }
         .success-steps-track {
           width: 100%;
-          background: #f8fafc;
-          border: 1px solid #e2e8f0;
+          background: #f4f8f6;
+          border: 1px solid #d8e4df;
           border-radius: 12px;
           padding: 1.25rem 1.5rem 1rem;
           margin-bottom: 2rem;
@@ -234,22 +234,22 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
         }
         .step-dot {
           width: 32px; height: 32px; border-radius: 50%;
-          background: #e2e8f0; color: #94a3b8;
+          background: #d8e4df; color: #8a9691;
           display: flex; align-items: center; justify-content: center;
           font-size: .78rem; font-weight: 700; flex-shrink: 0;
         }
-        .step-dot.done { background: #dcfce7; color: #16a34a; }
+        .step-dot.done { background: #e8f2ef; color: #6b9e8e; }
         .step-dot.active { background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%); color: #fff; box-shadow: 0 0 0 4px rgba(147,183,169,.15); }
-        .step-line { flex: 1; height: 2px; background: #e2e8f0; border-radius: 99px; }
-        .step-line.done { background: #bbf7d0; }
+        .step-line { flex: 1; height: 2px; background: #d8e4df; border-radius: 99px; }
+        .step-line.done { background: #c3d9d2; }
         .step-line.active { background: #c3d9d2; }
         .steps-labels { display: flex; align-items: flex-start; width: 100%; }
         .step-label-block { width: 32px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: .1rem; }
         .step-label-spacer { flex: 1; }
-        .step-num { font-size: .6rem; color: #94a3b8; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; white-space: nowrap; }
-        .step-name { font-size: .75rem; font-weight: 600; color: #94a3b8; white-space: nowrap; }
+        .step-num { font-size: .6rem; color: #8a9691; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; white-space: nowrap; }
+        .step-name { font-size: .75rem; font-weight: 600; color: #8a9691; white-space: nowrap; }
         .step-label-block.done .step-name,
-        .step-label-block.done .step-num { color: #16a34a; }
+        .step-label-block.done .step-num { color: #6b9e8e; }
         .step-label-block.active .step-name,
         .step-label-block.active .step-num { color: #93b7a9; }
         .success-cta {
@@ -267,19 +267,19 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
           width: 100%; margin-bottom: .9rem;
         }
         .success-divider::before, .success-divider::after {
-          content: ""; flex: 1; height: 1px; background: #e2e8f0;
+          content: ""; flex: 1; height: 1px; background: #d8e4df;
         }
-        .success-divider span { font-size: .78rem; color: #94a3b8; white-space: nowrap; font-weight: 500; }
+        .success-divider span { font-size: .78rem; color: #8a9691; white-space: nowrap; font-weight: 500; }
         .success-signin {
           display: block; width: 100%;
-          border: 1px solid #e2e8f0; border-radius: 10px;
+          border: 1px solid #d8e4df; border-radius: 10px;
           padding: .8rem 1.5rem; font-size: .88rem; font-weight: 600;
           color: #374151; text-decoration: none;
           transition: border-color .15s, color .15s; margin-bottom: 1.5rem;
         }
         .success-signin:hover { border-color: #93b7a9; color: #93b7a9; }
-        .success-back { display: inline-block; color: #94a3b8; font-size: .82rem; text-decoration: none; }
-        .success-back:hover { color: #64748b; }
+        .success-back { display: inline-block; color: #8a9691; font-size: .82rem; text-decoration: none; }
+        .success-back:hover { color: #5c6b66; }
         @media (max-width: 500px) {
           .success-container { padding: 2rem 1.5rem; }
           .success-steps-track { padding: .9rem 1rem; }

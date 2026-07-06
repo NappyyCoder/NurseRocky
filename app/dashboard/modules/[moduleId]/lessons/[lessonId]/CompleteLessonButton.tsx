@@ -48,9 +48,9 @@ export function CompleteLessonButton({
         disabled={busy || locked}
         onClick={onClick}
         style={{
-          background: locked ? "#dcfce7" : "#93b7a9",
-          color: locked ? "#15803d" : "#ffffff",
-          border: locked ? "1px solid #bbf7d0" : "none",
+          background: locked ? "#e8f2ef" : "#93b7a9",
+          color: locked ? "#6b9e8e" : "#ffffff",
+          border: locked ? "1px solid #c3d9d2" : "none",
           fontWeight: 700,
           fontSize: "0.88rem",
           padding: "0.62rem 1.25rem",
@@ -62,7 +62,7 @@ export function CompleteLessonButton({
         {busy ? "Saving…" : doneLabel}
       </button>
       {!locked && (
-        <span style={{ color: "#94a3b8", fontSize: "0.82rem" }}>
+        <span style={{ color: "#8a9691", fontSize: "0.82rem" }}>
           Mark lessons complete before moving on—they track your readiness.
         </span>
       )}

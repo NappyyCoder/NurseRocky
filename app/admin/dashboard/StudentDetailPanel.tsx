@@ -291,20 +291,20 @@ export function StudentDetailPanel({
       <style>{`
         .student-detail { display: flex; flex-direction: column; gap: 1rem; }
         .student-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
-        .student-email { color: #64748b; font-size: .9rem; margin: .25rem 0 .5rem; }
+        .student-email { color: #5c6b66; font-size: .9rem; margin: .25rem 0 .5rem; }
         .student-head-actions { display: flex; gap: .5rem; }
         .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; }
-        .summary-pill { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: .85rem 1rem; text-align: center; }
-        .summary-pill strong { display: block; font-family: "Fraunces", serif; font-size: 1.1rem; color: #0f172a; }
-        .summary-pill span { font-size: .75rem; color: #64748b; }
-        .module-progress-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .summary-pill { background: #f4f8f6; border: 1px solid #d8e4df; border-radius: 8px; padding: .85rem 1rem; text-align: center; }
+        .summary-pill strong { display: block; font-family: "Fraunces", serif; font-size: 1.1rem; color: #0f1a17; }
+        .summary-pill span { font-size: .75rem; color: #5c6b66; }
+        .module-progress-card { background: #fff; border: 1px solid #d8e4df; border-radius: 8px; overflow: hidden; }
         .module-progress-head { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: none; border: none; cursor: pointer; text-align: left; font: inherit; }
-        .module-progress-head:hover { background: #f8fafc; }
-        .module-progress-body { padding: 0 1.25rem 1.25rem; border-top: 1px solid #f1f5f9; }
+        .module-progress-head:hover { background: #f4f8f6; }
+        .module-progress-body { padding: 0 1.25rem 1.25rem; border-top: 1px solid #eef3f0; }
         .progress-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
         .progress-list { list-style: none; margin: 0 0 1.25rem; padding: 0; }
-        .progress-list li { display: flex; justify-content: space-between; align-items: center; gap: .75rem; padding: .5rem 0; border-bottom: 1px solid #f8fafc; font-size: .875rem; }
-        .progress-list .done { color: #15803d; font-weight: 600; }
+        .progress-list li { display: flex; justify-content: space-between; align-items: center; gap: .75rem; padding: .5rem 0; border-bottom: 1px solid #f4f8f6; font-size: .875rem; }
+        .progress-list .done { color: #6b9e8e; font-weight: 600; }
         .quiz-progress-line { display: flex; flex-direction: column; gap: .1rem; }
         @media (max-width: 600px) { .summary-grid { grid-template-columns: 1fr; } }
       `}</style>

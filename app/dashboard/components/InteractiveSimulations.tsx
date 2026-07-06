@@ -34,7 +34,7 @@ export function InteractiveSimulations() {
           });
 
           const isCorrect = letter === correctLetter;
-          (li as HTMLElement).style.background = isCorrect ? "#dcfce7" : "#fee2e2";
+          (li as HTMLElement).style.background = isCorrect ? "#e8f2ef" : "#fee2e2";
           (li as HTMLElement).style.fontWeight = "600";
 
           card.querySelectorAll(".sim-rationale, .sim-feedback").forEach((el) => {

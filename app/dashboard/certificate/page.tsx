@@ -10,7 +10,7 @@ import { PrintButton } from "./PrintButton";
 const certStyles = `
 .cert-page {
   min-height: 100vh;
-  background: #f8fafc;
+  background: #f4f8f6;
   padding: 2rem;
   font-family: "DM Sans", system-ui, sans-serif;
   display: flex;
@@ -32,16 +32,16 @@ const certStyles = `
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.75rem;
-  color: #64748b;
+  color: #5c6b66;
   margin-bottom: 1rem;
 }
 .cert-page h1 {
   font-family: "Fraunces", serif;
   font-size: 2rem;
-  color: #0f172a;
+  color: #0f1a17;
   margin-bottom: 1.5rem;
 }
-.cert-presented { color: #64748b; margin-bottom: 0.25rem; }
+.cert-presented { color: #5c6b66; margin-bottom: 0.25rem; }
 .cert-name {
   font-family: "Fraunces", serif;
   font-size: 1.75rem;
@@ -49,8 +49,8 @@ const certStyles = `
   color: #93b7a9;
   margin: 0.5rem 0 1.5rem;
 }
-.cert-body { color: #475569; line-height: 1.65; max-width: 520px; margin: 0 auto 1.5rem; }
-.cert-date { font-weight: 600; color: #334155; }
+.cert-body { color: #4a5c55; line-height: 1.65; max-width: 520px; margin: 0 auto 1.5rem; }
+.cert-date { font-weight: 600; color: #2f3d38; }
 .cert-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 .cert-actions a { color: #93b7a9; font-weight: 600; align-self: center; text-decoration: none; }
 @media print {

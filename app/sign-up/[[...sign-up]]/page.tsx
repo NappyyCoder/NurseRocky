@@ -2,6 +2,7 @@ import { SignUp } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
+import { clerkAppearance } from "@/lib/clerk-theme";
 
 export default async function StudentSignUpPage() {
   const { userId } = await auth();
@@ -12,7 +13,7 @@ export default async function StudentSignUpPage() {
 
       {/* ── Dark left panel ── */}
       <div className="signup-left">
-        <BrandLogo href="/" className="signup-logo" height={150} />
+        <BrandLogo href="/" className="signup-logo" height={150} variant="dark" />
         <h1 className="signup-headline">Your CNA journey starts here.</h1>
         <p className="signup-desc">
           Create your student account to unlock your course, track your progress,
@@ -48,22 +49,8 @@ export default async function StudentSignUpPage() {
             forceRedirectUrl="/dashboard"
             afterSignUpUrl="/dashboard"
             unsafeMetadata={{ source: "enrollment" }}
-          appearance={{
-            variables: {
-              colorPrimary: "#93b7a9",
-              borderRadius: "8px",
-              fontFamily: "DM Sans, system-ui, sans-serif",
-              fontSize: "15px",
-            },
-            elements: {
-              headerTitle: { display: "none" },
-              headerSubtitle: { display: "none" },
-              card: { boxShadow: "0 4px 24px rgba(0,0,0,.08)", borderRadius: "12px" },
-              formButtonPrimary: { backgroundColor: "#93b7a9", fontWeight: "700" },
-              footerAction: { display: "none" },
-            },
-          }}
-        />
+            appearance={clerkAppearance}
+          />
       </div>
 
       <style>{`
@@ -79,7 +66,7 @@ export default async function StudentSignUpPage() {
         .signup-left {
           width: 45%;
           flex-shrink: 0;
-          background: linear-gradient(160deg, #0f172a 0%, #0c4a6e 100%);
+          background: linear-gradient(160deg, #0f1a17 0%, #6b9e8e 100%);
           padding: 3.5rem 3rem;
           display: flex;
           flex-direction: column;
@@ -131,7 +118,7 @@ export default async function StudentSignUpPage() {
           color: rgba(255,255,255,.85);
           font-size: .875rem;
         }
-        .signup-perks svg { color: #4ade80; flex-shrink: 0; }
+        .signup-perks svg { color: #93b7a9; flex-shrink: 0; }
         .signup-badge {
           display: inline-flex;
           align-items: center;
@@ -148,7 +135,7 @@ export default async function StudentSignUpPage() {
         /* Right panel — takes the rest, centers the Clerk form */
         .signup-right {
           flex: 1;
-          background: #f1f5f9;
+          background: #eef3f0;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -159,7 +146,7 @@ export default async function StudentSignUpPage() {
         }
         .signup-switch {
           font-size: .875rem;
-          color: #64748b;
+          color: #5c6b66;
           text-align: center;
         }
         .signup-switch a {

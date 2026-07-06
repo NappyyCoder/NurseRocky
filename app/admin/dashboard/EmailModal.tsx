@@ -68,10 +68,10 @@ export function EmailModal({
       <style>{`
         .modal-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,.45); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
         .modal-card { background: #fff; border-radius: 10px; padding: 1.5rem; width: 100%; max-width: 520px; box-shadow: 0 20px 50px rgba(0,0,0,.15); }
-        .modal-title { font-family: "Fraunces", serif; font-size: 1.15rem; font-weight: 700; color: #0f172a; margin-bottom: 1.25rem; }
+        .modal-title { font-family: "Fraunces", serif; font-size: 1.15rem; font-weight: 700; color: #0f1a17; margin-bottom: 1.25rem; }
         .modal-result { margin-top: .75rem; font-size: .9rem; font-weight: 600; }
-        .modal-result.ok { color: #16a34a; } .modal-result.err { color: #dc2626; }
-        .modal-note { margin-top: 1rem; font-size: .78rem; color: #94a3b8; line-height: 1.4; }
+        .modal-result.ok { color: #6b9e8e; } .modal-result.err { color: #dc2626; }
+        .modal-note { margin-top: 1rem; font-size: .78rem; color: #8a9691; line-height: 1.4; }
       `}</style>
     </div>
   );

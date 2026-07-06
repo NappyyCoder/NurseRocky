@@ -73,7 +73,7 @@ export function NotEnrolledBanner() {
         >
           {busy ? "Linking…" : "I already paid — link my course"}
         </button>
-        <a href="/enroll" className="sp-btn-secondary" style={{ background: "#f97316" }}>
+        <a href="/enroll" className="sp-btn-secondary" style={{ background: "linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%)", color: "#fff" }}>
           Enroll now
         </a>
       </div>

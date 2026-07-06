@@ -151,23 +151,23 @@ export default async function LessonPage(props: {
       <style>{`
         .lesson-shell {
           min-height: 100vh;
-          background: #f8fafc;
+          background: #f4f8f6;
           padding: 2rem 1.5rem;
           font-family: "DM Sans", system-ui, sans-serif;
-          color: #0f172a;
+          color: #0f1a17;
         }
         .lesson-inner {
           max-width: 840px;
           margin: 0 auto;
           background: #fff;
           border-radius: 10px;
-          border: 1px solid #e2e8f0;
+          border: 1px solid #d8e4df;
           padding: 2rem 2.25rem 2.25rem;
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
         .lesson-crumb {
           font-size: 0.8rem;
-          color: #64748b;
+          color: #5c6b66;
           margin-bottom: 1rem;
           display: flex;
           gap: 0.35rem;
@@ -194,7 +194,7 @@ export default async function LessonPage(props: {
           margin-bottom: 0.4rem;
         }
         .lesson-sub {
-          color: #94a3b8;
+          color: #8a9691;
           font-size: 0.85rem;
           margin-bottom: 1rem;
         }
@@ -205,7 +205,7 @@ export default async function LessonPage(props: {
           margin-bottom: 1.5rem;
           border-radius: 8px;
           overflow: hidden;
-          background: #0f172a;
+          background: #0f1a17;
         }
         .lesson-video iframe {
           position: absolute;
@@ -218,21 +218,21 @@ export default async function LessonPage(props: {
         .lesson-progress-strip {
           margin-bottom: 1.6rem;
           padding: 0.75rem 0.9rem;
-          background: #f8fafc;
-          border: 1px solid #e2e8f0;
+          background: #f4f8f6;
+          border: 1px solid #d8e4df;
           border-radius: 8px;
         }
         .lps-meta {
           display: flex;
           justify-content: space-between;
           font-size: 0.78rem;
-          color: #64748b;
+          color: #5c6b66;
           font-weight: 600;
           margin-bottom: 0.35rem;
         }
         .lps-bar {
           height: 6px;
-          background: #e2e8f0;
+          background: #d8e4df;
           border-radius: 99px;
           overflow: hidden;
         }
@@ -247,14 +247,14 @@ export default async function LessonPage(props: {
           margin: 1.25rem 0;
         }
         .lesson-body .lesson-block .lesson-callout.info {
-          background: #f0f9ff;
+          background: #e8f2ef;
           border: 1px solid #c3d9d2;
           border-left: 4px solid #93b7a9;
         }
         .lesson-body .lesson-block .lesson-callout.path {
-          background: #f8fafc;
-          border: 1px solid #e2e8f0;
-          border-left: 4px solid #16a34a;
+          background: #f4f8f6;
+          border: 1px solid #d8e4df;
+          border-left: 4px solid #93b7a9;
         }
         .lesson-body .lesson-block .lesson-callout h3 {
           margin-top: 0;
@@ -265,7 +265,7 @@ export default async function LessonPage(props: {
           padding-left: 1.25rem;
           line-height: 1.65;
           font-size: 0.9rem;
-          color: #475569;
+          color: #4a5c55;
         }
         .lesson-body {
           margin: 0;
@@ -283,7 +283,7 @@ export default async function LessonPage(props: {
           font-family: "Fraunces", serif;
           font-size: 1.28rem;
           font-weight: 700;
-          color: #0f172a;
+          color: #0f1a17;
           letter-spacing: -0.02em;
           line-height: 1.35;
           margin-top: 2.25rem;
@@ -317,7 +317,7 @@ export default async function LessonPage(props: {
           font-family: "DM Sans", system-ui, sans-serif;
           font-size: 0.92rem;
           font-weight: 700;
-          color: #475569;
+          color: #4a5c55;
           letter-spacing: 0.01em;
           text-transform: uppercase;
           margin-top: 1.25rem;
@@ -325,21 +325,21 @@ export default async function LessonPage(props: {
         }
         .lesson-body .lesson-block p {
           line-height: 1.73;
-          color: #475569;
+          color: #4a5c55;
           font-size: 0.935rem;
           margin: 0.55rem 0;
         }
         .lesson-body .lesson-block p.lead {
           margin-top: 0;
           margin-bottom: 0.35rem;
-          color: #334155;
+          color: #2f3d38;
           font-weight: 600;
         }
         .lesson-body .lesson-block .lesson-list {
           padding-left: 1.35rem;
           margin: 0.75rem 0 1rem;
           line-height: 1.62;
-          color: #475569;
+          color: #4a5c55;
           font-size: 0.92rem;
         }
         .lesson-body .lesson-block .lesson-list.options {
@@ -350,7 +350,7 @@ export default async function LessonPage(props: {
         }
         .lesson-body .lesson-block .sim-card {
           border-left: 3px solid #93b7a9;
-          background: #f8fafc;
+          background: #f4f8f6;
           padding: 1rem 1.15rem;
           margin: 1.5rem 0;
           border-radius: 8px;
@@ -373,23 +373,23 @@ export default async function LessonPage(props: {
         .lesson-body .lesson-block .sim-rationale {
           margin: 0.75rem 0;
           font-size: 0.92rem;
-          color: #334155;
+          color: #2f3d38;
           line-height: 1.6;
         }
         .lesson-body .lesson-block .sim-feedback {
           margin: 0.5rem 0 0;
           font-size: 0.92rem;
-          color: #334155;
+          color: #2f3d38;
         }
         .lesson-body .lesson-block .lesson-next-hint {
           margin-top: 1.25rem;
           font-weight: 500;
-          color: #334155;
+          color: #2f3d38;
         }
         .lesson-footer {
           margin-top: 2.75rem;
           padding-top: 1.85rem;
-          border-top: 1px solid #e2e8f0;
+          border-top: 1px solid #d8e4df;
         }
         .lesson-nav-links {
           display: flex;
@@ -412,7 +412,7 @@ export default async function LessonPage(props: {
           text-decoration: underline;
         }
         .lesson-nav-links .ln.ghost {
-          color: #cbd5e1;
+          color: #b8c9c2;
           cursor: default;
         }
       `}</style>

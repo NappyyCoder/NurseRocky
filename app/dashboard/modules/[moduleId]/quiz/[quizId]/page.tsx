@@ -109,7 +109,7 @@ export default async function ModuleQuizPage(props: {
 
       <style>{`
         .quiz-page {
-          background: #f8fafc;
+          background: #f4f8f6;
           min-height: 100vh;
           padding: 2rem 1.25rem 3rem;
         }
@@ -118,14 +118,14 @@ export default async function ModuleQuizPage(props: {
           margin: 0 auto;
           background: #fff;
           border-radius: 10px;
-          border: 1px solid #e2e8f0;
+          border: 1px solid #d8e4df;
           padding: 1.85rem 1.75rem 2.25rem;
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
         }
         .quiz-bc {
           font-family: "DM Sans", system-ui, sans-serif;
           font-size: 0.8rem;
-          color: #64748b;
+          color: #5c6b66;
           margin-bottom: 1.5rem;
           display: flex;
           flex-wrap: wrap;
@@ -144,7 +144,7 @@ export default async function ModuleQuizPage(props: {
           margin-top: 2.25rem;
           font-family: "DM Sans", system-ui;
           font-size: 0.82rem;
-          color: #94a3b8;
+          color: #8a9691;
           line-height: 1.55;
         }
       `}</style>

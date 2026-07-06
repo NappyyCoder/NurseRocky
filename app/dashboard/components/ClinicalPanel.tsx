@@ -29,7 +29,7 @@ export function ClinicalPanel({
     <>
       <div className="sp-card" style={{ marginBottom: "1.25rem" }}>
         <div className="sp-clinical-hours">
-          {clinical.total} <span style={{ fontSize: "1rem", color: "#64748b" }}>/ {clinical.required} hrs</span>
+          {clinical.total} <span style={{ fontSize: "1rem", color: "#5c6b66" }}>/ {clinical.required} hrs</span>
         </div>
         <div className="sp-clinical-meta">
           Clinical hours logged

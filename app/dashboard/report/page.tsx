@@ -9,16 +9,16 @@ import { ReportHeader } from "./ReportHeader";
 const reportStyles = `
 .report-page {
   min-height: 100vh;
-  background: #f8fafc;
+  background: #f4f8f6;
   padding: 2rem;
   font-family: "DM Sans", system-ui, sans-serif;
-  color: #0f172a;
+  color: #0f1a17;
 }
 .report-body {
   max-width: 800px;
   margin: 0 auto;
   background: #fff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #d8e4df;
   border-radius: 8px;
   padding: 2rem;
 }
@@ -27,7 +27,7 @@ const reportStyles = `
   font-size: 1.5rem;
   margin-bottom: 0.25rem;
 }
-.report-body .meta { color: #64748b; font-size: 0.9rem; margin-bottom: 2rem; }
+.report-body .meta { color: #5c6b66; font-size: 0.9rem; margin-bottom: 2rem; }
 .report-body section { margin-bottom: 2rem; }
 .report-body h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
 .report-body ul { padding-left: 1.25rem; line-height: 1.8; }
@@ -35,9 +35,9 @@ const reportStyles = `
 .report-body th, .report-body td {
   padding: 0.5rem 0.75rem;
   text-align: left;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #d8e4df;
 }
-.report-body th { background: #f8fafc; }
+.report-body th { background: #f4f8f6; }
 @media print {
   .no-print { display: none !important; }
   .report-page { background: #fff; padding: 0; }

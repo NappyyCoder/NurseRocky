@@ -122,7 +122,7 @@ export default async function ModuleOverviewPage(props: {
             <div className="mpc">
               <span className="mpc-label">Lessons</span>
               <span className="mpc-val">{lessonsDone}/{lessonsTotal}</span>
-              <div className="mpc-bar"><div className="mpc-fill blue" style={{ width: `${lessonPct}%` }} /></div>
+              <div className="mpc-bar"><div className="mpc-fill sage" style={{ width: `${lessonPct}%` }} /></div>
             </div>
             <div className="mpc">
               <span className="mpc-label">Assessments passed</span>
@@ -304,7 +304,7 @@ export default async function ModuleOverviewPage(props: {
         }
         .module-crumbs {
           font-size: 0.82rem;
-          color: #64748b;
+          color: #5c6b66;
           margin-bottom: 1.35rem;
         }
         .module-crumbs a {
@@ -322,17 +322,17 @@ export default async function ModuleOverviewPage(props: {
           font-family: "Fraunces", serif;
           font-size: 1.85rem;
           font-weight: 700;
-          color: #0f172a;
+          color: #0f1a17;
           letter-spacing: -0.025em;
         }
         .module-meta {
-          color: #94a3b8;
+          color: #8a9691;
           font-size: 0.85rem;
           margin-top: 0.35rem;
         }
         .module-desc {
           margin-top: 1rem;
-          color: #475569;
+          color: #4a5c55;
           line-height: 1.65;
           font-size: 0.93rem;
         }
@@ -340,14 +340,14 @@ export default async function ModuleOverviewPage(props: {
           margin-top: 2.5rem;
           background: #fff;
           border-radius: 10px;
-          border: 1px solid #e2e8f0;
+          border: 1px solid #d8e4df;
           padding: 1.35rem 1.5rem 1.5rem;
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
         .module-section h2 {
           font-family: "Fraunces", serif;
           font-size: 1.1rem;
-          color: #0f172a;
+          color: #0f1a17;
           margin-bottom: 1rem;
         }
         .lesson-rows {
@@ -365,9 +365,9 @@ export default async function ModuleOverviewPage(props: {
           justify-content: space-between;
           padding: 0.75rem 0.95rem;
           border-radius: 8px;
-          border: 1px solid #e2e8f0;
+          border: 1px solid #d8e4df;
           text-decoration: none;
-          color: #0f172a;
+          color: #0f1a17;
           transition: box-shadow 0.15s, border-color 0.15s;
         }
         .lesson-row-link:hover {
@@ -389,7 +389,7 @@ export default async function ModuleOverviewPage(props: {
         .lesson-done {
           font-size: 0.75rem;
           font-weight: 600;
-          color: #64748b;
+          color: #5c6b66;
           flex-shrink: 0;
         }
         .quiz-rows {
@@ -404,10 +404,10 @@ export default async function ModuleOverviewPage(props: {
           gap: 1rem;
           padding: 0.85rem 1rem;
           border-radius: 8px;
-          border: 1px solid #e2e8f0;
+          border: 1px solid #d8e4df;
           text-decoration: none;
           font-size: 0.85rem;
-          color: #0f172a;
+          color: #0f1a17;
           transition: border-color 0.15s, box-shadow 0.15s;
         }
         .quiz-card:hover {
@@ -415,7 +415,7 @@ export default async function ModuleOverviewPage(props: {
           box-shadow: 0 2px 8px rgba(147, 183, 169, 0.12);
         }
         .empty {
-          color: #94a3b8;
+          color: #8a9691;
           font-size: 0.9rem;
         }
         .module-progress-cards {
@@ -425,19 +425,19 @@ export default async function ModuleOverviewPage(props: {
           margin-top: 1.25rem;
         }
         .mpc {
-          background: #f8fafc;
-          border: 1px solid #e2e8f0;
+          background: #f4f8f6;
+          border: 1px solid #d8e4df;
           border-radius: 8px;
           padding: 0.85rem 1rem;
         }
-        .mpc-label { font-size: 0.75rem; color: #64748b; font-weight: 600; display: block; }
-        .mpc-val { font-family: "Fraunces", serif; font-size: 1.2rem; font-weight: 700; color: #0f172a; }
+        .mpc-label { font-size: 0.75rem; color: #5c6b66; font-weight: 600; display: block; }
+        .mpc-val { font-family: "Fraunces", serif; font-size: 1.2rem; font-weight: 700; color: #0f1a17; }
         .mpc-bar {
-          height: 6px; background: #e2e8f0; border-radius: 99px; margin-top: 0.5rem; overflow: hidden;
+          height: 6px; background: #d8e4df; border-radius: 99px; margin-top: 0.5rem; overflow: hidden;
         }
         .mpc-fill { height: 100%; border-radius: 99px; }
-        .mpc-fill.blue { background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%); }
-        .mpc-fill.green { background: #16a34a; }
+        .mpc-fill.sage { background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%); }
+        .mpc-fill.green { background: #6b9e8e; }
         .continue-cta {
           display: inline-block;
           margin-top: 1.25rem;
@@ -457,54 +457,54 @@ export default async function ModuleOverviewPage(props: {
         }
         .flow-steps li {
           display: flex; gap: 0.85rem; align-items: flex-start;
-          padding: 0.75rem 0.9rem; border-radius: 8px; border: 1px solid #e2e8f0;
+          padding: 0.75rem 0.9rem; border-radius: 8px; border: 1px solid #d8e4df;
           background: #fff;
         }
-        .flow-steps li.done { border-color: #bbf7d0; background: #fafffe; }
-        .flow-steps li.active { border-color: #c3d9d2; background: #f0f9ff; }
+        .flow-steps li.done { border-color: #c3d9d2; background: #fafffe; }
+        .flow-steps li.active { border-color: #c3d9d2; background: #e8f2ef; }
         .flow-num {
           width: 28px; height: 28px; border-radius: 50%;
-          background: #e2e8f0; color: #64748b;
+          background: #d8e4df; color: #5c6b66;
           display: flex; align-items: center; justify-content: center;
           font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
         }
-        .flow-steps li.done .flow-num { background: #dcfce7; color: #15803d; }
+        .flow-steps li.done .flow-num { background: #e8f2ef; color: #6b9e8e; }
         .flow-steps li.active .flow-num { background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%); color: #fff; }
-        .flow-steps strong { display: block; font-size: 0.9rem; color: #0f172a; }
-        .flow-steps span { font-size: 0.8rem; color: #64748b; }
-        .section-hint { font-size: 0.85rem; color: #64748b; margin: -0.5rem 0 1rem; }
-        .done-row { border-left: 3px solid #22c55e; }
-        .lesson-done.is-done { color: #16a34a; }
-        .quiz-card.passed { border-color: #bbf7d0; }
+        .flow-steps strong { display: block; font-size: 0.9rem; color: #0f1a17; }
+        .flow-steps span { font-size: 0.8rem; color: #5c6b66; }
+        .section-hint { font-size: 0.85rem; color: #5c6b66; margin: -0.5rem 0 1rem; }
+        .done-row { border-left: 3px solid #93b7a9; }
+        .lesson-done.is-done { color: #6b9e8e; }
+        .quiz-card.passed { border-color: #c3d9d2; }
         .quiz-card-main { flex: 1; }
-        .quiz-card-sub { display: block; font-size: 0.78rem; color: #94a3b8; font-weight: 400; margin-top: 0.15rem; }
+        .quiz-card-sub { display: block; font-size: 0.78rem; color: #8a9691; font-weight: 400; margin-top: 0.15rem; }
         .quiz-card-right { display: flex; align-items: center; gap: 0.5rem; }
         .grade-pill {
           font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.55rem; border-radius: 99px;
         }
-        .grade-pill.pass { background: #dcfce7; color: #15803d; }
+        .grade-pill.pass { background: #e8f2ef; color: #6b9e8e; }
         .grade-pill.fail { background: #ffedd5; color: #c2410c; }
-        .grade-pill.open { background: #f1f5f9; color: #64748b; }
+        .grade-pill.open { background: #eef3f0; color: #5c6b66; }
         .quiz-arrow { color: #93b7a9; font-weight: 600; }
         .grades-table {
           width: 100%; border-collapse: collapse; font-size: 0.85rem;
         }
         .grades-table th {
           text-align: left; padding: 0.6rem 0.75rem;
-          border-bottom: 2px solid #e2e8f0; color: #64748b; font-weight: 600; font-size: 0.75rem;
+          border-bottom: 2px solid #d8e4df; color: #5c6b66; font-weight: 600; font-size: 0.75rem;
           text-transform: uppercase; letter-spacing: 0.04em;
         }
         .grades-table td {
-          padding: 0.75rem; border-bottom: 1px solid #f1f5f9; color: #334155;
+          padding: 0.75rem; border-bottom: 1px solid #eef3f0; color: #2f3d38;
         }
         .grades-table a { color: #93b7a9; font-weight: 600; text-decoration: none; }
         .grades-table a:hover { text-decoration: underline; }
         .status-chip {
           font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 99px;
         }
-        .status-chip.pass { background: #dcfce7; color: #15803d; }
+        .status-chip.pass { background: #e8f2ef; color: #6b9e8e; }
         .status-chip.fail { background: #ffedd5; color: #c2410c; }
-        .status-chip.none { background: #f1f5f9; color: #94a3b8; }
+        .status-chip.none { background: #eef3f0; color: #8a9691; }
         @media (max-width: 600px) {
           .module-progress-cards { grid-template-columns: 1fr; }
           .grades-table { font-size: 0.78rem; }

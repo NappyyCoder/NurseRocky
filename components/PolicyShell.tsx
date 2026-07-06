@@ -39,7 +39,7 @@ export function PolicyShell({
         <div className="container">
           <div className="footer-grid">
             <div className="footer-brand">
-              <BrandLogo href="/" height={150} />
+              <BrandLogo href="/" height={110} variant="dark" />
               <p>Accelerated CNA training with clinical experience and career support.</p>
             </div>
             <div className="footer-col">

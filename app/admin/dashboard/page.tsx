@@ -33,7 +33,7 @@ function Sidebar({ active, setTab }: { active: Tab; setTab: (t: Tab) => void }) 
   ];
   return (
     <aside className="sidebar">
-      <BrandLogo href="/" className="sidebar-logo" height={150} />
+      <BrandLogo href="/" className="sidebar-logo" height={150} variant="dark" />
       <div className="sidebar-badge">Admin Panel</div>
       <nav className="sidebar-nav">
         {links.map(l => (
@@ -60,10 +60,10 @@ function Overview({ students, modules }: { students: Student[]; modules: Module[
     <div>
       <div className="progress-grid">
         {[
-          { label: "Total Students", value: students.length, color: "blue" },
+          { label: "Total Students", value: students.length, color: "sage" },
           { label: "Active Enrollments", value: active, color: "green" },
           { label: "Modules Published", value: modules.filter(m => m.is_published).length, color: "orange" },
-          { label: "Avg Progress", value: avgProgress + "%", color: "purple" },
+          { label: "Avg Progress", value: avgProgress + "%", color: "sage-mid" },
         ].map(c => (
           <div className="progress-card" key={c.label}>
             <div className={`progress-icon ${c.color}`} />
@@ -126,7 +126,7 @@ function StudentTable({
               )}
             </tr>
           ))}
-          {students.length === 0 && <tr><td colSpan={onEmail && !compact ? 8 : 6} style={{ textAlign: "center", color: "#94a3b8", padding: "2rem" }}>No students yet.</td></tr>}
+          {students.length === 0 && <tr><td colSpan={onEmail && !compact ? 8 : 6} style={{ textAlign: "center", color: "#8a9691", padding: "2rem" }}>No students yet.</td></tr>}
         </tbody>
       </table>
     </div>
@@ -294,7 +294,7 @@ function ClinicalTab({ students }: { students: Student[] }) {
         </div>
         <div className="form-actions">
           <button className="admin-btn" onClick={log} disabled={saving || !form.student_id || !form.hours}>{saving ? "Saving…" : "Log Hours"}</button>
-          {done && <span style={{ color: "#16a34a", fontWeight: 600, fontSize: ".9rem" }}>✓ Hours logged</span>}
+          {done && <span style={{ color: "#6b9e8e", fontWeight: 600, fontSize: ".9rem" }}>✓ Hours logged</span>}
         </div>
       </div>
 
@@ -470,7 +470,7 @@ function CommunicationsTab() {
         <p className="section-hint">Email enrolled students who have not accessed lessons in 7+ days (requires RESEND_API_KEY).</p>
         <div className="form-actions">
           <button className="admin-btn" disabled={busy} onClick={sendReminders}>Send reminders</button>
-          {reminderResult && <span style={{ fontSize: ".9rem", color: "#475569" }}>{reminderResult}</span>}
+          {reminderResult && <span style={{ fontSize: ".9rem", color: "#4a5c55" }}>{reminderResult}</span>}
         </div>
       </div>
     </div>
@@ -628,63 +628,63 @@ export default function AdminDashboard() {
       </main>
 
       <style>{`
-        .portal { display: grid; grid-template-columns: 400px 1fr; min-height: 100vh; font-family: "DM Sans", system-ui, sans-serif; background: #f8fafc; }
-        .sidebar { background: #0f172a; display: flex; flex-direction: column; padding: 1.75rem 1.25rem; position: sticky; top: 0; height: 100vh; }
+        .portal { display: grid; grid-template-columns: 400px 1fr; min-height: 100vh; font-family: "DM Sans", system-ui, sans-serif; background: #f4f8f6; }
+        .sidebar { background: #0f1a17; display: flex; flex-direction: column; padding: 1.75rem 1.25rem; position: sticky; top: 0; height: 100vh; }
         .sidebar-logo.brand-logo { display: block; margin-bottom: 0.75rem; }
-        .sidebar-badge { display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #c3d9d2; border: 1px solid rgba(186,230,253,.3); border-radius: 99px; padding: .15rem .6rem; margin: .5rem 0 2rem; }
+        .sidebar-badge { display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #c3d9d2; border: 1px solid rgba(147,183,169,.35); border-radius: 99px; padding: .15rem .6rem; margin: .5rem 0 2rem; }
         .sidebar-nav { display: flex; flex-direction: column; gap: .25rem; flex: 1; }
-        .sidebar-link { display: flex; align-items: center; gap: .75rem; padding: .65rem .9rem; border-radius: 6px; color: #94a3b8; font-size: .9rem; font-weight: 500; background: none; border: none; cursor: pointer; width: 100%; text-align: left; transition: all .15s; }
+        .sidebar-link { display: flex; align-items: center; gap: .75rem; padding: .65rem .9rem; border-radius: 6px; color: #8a9691; font-size: .9rem; font-weight: 500; background: none; border: none; cursor: pointer; width: 100%; text-align: left; transition: all .15s; }
         .sidebar-link svg { width: 18px; height: 18px; flex-shrink: 0; }
-        .sidebar-link:hover { background: rgba(255,255,255,.07); color: #e2e8f0; }
+        .sidebar-link:hover { background: rgba(255,255,255,.07); color: #d8e4df; }
         .sidebar-link.active { background: rgba(147,183,169,.25); color: #c3d9d2; }
         .sidebar-footer { display: flex; align-items: center; gap: .75rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.08); }
-        .sidebar-username { color: #94a3b8; font-size: .85rem; }
+        .sidebar-username { color: #8a9691; font-size: .85rem; }
         .portal-main { padding: 2rem; overflow-y: auto; }
         .portal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; }
-        .portal-welcome { font-family: "Fraunces", serif; font-size: 1.75rem; font-weight: 700; color: #0f172a; letter-spacing: -.02em; }
-        .portal-subtitle { color: #64748b; font-size: .95rem; margin-top: .2rem; }
-        .loading { color: #64748b; padding: 3rem; text-align: center; }
+        .portal-welcome { font-family: "Fraunces", serif; font-size: 1.75rem; font-weight: 700; color: #0f1a17; letter-spacing: -.02em; }
+        .portal-subtitle { color: #5c6b66; font-size: .95rem; margin-top: .2rem; }
+        .loading { color: #5c6b66; padding: 3rem; text-align: center; }
         .progress-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
-        .progress-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+        .progress-card { background: #fff; border: 1px solid #d8e4df; border-radius: 8px; padding: 1.25rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
         .progress-icon { width: 44px; height: 44px; border-radius: 8px; flex-shrink: 0; }
-        .progress-icon.blue { background: #e8f2ef; } .progress-icon.green { background: #dcfce7; } .progress-icon.orange { background: #ffedd5; } .progress-icon.purple { background: #f3e8ff; }
-        .progress-num { font-family: "Fraunces", serif; font-size: 1.3rem; font-weight: 700; color: #0f172a; line-height: 1; }
-        .progress-label { font-size: .78rem; color: #64748b; margin-top: .2rem; }
+        .progress-icon.sage { background: #e8f2ef; } .progress-icon.green { background: #e8f2ef; } .progress-icon.orange { background: #ffedd5; } .progress-icon.sage-mid { background: #dceee8; color: #6b9e8e; }
+        .progress-num { font-family: "Fraunces", serif; font-size: 1.3rem; font-weight: 700; color: #0f1a17; line-height: 1; }
+        .progress-label { font-size: .78rem; color: #5c6b66; margin-top: .2rem; }
         .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 1rem; flex-wrap: wrap; }
-        .section-hint { font-size: .85rem; color: #64748b; }
+        .section-hint { font-size: .85rem; color: #5c6b66; }
         .admin-error-banner { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: .85rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: .875rem; line-height: 1.5; }
-        .admin-ok-banner { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: .65rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: .85rem; }
-        .portal-section-title { font-family: "Fraunces", serif; font-size: 1.2rem; font-weight: 700; color: #0f172a; }
-        .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .admin-ok-banner { background: #e8f2ef; border: 1px solid #c3d9d2; color: #6b9e8e; padding: .65rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: .85rem; }
+        .portal-section-title { font-family: "Fraunces", serif; font-size: 1.2rem; font-weight: 700; color: #0f1a17; }
+        .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid #d8e4df; }
         .admin-table { width: 100%; border-collapse: collapse; background: #fff; font-size: .875rem; }
-        .admin-table th { text-align: left; padding: .85rem 1rem; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #64748b; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
-        .admin-table td { padding: .9rem 1rem; border-bottom: 1px solid #f1f5f9; }
+        .admin-table th { text-align: left; padding: .85rem 1rem; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #5c6b66; background: #f4f8f6; border-bottom: 1px solid #d8e4df; }
+        .admin-table td { padding: .9rem 1rem; border-bottom: 1px solid #eef3f0; }
         .admin-table tr:last-child td { border-bottom: none; }
-        .td-name { font-weight: 600; color: #0f172a; } .td-muted { color: #64748b; }
+        .td-name { font-weight: 600; color: #0f1a17; } .td-muted { color: #5c6b66; }
         .progress-bar-wrap { display: flex; align-items: center; gap: .5rem; }
         .progress-bar-wrap > div { height: 6px; background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%); border-radius: 99px; min-width: 4px; }
-        .progress-bar-wrap span { font-size: .8rem; color: #64748b; white-space: nowrap; }
+        .progress-bar-wrap span { font-size: .8rem; color: #5c6b66; white-space: nowrap; }
         .status-badge { display: inline-block; padding: .2rem .65rem; border-radius: 99px; font-size: .75rem; font-weight: 600; text-transform: capitalize; }
-        .status-badge.active { background: #dcfce7; color: #15803d; } .status-badge.pending { background: #fef9c3; color: #a16207; }
+        .status-badge.active { background: #e8f2ef; color: #6b9e8e; } .status-badge.pending { background: #fef9c3; color: #a16207; }
         .admin-btn { background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%); color: #fff; border: none; border-radius: 6px; padding: .5rem 1rem; font-size: .85rem; font-weight: 600; cursor: pointer; transition: background .15s; }
         .admin-btn:hover:not(:disabled) { background: linear-gradient(180deg, #aaccc4 0%, #7aab9b 100%); } .admin-btn:disabled { opacity: .5; cursor: not-allowed; }
         .admin-btn.small { padding: .35rem .75rem; font-size: .78rem; }
-        .row-btn { background: transparent; border: 1px solid #e2e8f0; border-radius: 5px; padding: .3rem .7rem; font-size: .8rem; font-weight: 500; color: #64748b; cursor: pointer; transition: all .15s; margin-right: .35rem; }
+        .row-btn { background: transparent; border: 1px solid #d8e4df; border-radius: 5px; padding: .3rem .7rem; font-size: .8rem; font-weight: 500; color: #5c6b66; cursor: pointer; transition: all .15s; margin-right: .35rem; }
         .row-btn:hover { border-color: #93b7a9; color: #93b7a9; } .row-btn.danger:hover { border-color: #ef4444; color: #ef4444; }
         .modules-admin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-        .module-admin-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
+        .module-admin-card { background: #fff; border: 1px solid #d8e4df; border-radius: 8px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
         .module-admin-card.unpublished { opacity: .65; border-style: dashed; }
-        .module-admin-num { font-family: "Fraunces", serif; font-size: 1.5rem; font-weight: 700; color: #cbd5e1; margin-bottom: .25rem; }
-        .module-admin-title { font-weight: 600; font-size: .9rem; color: #0f172a; line-height: 1.4; }
-        .module-admin-meta { font-size: .78rem; color: #94a3b8; margin: .2rem 0 .5rem; }
-        .module-admin-desc { font-size: .82rem; color: #64748b; line-height: 1.5; margin-bottom: .75rem; }
-        .module-admin-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; padding-top: .75rem; border-top: 1px solid #f1f5f9; }
+        .module-admin-num { font-family: "Fraunces", serif; font-size: 1.5rem; font-weight: 700; color: #b8c9c2; margin-bottom: .25rem; }
+        .module-admin-title { font-weight: 600; font-size: .9rem; color: #0f1a17; line-height: 1.4; }
+        .module-admin-meta { font-size: .78rem; color: #8a9691; margin: .2rem 0 .5rem; }
+        .module-admin-desc { font-size: .82rem; color: #5c6b66; line-height: 1.5; margin-bottom: .75rem; }
+        .module-admin-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; padding-top: .75rem; border-top: 1px solid #eef3f0; }
         .module-admin-actions { display: flex; }
-        .form-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
-        .form-title { font-family: "Fraunces", serif; font-size: 1.05rem; font-weight: 700; color: #0f172a; margin-bottom: 1.25rem; }
+        .form-card { background: #fff; border: 1px solid #d8e4df; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+        .form-title { font-family: "Fraunces", serif; font-size: 1.05rem; font-weight: 700; color: #0f1a17; margin-bottom: 1.25rem; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         .form-label { display: flex; flex-direction: column; gap: .35rem; font-size: .85rem; font-weight: 600; color: #374151; }
-        .form-input { padding: .55rem .75rem; border: 1px solid #e2e8f0; border-radius: 6px; font-size: .9rem; font-family: inherit; color: #0f172a; transition: border-color .15s; outline: none; width: 100%; }
+        .form-input { padding: .55rem .75rem; border: 1px solid #d8e4df; border-radius: 6px; font-size: .9rem; font-family: inherit; color: #0f1a17; transition: border-color .15s; outline: none; width: 100%; }
         .form-input:focus { border-color: #93b7a9; box-shadow: 0 0 0 3px rgba(147,183,169,.12); }
         textarea.form-input { resize: vertical; }
         .form-actions { display: flex; align-items: center; gap: 1rem; margin-top: 1.25rem; }

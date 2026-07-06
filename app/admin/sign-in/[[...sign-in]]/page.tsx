@@ -2,6 +2,7 @@ import { SignIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { clerkIsAdmin } from "@/lib/clerk-admin";
+import { clerkAppearance } from "@/lib/clerk-theme";
 import { BrandLogo } from "@/components/BrandLogo";
 
 export default async function AdminSignInPage() {
@@ -15,7 +16,7 @@ export default async function AdminSignInPage() {
   return (
     <main className="auth-page admin">
       <div className="auth-brand">
-        <BrandLogo href="/" className="auth-logo" height={150} />
+        <BrandLogo href="/" className="auth-logo" height={150} variant="dark" />
         <p className="admin-badge">Administrator Access</p>
       </div>
 
@@ -36,7 +37,7 @@ export default async function AdminSignInPage() {
         </div>
       ) : (
         <div className="auth-card">
-          <SignIn fallbackRedirectUrl="/admin/dashboard" />
+          <SignIn fallbackRedirectUrl="/admin/dashboard" appearance={clerkAppearance} />
         </div>
       )}
 
@@ -49,7 +50,7 @@ export default async function AdminSignInPage() {
           justify-content: center;
           padding: 2rem 1rem;
           font-family: "DM Sans", system-ui, sans-serif;
-          background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #93b7a9 100%);
+          background: linear-gradient(135deg, #0f1a17 0%, #1a2824 60%, #93b7a9 100%);
         }
         .auth-brand { text-align: center; margin-bottom: 1.5rem; }
         .auth-logo.brand-logo { display: inline-flex; justify-content: center; }
@@ -61,7 +62,7 @@ export default async function AdminSignInPage() {
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: .1em;
-          border: 1px solid rgba(186,230,253,.3);
+          border: 1px solid rgba(147,183,169,.35);
           padding: .2rem .75rem;
           border-radius: 99px;
         }
@@ -74,11 +75,11 @@ export default async function AdminSignInPage() {
           max-width: 420px;
           width: 100%;
           text-align: center;
-          color: #e2e8f0;
+          color: #d8e4df;
         }
         .already-text { font-size: .95rem; margin-bottom: .5rem; line-height: 1.5; }
         .already-text strong { color: #c3d9d2; }
-        .already-sub { font-size: .85rem; color: #94a3b8; margin-bottom: 1.5rem; line-height: 1.5; }
+        .already-sub { font-size: .85rem; color: #8a9691; margin-bottom: 1.5rem; line-height: 1.5; }
         .signout-btn {
           display: block;
           background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%);

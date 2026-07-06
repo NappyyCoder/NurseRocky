@@ -63,10 +63,10 @@ export async function POST(req: NextRequest) {
     }
 
     const html = `
-      <div style="font-family: system-ui, sans-serif; max-width: 560px; line-height: 1.6; color: #0f172a;">
+      <div style="font-family: system-ui, sans-serif; max-width: 560px; line-height: 1.6; color: #0f1a17;">
         <p style="margin: 0 0 1rem;">${escapeHtml(message).replace(/\n/g, "<br>")}</p>
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 1.5rem 0;" />
-        <p style="font-size: 0.85rem; color: #64748b; margin: 0;">Nurse Rocky CNA Training Program</p>
+        <hr style="border: none; border-top: 1px solid #d8e4df; margin: 1.5rem 0;" />
+        <p style="font-size: 0.85rem; color: #5c6b66; margin: 0;">Nurse Rocky CNA Training Program</p>
       </div>
     `;
 

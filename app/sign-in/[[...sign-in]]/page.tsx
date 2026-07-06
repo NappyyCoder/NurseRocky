@@ -2,6 +2,7 @@ import { SignIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
+import { clerkAppearance } from "@/lib/clerk-theme";
 
 export default async function StudentSignInPage() {
   const { userId } = await auth();
@@ -12,7 +13,7 @@ export default async function StudentSignInPage() {
 
       {/* ── Dark left panel ── */}
       <div className="signin-left">
-        <BrandLogo href="/" className="signin-logo" height={150} />
+        <BrandLogo href="/" className="signin-logo" height={150} variant="dark" />
         <h1 className="signin-headline">Welcome back.</h1>
         <p className="signin-desc">
           Sign in to continue your CNA certification. Your progress is saved
@@ -32,21 +33,7 @@ export default async function StudentSignInPage() {
         <SignIn
           forceRedirectUrl="/dashboard"
           afterSignInUrl="/dashboard"
-          appearance={{
-            variables: {
-              colorPrimary: "#93b7a9",
-              borderRadius: "8px",
-              fontFamily: "DM Sans, system-ui, sans-serif",
-              fontSize: "15px",
-            },
-            elements: {
-              headerTitle: { display: "none" },
-              headerSubtitle: { display: "none" },
-              card: { boxShadow: "0 4px 24px rgba(0,0,0,.08)", borderRadius: "12px" },
-              formButtonPrimary: { backgroundColor: "#93b7a9", fontWeight: "700" },
-              footerAction: { display: "none" },
-            },
-          }}
+          appearance={clerkAppearance}
         />
       </div>
 
@@ -63,7 +50,7 @@ export default async function StudentSignInPage() {
         .signin-left {
           width: 45%;
           flex-shrink: 0;
-          background: linear-gradient(160deg, #0f172a 0%, #0c4a6e 100%);
+          background: linear-gradient(160deg, #0f1a17 0%, #6b9e8e 100%);
           padding: 3.5rem 3rem;
           display: flex;
           flex-direction: column;
@@ -117,7 +104,7 @@ export default async function StudentSignInPage() {
         /* Right panel — centers Clerk's natural card */
         .signin-right {
           flex: 1;
-          background: #f1f5f9;
+          background: #eef3f0;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -128,7 +115,7 @@ export default async function StudentSignInPage() {
         }
         .signin-switch {
           font-size: .875rem;
-          color: #64748b;
+          color: #5c6b66;
           text-align: center;
         }
         .signin-switch a {

@@ -57,7 +57,7 @@ export default function EnrollPage() {
       <style>{`
         .enroll-page {
           min-height: 100vh;
-          background: linear-gradient(135deg, #f0f9ff 0%, #e8f2ef 100%);
+          background: linear-gradient(135deg, #e8f2ef 0%, #c3d9d2 100%);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -67,7 +67,7 @@ export default function EnrollPage() {
         .enroll-container { width: 100%; max-width: 480px; text-align: center; }
         .enroll-header { margin-bottom: 2rem; }
         .enroll-logo.brand-logo { display: inline-flex; justify-content: center; }
-        .enroll-tagline { color: #64748b; font-size: .9rem; margin-top: .3rem; }
+        .enroll-tagline { color: #5c6b66; font-size: .9rem; margin-top: .3rem; }
         .pricing-card {
           background: #fff;
           border-radius: 16px;
@@ -92,7 +92,7 @@ export default function EnrollPage() {
           font-family: "Fraunces", serif;
           font-size: 4rem;
           font-weight: 700;
-          color: #0f172a;
+          color: #0f1a17;
           line-height: 1;
           margin-bottom: .75rem;
           display: flex;
@@ -100,11 +100,11 @@ export default function EnrollPage() {
           justify-content: center;
           gap: .1rem;
         }
-        .price-dollar { font-size: 1.75rem; margin-top: .6rem; color: #64748b; }
-        .pricing-desc { color: #64748b; font-size: .9rem; margin-bottom: 1.75rem; line-height: 1.5; }
+        .price-dollar { font-size: 1.75rem; margin-top: .6rem; color: #5c6b66; }
+        .pricing-desc { color: #5c6b66; font-size: .9rem; margin-bottom: 1.75rem; line-height: 1.5; }
         .pricing-features { list-style: none; text-align: left; margin-bottom: 2rem; display: flex; flex-direction: column; gap: .65rem; }
         .pricing-feature { display: flex; align-items: center; gap: .65rem; font-size: .9rem; color: #374151; }
-        .check-icon { width: 18px; height: 18px; color: #16a34a; flex-shrink: 0; }
+        .check-icon { width: 18px; height: 18px; color: #6b9e8e; flex-shrink: 0; }
         .enroll-btn {
           width: 100%;
           background: linear-gradient(180deg, #c0d9d2 0%, #93b7a9 100%);
@@ -126,7 +126,7 @@ export default function EnrollPage() {
           align-items: center;
           justify-content: center;
           gap: .35rem;
-          color: #94a3b8;
+          color: #8a9691;
           font-size: .78rem;
         }
         .enroll-existing {
@@ -138,8 +138,8 @@ export default function EnrollPage() {
           margin-bottom: .75rem;
         }
         .enroll-existing:hover { text-decoration: underline; }
-        .enroll-back { display: inline-block; color: #94a3b8; font-size: .85rem; text-decoration: none; }
-        .enroll-back:hover { color: #64748b; }
+        .enroll-back { display: inline-block; color: #8a9691; font-size: .85rem; text-decoration: none; }
+        .enroll-back:hover { color: #5c6b66; }
       `}</style>
     </main>
   );
