@@ -42,10 +42,10 @@ export default function Home() {
           <div className="hero-media">
             <div className="hero-img-wrap">
               <Image
-                src={img("PICTURE 1.jpg")}
-                alt="CNA student in clinical training"
-                width={560}
-                height={420}
+                src={img("landing-hero.png")}
+                alt="Compassionate CNA caregiver supporting an elderly patient"
+                width={1245}
+                height={848}
                 priority
                 quality={85}
                 sizes="(max-width: 900px) 100vw, 50vw"
@@ -247,12 +247,12 @@ export default function Home() {
           <div className="different-highlight">
             <div className="different-highlight-photo">
               <Image
-                src={img("Nurse Rocky Image 8.webp")}
-                alt="Nurse Rocky students in clinical training"
+                src={img("landing-team.png")}
+                alt="Healthcare team joining hands in collaboration"
                 fill
                 quality={80}
                 sizes="(max-width: 860px) 100vw, 45vw"
-                style={{ objectFit: "cover", objectPosition: "center center" }}
+                style={{ objectFit: "cover", objectPosition: "center 78%" }}
               />
             </div>
             <div className="different-highlight-text">
@@ -352,32 +352,22 @@ export default function Home() {
             </div>
             <div className="program-card-photo">
               <Image
-                src={img("Nurse Rocky New Image.jpg")}
-                alt="CNA student in clinical program"
+                src={img("landing-clinical.png")}
+                alt="CNA professionals providing patient care in a clinical setting"
                 fill
                 quality={82}
                 sizes="(max-width: 860px) 100vw, 40vw"
-                style={{ objectFit: "cover", objectPosition: "center top" }}
+                className="program-card-photo-img"
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Tuition — one photo ───────────────────── */}
+      {/* ── Tuition ───────────────────────────────── */}
       <section className="tuition-section" id="tuition">
         <div className="container">
           <div className="tuition-card">
-            <div className="tuition-img">
-              <Image
-                src={img("Nurse Rocky New Image 3.png")}
-                alt="Nurse Rocky training and payment"
-                fill
-                quality={80}
-                sizes="(max-width: 860px) 100vw, 40vw"
-                style={{ objectFit: "cover", objectPosition: "center top" }}
-              />
-            </div>
             <div className="tuition-info">
               <span className="section-tag">Tuition &amp; Payment</span>
               <h2 className="section-title">Affordable &amp; Accessible</h2>
@@ -406,7 +396,7 @@ export default function Home() {
         {/* Subtle background photo */}
         <div className="cta-bg-photo">
           <Image
-            src={img("Nurse Rocky New Image 4.png")}
+            src={img("landing-clinical.png")}
             alt=""
             fill
             quality={75}
