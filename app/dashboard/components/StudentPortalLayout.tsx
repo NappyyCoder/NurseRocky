@@ -107,7 +107,7 @@ export function StudentPortalLayout({
       {showPolicy && <PolicyAckModal onDone={() => setShowPolicy(false)} />}
 
       <aside className="student-portal-sidebar">
-        <BrandLogo href="/" className="student-portal-logo" height={150} variant="dark" />
+        <BrandLogo href="/" className="student-portal-logo" height={64} variant="dark" />
         <div className="student-portal-badge">Student Portal</div>
         <nav className="student-portal-nav" aria-label="Student portal">
           {NAV.map((item) => (
@@ -129,7 +129,7 @@ export function StudentPortalLayout({
 
       <div className="student-portal-main">
         <div className="student-portal-topbar">
-          <BrandLogo href="/" className="student-portal-logo" height={150} />
+          <BrandLogo href="/" className="student-portal-logo" height={52} />
           <UserButton afterSignOutUrl="/" appearance={clerkUserButtonAppearance} />
         </div>
         {children}
